@@ -1,0 +1,152 @@
+<script setup>
+const { shoppingItems } = useShoppingItems()
+
+import { usePantriesStore } from "~/stores/pantries"
+const pantriesStore = usePantriesStore()
+const { handlePantryItem } = pantriesStore
+const { currentPantry } = storeToRefs(pantriesStore)
+
+const pantryItemInput = ref("")
+const activeCategory = ref("")
+const addingItem = ref(false)
+
+const availableShoppingItemsByPhrase = computed(() => {
+    const allItems = shoppingItems.flatMap((item) => item.items)
+    return [
+        pantryItemInput.value,
+        ...allItems.filter((item) =>
+            item.toLowerCase().includes(pantryItemInput.value.toLowerCase())
+        ),
+    ]
+})
+
+const handleCategory = (cat) => {
+    activeCategory.value = activeCategory.value === cat ? "" : cat
+}
+
+const handleItem = async (item) => {
+    addingItem.value = true
+    await handlePantryItem(item)
+    addingItem.value = false
+}
+</script>
+<template>
+    <ion-page>
+        <ion-header>
+            <ion-toolbar class="ion-color-primary ion-color">
+                <ion-title>Listy zakupowe</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content :fullscreen="true">
+            <ion-list>
+                <ion-item>
+                    <ion-input
+                        label="Czego szukasz..."
+                        label-placement="floating"
+                        ref="input"
+                        type="text"
+                        :clear-input="true"
+                        v-model="pantryItemInput"
+                        class="border-b-2 mb-4"
+                    ></ion-input>
+                </ion-item>
+            </ion-list>
+            <ion-accordion-group
+                v-show="pantryItemInput.length === 0"
+                class="shopping-accordion-group"
+            >
+                <ion-accordion
+                    v-for="items in shoppingItems"
+                    :key="items.category"
+                    :value="items.category"
+                >
+                    <ion-item
+                        slot="header"
+                        color="light"
+                        @click="() => handleCategory(items.category)"
+                    >
+                        <ion-label>{{ items.category }}</ion-label>
+                    </ion-item>
+                    <div
+                        class="ion-padding"
+                        slot="content"
+                        v-if="currentPantry.items"
+                    >
+                        <div
+                            class="w-full p-2 grid-cols-2 grid auto-rows-max overflow-auto"
+                            v-if="items.category === activeCategory"
+                        >
+                            <shoppingListItemToAdd
+                                v-for="item in items.items"
+                                :key="item"
+                                :shopping-item="item"
+                                :active="
+                                    currentPantry.items.some(
+                                        (pantryItem) => pantryItem.name === item
+                                    )
+                                "
+                                @click="() => handleItem(item)"
+                            />
+                        </div>
+                    </div>
+                </ion-accordion>
+            </ion-accordion-group>
+            <div
+                class="w-full p-2 grid-cols-2 grid auto-rows-max overflow-auto"
+                v-if="pantryItemInput.length"
+            >
+                <shoppingListItemToAdd
+                    v-for="item in availableShoppingItemsByPhrase"
+                    :key="item"
+                    :shopping-item="item"
+                    v-if="availableShoppingItemsByPhrase.length"
+                    :active="
+                        currentPantry.items.some(
+                            (shoppingItem) => shoppingItem.name === item.name
+                        )
+                    "
+                    @click="() => handleItem(item)"
+                />
+                <shoppingListItemToAdd
+                    :shopping-item="pantryItemInput"
+                    v-else
+                    :active="
+                        currentPantry.items.some(
+                            (shoppingItem) =>
+                                shoppingItem.name === pantryItemInput
+                        )
+                    "
+                    @click="() => handleItem(pantryItemInput)"
+                />
+            </div>
+            <div class="background" v-if="addingItem">
+                <ion-spinner name="lines-sharp"></ion-spinner>
+                <span>Aktualizacja listy</span>
+            </div>
+        </ion-content>
+    </ion-page>
+</template>
+<style inner-content lang="scss" scoped>
+.shopping-accordion-group {
+    height: calc(100% - 100px);
+    overflow: auto;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999999999999;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    span {
+        color: white;
+    }
+}
+</style>

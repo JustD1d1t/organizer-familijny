@@ -1,0 +1,34 @@
+ion-modal {
+  --width: 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+ion-modal.auto-height {
+  --height: auto;
+}
+ion-modal.auto-height.bottom {
+  align-items: flex-end;
+}
+ion-modal.auto-height .ion-page {
+  position: relative;
+  display: block;
+  contain: content;
+}
+ion-modal.auto-height .ion-page .inner-content {
+  max-height: 80vh;
+  overflow: auto;
+  padding-bottom: 10px;
+}
+ion-modal ion-content::part(scroll)::before {
+  content: unset;
+}
+ion-modal ion-content ion-input {
+  padding: 0 0.5rem !important;
+}
+ion-modal ion-content ion-input.sc-ion-input-ios-h {
+  padding: 0 0.5rem !important;
+}
+ion-modal ion-item::part(native) {
+  padding: 0 0.5rem;
+}/*# sourceMappingURL=modal.css.map */

@@ -1,0 +1,352 @@
+[
+    {
+        "name": "Olej",
+        "price": 5.99,
+        "date": "2024-01-01"
+    },
+    {
+        "name": "Milk",
+        "price": 2.49,
+        "date": "2024-01-02"
+    },
+    {
+        "name": "Bread",
+        "price": 1.99,
+        "date": "2024-01-03"
+    },
+    {
+        "name": "Eggs",
+        "price": 3.99,
+        "date": "2024-01-04"
+    },
+    {
+        "name": "Cheese",
+        "price": 4.99,
+        "date": "2024-01-05"
+    },
+    {
+        "name": "Butter",
+        "price": 2.99,
+        "date": "2024-01-06"
+    },
+    {
+        "name": "Chicken",
+        "price": 7.99,
+        "date": "2024-01-07"
+    },
+    {
+        "name": "Beef",
+        "price": 9.99,
+        "date": "2024-01-08"
+    },
+    {
+        "name": "Pork",
+        "price": 6.99,
+        "date": "2024-01-09"
+    },
+    {
+        "name": "Fish",
+        "price": 8.99,
+        "date": "2024-01-10"
+    },
+    {
+        "name": "Rice",
+        "price": 1.49,
+        "date": "2024-01-11"
+    },
+    {
+        "name": "Pasta",
+        "price": 2.49,
+        "date": "2024-01-12"
+    },
+    {
+        "name": "Tomatoes",
+        "price": 3.49,
+        "date": "2024-01-13"
+    },
+    {
+        "name": "Potatoes",
+        "price": 2.99,
+        "date": "2024-01-14"
+    },
+    {
+        "name": "Onions",
+        "price": 1.99,
+        "date": "2024-01-15"
+    },
+    {
+        "name": "Carrots",
+        "price": 1.49,
+        "date": "2024-01-16"
+    },
+    {
+        "name": "Apples",
+        "price": 3.99,
+        "date": "2024-01-17"
+    },
+    {
+        "name": "Oranges",
+        "price": 2.99,
+        "date": "2024-01-18"
+    },
+    {
+        "name": "Bananas",
+        "price": 1.99,
+        "date": "2024-01-19"
+    },
+    {
+        "name": "Grapes",
+        "price": 4.99,
+        "date": "2024-02-10"
+    },
+    {
+        "name": "Avocado",
+        "price": 2.99,
+        "date": "2024-02-11"
+    },
+    {
+        "name": "Lettuce",
+        "price": 1.49,
+        "date": "2024-02-12"
+    },
+    {
+        "name": "Cucumber",
+        "price": 1.99,
+        "date": "2024-02-13"
+    },
+    {
+        "name": "Bell Pepper",
+        "price": 0.99,
+        "date": "2024-02-14"
+    },
+    {
+        "name": "Spinach",
+        "price": 2.49,
+        "date": "2024-02-15"
+    },
+    {
+        "name": "Broccoli",
+        "price": 1.99,
+        "date": "2024-02-16"
+    },
+    {
+        "name": "Cauliflower",
+        "price": 2.99,
+        "date": "2024-02-17"
+    },
+    {
+        "name": "Zucchini",
+        "price": 1.49,
+        "date": "2024-02-18"
+    },
+    {
+        "name": "Strawberries",
+        "price": 3.99,
+        "date": "2024-02-19"
+    },
+    {
+        "name": "Blueberries",
+        "price": 4.99,
+        "date": "2024-02-20"
+    },
+    {
+        "name": "Raspberries",
+        "price": 3.99,
+        "date": "2024-02-21"
+    },
+    {
+        "name": "Blackberries",
+        "price": 4.99,
+        "date": "2024-02-22"
+    },
+    {
+        "name": "Pineapple",
+        "price": 2.99,
+        "date": "2024-02-23"
+    },
+    {
+        "name": "Watermelon",
+        "price": 3.99,
+        "date": "2024-02-24"
+    },
+    {
+        "name": "Grapefruit",
+        "price": 1.99,
+        "date": "2024-02-25"
+    },
+    {
+        "name": "Mango",
+        "price": 2.99,
+        "date": "2024-02-26"
+    },
+    {
+        "name": "Peach",
+        "price": 1.99,
+        "date": "2024-02-27"
+    },
+    {
+        "name": "Plum",
+        "price": 1.49,
+        "date": "2024-02-28"
+    },
+    {
+        "name": "Cherries",
+        "price": 3.99,
+        "date": "2024-02-29"
+    },
+    {
+        "name": "Kiwi",
+        "price": 1.99,
+        "date": "2024-03-01"
+    },
+    {
+        "name": "Lemon",
+        "price": 0.99,
+        "date": "2024-03-02"
+    },
+    {
+        "name": "Ginger",
+        "price": 1.49,
+        "date": "2024-03-03"
+    },
+    {
+        "name": "Garlic",
+        "price": 0.79,
+        "date": "2024-03-04"
+    },
+    {
+        "name": "Cilantro",
+        "price": 0.99,
+        "date": "2024-03-05"
+    },
+    {
+        "name": "Mint",
+        "price": 0.99,
+        "date": "2024-03-06"
+    },
+    {
+        "name": "Basil",
+        "price": 1.49,
+        "date": "2024-03-07"
+    },
+    {
+        "name": "Thyme",
+        "price": 0.99,
+        "date": "2024-03-08"
+    },
+    {
+        "name": "Rosemary",
+        "price": 1.49,
+        "date": "2024-03-09"
+    },
+    {
+        "name": "Oregano",
+        "price": 0.99,
+        "date": "2024-03-10"
+    },
+    {
+        "name": "Parsley",
+        "price": 0.99,
+        "date": "2024-03-11"
+    },
+    {
+        "name": "Sage",
+        "price": 1.49,
+        "date": "2024-03-12"
+    },
+    {
+        "name": "Dill",
+        "price": 0.99,
+        "date": "2024-03-13"
+    },
+    {
+        "name": "Chives",
+        "price": 0.99,
+        "date": "2024-03-14"
+    },
+    {
+        "name": "Cinnamon",
+        "price": 1.49,
+        "date": "2024-03-15"
+    },
+    {
+        "name": "Nutmeg",
+        "price": 1.49,
+        "date": "2024-03-16"
+    },
+    {
+        "name": "Paprika",
+        "price": 0.99,
+        "date": "2024-03-17"
+    },
+    {
+        "name": "Turmeric",
+        "price": 1.49,
+        "date": "2024-03-18"
+    },
+    {
+        "name": "Cumin",
+        "price": 0.99,
+        "date": "2024-03-19"
+    },
+    {
+        "name": "Coriander",
+        "price": 1.49,
+        "date": "2024-03-20"
+    },
+    {
+        "name": "Pumpkin",
+        "price": 2.99,
+        "date": "2024-03-21"
+    },
+    {
+        "name": "Cabbage",
+        "price": 1.99,
+        "date": "2024-03-22"
+    },
+    {
+        "name": "Celery",
+        "price": 1.49,
+        "date": "2024-03-23"
+    },
+    {
+        "name": "Lime",
+        "price": 0.99,
+        "date": "2024-03-24"
+    },
+    {
+        "name": "Parsnip",
+        "price": 1.49,
+        "date": "2024-03-25"
+    },
+    {
+        "name": "Radish",
+        "price": 0.99,
+        "date": "2024-03-26"
+    },
+    {
+        "name": "Artichoke",
+        "price": 2.99,
+        "date": "2024-03-27"
+    },
+    {
+        "name": "Asparagus",
+        "price": 3.49,
+        "date": "2024-03-28"
+    },
+    {
+        "name": "Eggplant",
+        "price": 2.99,
+        "date": "2024-03-29"
+    },
+    {
+        "name": "Cantaloupe",
+        "price": 3.99,
+        "date": "2024-03-30"
+    },
+    {
+        "name": "Honeydew",
+        "price": 3.99,
+        "date": "2024-03-31"
+    }
+]

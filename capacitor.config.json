@@ -1,0 +1,16 @@
+{
+    "appId": "io.ionic.family-organizer",
+    "appName": "Family organizer",
+    "webDir": "dist",
+    "server": {
+        "androidScheme": "http",
+        "hostname": "localhost:3000"
+    },
+    "plugins": {
+        "Keyboard": {
+            "resize": "body",
+            "style": "DARK",
+            "resizeOnFullScreen": true
+        }
+    }
+}

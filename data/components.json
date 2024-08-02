@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "name": "Listy zakupowe"
+    },
+    {
+        "id": 2,
+        "name": "Przepisy"
+    },
+    {
+        "id": 3,
+        "name": "Wydatki"
+    },
+    {
+        "id": 4,
+        "name": "Spiżarnia"
+    }
+]

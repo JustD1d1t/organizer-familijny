@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Listy zakupowe",
+        "path": "/shopping-lists"
+    },
+    {
+        "name": "Przepisy",
+        "path": "/recipes"
+    },
+    {
+        "name": "Wydatki",
+        "path": "/expenses"
+    },
+    {
+        "name": "Spiżarnia",
+        "path": "/pantries"
+    },
+    {
+        "name": "Gazetki",
+        "path": "/newspaper"
+    }
+]

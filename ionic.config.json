@@ -1,0 +1,7 @@
+{
+    "name": "Family organizer",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "vue"
+}

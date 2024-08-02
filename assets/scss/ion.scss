@@ -1,0 +1,28 @@
+.header-ios {
+    ion-toolbar:last-of-type {
+        --border-width: 0;
+    }
+}
+
+ion-list {
+    background: transparent;
+    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+ion-item {
+    &::part(native) {
+        --padding-start: 8px;
+        --padding-end: 8px;
+    }
+}
+
+ion-content {
+    --padding-start: 0;
+    --padding-end: 0;
+}
+
+ion-checkbox {
+    --checkbox-background: #fff;
+}

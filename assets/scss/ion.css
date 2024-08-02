@@ -1,0 +1,15 @@
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0;
+}
+
+ion-list {
+  background: transparent;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+ion-content {
+  --padding-end: 1rem;
+  --padding-start: 0;
+}/*# sourceMappingURL=ion.css.map */
