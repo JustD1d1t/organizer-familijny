@@ -4,48 +4,26 @@ import { useRoute, useRouter } from "vue-router"
 import { useFirebase } from "../composables/useFirebase"
 import { usePhotoGallery } from "../composables/usePhotoGallery"
 import { StateEntries } from "@/types"
-const { formatDate } = useFormatters()
 const { photos, photoFromCamera, selectPhotoFromData } = usePhotoGallery()
-const {
-    updateDocument,
-    savePhotoToStorageWithId,
-    getPhotoById,
-    deleteDocument,
-} = useFirebase()
+const { getPhotoById, deleteDocument } = useFirebase()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-const { removeExpenseFromStore } = expensesStore
+const { removeExpenseFromStore, updateExpense } = expensesStore
 import { Timestamp } from "firebase/firestore/lite"
+const { currentExpense } = storeToRefs(expensesStore)
 
-const route = useRoute()
 const router = useRouter()
 
 const uid = useState(StateEntries.Uid)
 const expenses = computed(() => expensesStore.getExpenesesFromStore)
 
 const openModal = ref(false)
-const expense = ref(null)
-const newExpenseName = ref("")
-const newExpenseValue = ref("")
-const newShopName = ref("")
 const document = ref(null)
 const photoBase64 = ref(null)
 const photoEdited = ref(false)
-const billOwner = ref(false)
 
 const closeModal = () => {
     openModal.value = false
-}
-
-const loadExpenseData = () => {
-    const currentExpense = expenses.value.find((e) => e.id === route.params.id)
-    if (currentExpense) {
-        expense.value = currentExpense
-        newExpenseName.value = currentExpense.name
-        newExpenseValue.value = currentExpense.value
-        newShopName.value = currentExpense.shop
-        billOwner.value = uid.value === currentExpense.userId
-    }
 }
 
 const editPhoto = async () => {
@@ -71,44 +49,27 @@ const selectPhoto = async () => {
 
 const editExpense = async () => {
     const editedExpense = {
-        name: newExpenseName.value,
-        value: newExpenseValue.value,
-        timestamp: Timestamp.fromDate(new Date(expense.value.timestamp)),
-        shop: newShopName.value,
-        familyMembers: expense.value.familyMembers,
-        userId: expense.value.userId,
+        name: currentExpense.value.name,
+        value: currentExpense.value.value,
+        timestamp: Timestamp.fromDate(new Date(currentExpense.value.timestamp)),
+        shop: currentExpense.value.shop,
+        familyMembers: currentExpense.value.familyMembers,
+        userId: currentExpense.value.userId,
+        id: currentExpense.value.id,
     }
-    await updateDocument(
-        [StateEntries.Expenses, expense.value.id],
-        editedExpense
-    )
-
-    const index = expenses.value.findIndex((e) => e.id === expense.value.id)
-    expenses.value[index] = {
-        ...editedExpense,
-        timestamp: new Date(editedExpense.timestamp.seconds * 1000),
-        id: expenses.value[index].id,
-    }
-    if (document.value && photoBase64.value) {
-        await savePhotoToStorageWithId(
-            "photosCollection",
-            expense.value.id,
-            document.value,
-            photoBase64.value
-        )
-    }
+    await updateExpense(editedExpense, document.value, photoBase64.value)
 
     router.back()
 }
 
 const removeExpense = async () => {
-    await deleteDocument([StateEntries.Expenses, expense.value.id])
-    removeExpenseFromStore(expense.value.id)
+    await deleteDocument([StateEntries.Expenses, currentExpense.value.id])
+    removeExpenseFromStore(currentExpense.value.id)
     router.back()
 }
 
 const fetchBillUrl = async () => {
-    const url = await getPhotoById("photosCollection", expense.value.id)
+    const url = await getPhotoById("photosCollection", currentExpense.value.id)
     if (url) {
         photos.value.push({
             webviewPath: url,
@@ -126,18 +87,15 @@ const openImageInPreview = async () => {
 }
 
 onMounted(async () => {
-    loadExpenseData()
-    expense.value.timestamp = formatDate(expense.value.timestamp)
     await fetchBillUrl()
 })
 
 const handleMember = (member) => {
-    if (expense.value.familyMembers.includes(member.id)) {
-        expense.value.familyMembers = expense.value.familyMembers.filter(
-            (m) => m != member.id
-        )
+    if (currentExpense.value.familyMembers.includes(member.id)) {
+        currentExpense.value.familyMembers =
+            currentExpense.value.familyMembers.filter((m) => m != member.id)
     } else {
-        expense.value.familyMembers.push(member.id)
+        currentExpense.value.familyMembers.push(member.id)
     }
 }
 </script>
@@ -145,7 +103,10 @@ const handleMember = (member) => {
     <ion-page>
         <ion-header>
             <ion-toolbar class="ion-color-primary ion-color">
-                <ion-buttons slot="start" v-if="expense && expense.userId === uid">
+                <ion-buttons
+                    slot="start"
+                    v-if="currentExpense && currentExpense.userId === uid"
+                >
                     <uiButton
                         fill="clear"
                         :strong="true"
@@ -153,7 +114,10 @@ const handleMember = (member) => {
                         >Usuń</uiButton
                     >
                 </ion-buttons>
-                <ion-buttons slot="end" v-if="expense && expense.userId === uid">
+                <ion-buttons
+                    slot="end"
+                    v-if="currentExpense && currentExpense.userId === uid"
+                >
                     <uiButton fill="clear" :strong="true" @click="editExpense()"
                         >Zapisz</uiButton
                     >
@@ -161,15 +125,15 @@ const handleMember = (member) => {
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <div class="inner-content" v-if="expense">
+            <div class="inner-content" v-if="currentExpense">
                 <ion-item>
                     <ion-input
                         data-test="shop-input"
                         label="Nazwa sklepu"
                         label-placement="floating"
                         type="text"
-                        v-model="newShopName"
-                        :disabled="expense.userId !== uid"
+                        v-model="currentExpense.shop"
+                        :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>
                 <ion-item>
@@ -178,8 +142,8 @@ const handleMember = (member) => {
                         label="Nazwa wydatku"
                         label-placement="floating"
                         type="text"
-                        v-model="newExpenseName"
-                        :disabled="expense.userId !== uid"
+                        v-model="currentExpense.name"
+                        :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>
                 <ion-item>
@@ -188,8 +152,8 @@ const handleMember = (member) => {
                         label="Całkowita kwota"
                         label-placement="floating"
                         type="number"
-                        v-model="newExpenseValue"
-                        :disabled="expense.userId !== uid"
+                        v-model="currentExpense.value"
+                        :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>
                 <ion-item>
@@ -198,16 +162,16 @@ const handleMember = (member) => {
                         label="Data"
                         label-placement="floating"
                         type="date"
-                        v-model="expense.timestamp"
-                        :disabled="expense.userId !== uid"
+                        v-model="currentExpense.timestamp"
+                        :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>
                 <FamilyDropdownSelectMember
-                    :members="expense.familyMembers"
+                    :members="currentExpense.familyMembers"
                     @toggleMember="handleMember"
-                    v-if="expense.userId === uid"
+                    v-if="currentExpense.userId === uid"
                 />
-                <ion-item v-if="expense.userId === uid">
+                <ion-item v-if="currentExpense.userId === uid">
                     <uiButton @click="editPhoto">Zrób zdjęcie</uiButton>
                     <uiButton @click="selectPhoto" class="ml-auto"
                         >Wybierz zdjęcie</uiButton

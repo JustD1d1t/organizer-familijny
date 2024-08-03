@@ -1,16 +1,10 @@
 <script setup>
 import { StateEntries } from "@/types"
 import { usePhotoGallery } from "../composables/usePhotoGallery"
-const {
-    addDocument,
-    savePhotoToStorageWithId,
-} = useFirebase()
 const { photos, photoFromCamera, selectPhotoFromData } = usePhotoGallery()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-
-const { expenses } = storeToRefs(expensesStore)
-
+const { addExpenseToStore } = expensesStore
 const uid = useState(StateEntries.Uid)
 
 const router = useRouter()
@@ -46,33 +40,14 @@ const addPhoto = async () => {
 
 const addExpense = async () => {
     const newExpense = {
-        name: newExpenseName.value,
+        name: newExpenseName.value.toLowerCase(),
         value: parseFloat(newExpenseValue.value),
         timestamp: new Date(newExpenseDate.value).getTime(),
-        shop: newShopName.value,
+        shop: newShopName.value.toLowerCase(),
         userId: uid.value,
         familyMembers: expenseMembers.value,
     }
-    const addExpenseResponse = await addDocument(
-        [StateEntries.Expenses],
-        newExpense
-    )
-    if (addExpenseResponse.type === "document") {
-        const id = addExpenseResponse._key.path.segments[1]
-        expenses.value.push({
-            ...newExpense,
-            id,
-        })
-        expenses.value.sort((a, b) => new Date(a.date) - new Date(b.date))
-        if (document.value && photoBase64.value) {
-            await savePhotoToStorageWithId(
-                "photosCollection",
-                id,
-                document.value,
-                photoBase64.value
-            )
-        }
-    }
+    await addExpenseToStore(newExpense, document.value, photoBase64.value)
     router.back()
 }
 
@@ -91,7 +66,7 @@ const handleMember = (member) => {
     <ion-page>
         <ion-header>
             <ion-toolbar class="ion-color-primary ion-color">
-                <ion-buttons  slot="end">
+                <ion-buttons slot="end">
                     <uiButton fill="clear" :strong="true" @click="addExpense()"
                         >Dodaj</uiButton
                     >

@@ -1,11 +1,11 @@
 <script setup>
 const emit = defineEmits(["downloadExpenses"])
+
+import { useExpensesStore } from "~/stores/expenses"
+const expensesStore = useExpensesStore()
+const { selectedPeriod, startDate, endDate, startPrice, endPrice } =
+    storeToRefs(expensesStore)
 const {
-    selectedPeriod,
-    startDate,
-    endDate,
-    startPrice,
-    endPrice,
     updatePeriod,
     updateEndDate,
     updateStartDate,
@@ -13,7 +13,7 @@ const {
     updateEndPrice,
     updateShopName,
     updateExpenseName,
-} = useExpenses()
+} = expensesStore
 </script>
 
 <template>
@@ -64,16 +64,24 @@ const {
                     ></ion-datetime-button>
                 </ion-item>
                 <ion-item>
-                    <ion-input @ionInput="updateStartPrice" type="number">Cena od</ion-input>
+                    <ion-input @ionInput="updateStartPrice" type="number"
+                        >Cena od</ion-input
+                    >
                 </ion-item>
                 <ion-item>
-                    <ion-input @ionInput="updateEndPrice" type="number">Cena do</ion-input>
+                    <ion-input @ionInput="updateEndPrice" type="number"
+                        >Cena do</ion-input
+                    >
                 </ion-item>
                 <ion-item>
-                    <ion-input @ionInput="updateShopName" type="text">Nazwa sklepu</ion-input>
+                    <ion-input @ionInput="updateShopName" type="text"
+                        >Nazwa sklepu</ion-input
+                    >
                 </ion-item>
                 <ion-item>
-                    <ion-input @ionInput="updateExpenseName" type="text">Nazwa wydatku</ion-input>
+                    <ion-input @ionInput="updateExpenseName" type="text"
+                        >Nazwa wydatku</ion-input
+                    >
                 </ion-item>
             </div>
         </ion-content>

@@ -8,10 +8,9 @@ const route = useRoute()
 defineCustomElements(window)
 const auth = getAuth()
 const { queryDocsByCollection, queryDoc, queryDocsInCollection } = useFirebase()
-const { queryExpensesByPeriod } = useExpenses()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-const { addExpensesToStore } = expensesStore
+const { addExpensesToStore, queryExpenseByPeriod } = expensesStore
 
 CapacitorApp.addListener("backButton", ({ canGoBack }) => {
     if (!canGoBack) {
@@ -60,8 +59,7 @@ const loadFamily = async () => {
 }
 
 const downloadExpenses = async () => {
-    const expenses = await queryExpensesByPeriod()
-    addExpensesToStore(expenses)
+    await queryExpenseByPeriod()
 }
 
 onAuthStateChanged(auth, async (user) => {

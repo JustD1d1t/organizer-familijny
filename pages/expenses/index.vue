@@ -2,25 +2,22 @@
 import { StateEntries } from "@/types"
 const uid = useState(StateEntries.Uid)
 
-const { queryExpensesByPeriod } = useExpenses()
-
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-const { addExpensesToStore } = expensesStore
+const { queryExpenseByPeriod, setCurrentExpense } = expensesStore
 
 const { expenses } = storeToRefs(expensesStore)
-
 const isLoading = ref(false)
 const showSelect = ref("all")
 
 onMounted(async () => {
     isLoading.value = true
-    const expenses = await queryExpensesByPeriod()
-    addExpensesToStore(expenses)
+    await queryExpenseByPeriod()
     isLoading.value = false
 })
 
 const editExpense = (expense) => {
+    setCurrentExpense(expense)
     navigateTo(`/expenses/${expense.id}`)
 }
 
