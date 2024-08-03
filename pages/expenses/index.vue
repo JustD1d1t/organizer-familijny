@@ -44,7 +44,12 @@ const expensesToShow = computed(() => {
                 expense.familyMembers.length === 0
         )
     } else {
-        return expenses.value.filter((expense) => expense.userId === uid.value)
+        return expenses.value.filter(
+            (expense) =>
+                (expense.userId === uid.value &&
+                    expense.familyMembers.length > 0) ||
+                expense.familyMembers.includes(uid.value)
+        )
     }
 })
 
@@ -99,7 +104,7 @@ const openFilterMenu = async () => {
                                         :icon="ioniconsCheckmarkOutline"
                                         v-if="showSelect === 'common'"
                                     ></ion-icon>
-                                    <ion-label>Pokaż wspólne wspólne</ion-label>
+                                    <ion-label>Pokaż wspólne</ion-label>
                                 </ion-item>
                                 <ion-item @click="showMy">
                                     <ion-icon
@@ -107,7 +112,7 @@ const openFilterMenu = async () => {
                                         :icon="ioniconsCheckmarkOutline"
                                         v-if="showSelect === 'my'"
                                     ></ion-icon>
-                                    <ion-label>Pokaż moje prywatne</ion-label>
+                                    <ion-label>Pokaż moje</ion-label>
                                 </ion-item>
                             </ion-list>
                         </ion-content>
@@ -132,7 +137,7 @@ const openFilterMenu = async () => {
                 <ion-list>
                     <expenses-item
                         v-for="expense in expensesToShow"
-                        :key="expense.name"
+                        :key="`${expense.name}-${expense.id}`"
                         :expense="expense"
                         @click="() => editExpense(expense)"
                     />

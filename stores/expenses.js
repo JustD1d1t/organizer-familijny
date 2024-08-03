@@ -66,8 +66,6 @@ export const useExpensesStore = defineStore({
                     )
                 }
             }
-
-            this.expenses = [...this.expenses, expense]
         },
         async updateExpense(expense, document, photoBase64) {
             console.log(expense)
