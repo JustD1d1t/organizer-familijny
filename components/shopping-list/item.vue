@@ -1,7 +1,4 @@
 <script setup>
-import { useRoute } from "vue-router"
-
-const route = useRoute()
 const props = defineProps({
     item: {
         type: Object,
@@ -10,7 +7,7 @@ const props = defineProps({
 })
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
-const { handleItemChange, removeItem } = shoppingListsStore
+const { removeItem, handleItemChange } = shoppingListsStore
 </script>
 <template>
     <UiListCheckboxItem

@@ -15,12 +15,27 @@ const { currentExpense } = storeToRefs(expensesStore)
 const router = useRouter()
 
 const uid = useState(StateEntries.Uid)
-const expenses = computed(() => expensesStore.getExpenesesFromStore)
 
 const openModal = ref(false)
 const document = ref(null)
 const photoBase64 = ref(null)
 const photoEdited = ref(false)
+
+const convertedTimestamp = ref("")
+
+const convertTimestampToDate = () => {
+    let date
+    if (currentExpense.value.timestamp.seconds) {
+        date = new Date(currentExpense.value.timestamp.seconds * 1000)
+    } else {
+        date = new Date(currentExpense.value.timestamp)
+    }
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0") // Miesiące są od 0 do 11, więc dodaj 1
+    const day = String(date.getDate()).padStart(2, "0") // Pad start dla jednocyfrowych dni
+
+    convertedTimestamp.value = `${year}-${month}-${day}`
+}
 
 const closeModal = () => {
     openModal.value = false
@@ -51,7 +66,7 @@ const editExpense = async () => {
     const editedExpense = {
         name: currentExpense.value.name,
         value: currentExpense.value.value,
-        timestamp: Timestamp.fromDate(new Date(currentExpense.value.timestamp)),
+        timestamp: Timestamp.fromDate(new Date(convertedTimestamp.value)),
         shop: currentExpense.value.shop,
         familyMembers: currentExpense.value.familyMembers,
         userId: currentExpense.value.userId,
@@ -88,6 +103,7 @@ const openImageInPreview = async () => {
 
 onMounted(async () => {
     await fetchBillUrl()
+    convertTimestampToDate()
 })
 
 const handleMember = (member) => {
@@ -162,7 +178,7 @@ const handleMember = (member) => {
                         label="Data"
                         label-placement="floating"
                         type="date"
-                        v-model="currentExpense.timestamp"
+                        v-model="convertedTimestamp"
                         :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>

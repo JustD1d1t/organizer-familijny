@@ -1,9 +1,8 @@
 import { defineStore } from "pinia"
+const { backendUrl } = useConfig()
 import { getAuth } from "firebase/auth"
 const auth = getAuth()
-const { addDocument, deleteDocument, updateDocument, queryDocsInCollection } =
-    useFirebase()
-
+const { displayToast, showAlert, showConfirm, showPrompt } = useAlerts()
 export const useShoppingListsStore = defineStore({
     id: "shopping-lists-store",
     state: () => {
@@ -12,13 +11,15 @@ export const useShoppingListsStore = defineStore({
             collaboratedShoppingLists: [],
             currentShoppingList: null,
             currentRecipe: null,
+            isLoading: false,
+            error: null,
         }
     },
     actions: {
-        addShoppingListsToStore(shoppingLists) {
+        setShoppingLists(shoppingLists) {
             this.shoppingLists = [...shoppingLists]
         },
-        addCollaboratedShoppingListsToStore(shoppingLists) {
+        setCollaboratedShoppingLists(shoppingLists) {
             this.collaboratedShoppingLists = [...shoppingLists]
         },
         setCurrentShoppingList(shoppingList) {
@@ -27,192 +28,364 @@ export const useShoppingListsStore = defineStore({
         setCurrentRecipe(recipe) {
             this.currentRecipe = recipe
         },
-        async addShoppingList(name, members = []) {
-            const newShoppingList = {
-                name: name,
-                items: [],
-                recipes: [],
-                members,
-                ownerId: auth.currentUser.uid,
-            }
-            const addShoppingListResponse = await addDocument(
-                ["shoppingLists"],
-                newShoppingList
-            )
-            if (addShoppingListResponse.type === "document") {
-                const id = addShoppingListResponse._key.path.segments[1]
-                this.shoppingLists.push({
-                    ...newShoppingList,
-                    id,
-                })
-            }
+        addShoppingListToStore(shoppingList) {
+            this.shoppingLists.push(shoppingList)
         },
-        async removeShoppingList(id) {
-            await deleteDocument(["shoppingLists", id])
+        removeShoppingListFromStore(id) {
             this.shoppingLists = this.shoppingLists.filter(
                 (list) => list.id !== id
             )
         },
-        async toggleMember(member, id) {
-            if (this.currentShoppingList.members.includes(member.id)) {
-                this.currentShoppingList.members =
-                    this.currentShoppingList.members.filter(
-                        (m) => m != member.id
+        updateCurrentList(list) {
+            this.currentShoppingList = list
+        },
+        setLoading(isLoading) {
+            this.isLoading = isLoading
+        },
+        setError(error) {
+            this.error = error
+        },
+
+        async updateShoppingList(shoppingList) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const response = await fetch(
+                    `${backendUrl}/shopping-lists/update`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ shoppingList }),
+                    }
+                )
+
+                if (!response.ok) {
+                    const errorData = await response.json()
+                    throw new Error(
+                        `Error: ${errorData.message || response.status}`
                     )
-            } else {
-                this.currentShoppingList.members.push(member.id)
+                }
+
+                const data = await response.json()
+                return data
+            } catch (error) {
+                console.error("Failed to update shopping list:", error)
+                this.setError(error.message)
+                throw error
+            } finally {
+                this.setLoading(false)
             }
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                {
-                    members: this.currentShoppingList.members,
-                }
-            )
         },
-        async updateList() {
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                this.currentShoppingList
-            )
-        },
-        async toggleShoppingItem(item, category) {
-            const shoppingListItems = [...this.currentShoppingList.items]
-            if (
-                shoppingListItems.some(
-                    (shoppingItem) => shoppingItem.name === item.name
+
+        async getAllShoppingLists() {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const response = await fetch(
+                    `${backendUrl}/shopping-lists/get-all?userId=${auth.currentUser.uid}`
                 )
-            ) {
-                shoppingListItems.splice(
-                    shoppingListItems.findIndex(
-                        (shoppingItem) => shoppingItem.name === item.name
-                    ),
-                    1
+                const data = await response.json()
+                this.setShoppingLists(data.shoppingLists)
+                this.setCollaboratedShoppingLists(
+                    data.collaboratedShoppingLists
                 )
-            } else {
-                shoppingListItems.push({
-                    name: item,
-                    category: category ?? "",
-                    checked: false,
-                })
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to fetch shopping lists")
+                showAlert(this.error)
+            } finally {
+                this.setLoading(false)
             }
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                {
-                    items: shoppingListItems,
-                }
-            )
-            this.currentShoppingList.items = shoppingListItems
         },
-        async handleItemChange(item) {
-            const shoppingItem = this.currentShoppingList.items.find(
-                (i) => i.name === item.name
-            )
-            shoppingItem.checked = !item.checked
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                {
-                    items: this.currentShoppingList.items,
+
+        async addList(name, members) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const newShoppingList = {
+                    name: name,
+                    members: members,
+                    ownerId: auth.currentUser.uid,
+                    items: [],
+                    recipes: [],
                 }
-            )
+                const response = await fetch(
+                    `${backendUrl}/shopping-lists/add`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ shoppingList: newShoppingList }),
+                    }
+                )
+                const data = await response.json()
+                if (data.id) {
+                    this.addShoppingListToStore({
+                        ...newShoppingList,
+                        id: data.id,
+                    })
+                }
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to add shopping list")
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async removeShoppingList(id) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const response = await fetch(
+                    `${backendUrl}/shopping-lists/remove?shoppingListId=${id}`,
+                    {
+                        method: "DELETE",
+                    }
+                )
+                if (response.ok) {
+                    this.removeShoppingListFromStore(id)
+                } else {
+                    throw new Error("Failed to remove shopping list")
+                }
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to remove shopping list")
+            } finally {
+                this.setLoading(false)
+            }
         },
 
         async removeItem(item) {
-            const index = this.currentShoppingList.items.findIndex(
-                (i) => i.name === item.name
-            )
-            if (index !== -1) {
-                this.currentShoppingList.items.splice(index, 1)
-                await updateDocument(
-                    ["shoppingLists", this.currentShoppingList.id],
-                    {
-                        items: this.currentShoppingList.items,
-                    }
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const shoppingListItems = [...this.currentShoppingList.items]
+                const index = shoppingListItems.findIndex(
+                    (i) => i.name === item.name
                 )
+                if (index !== -1) {
+                    shoppingListItems.splice(index, 1)
+                    await this.updateShoppingList({
+                        ...this.currentShoppingList,
+                        items: shoppingListItems,
+                    })
+                    this.updateCurrentList({
+                        ...this.currentShoppingList,
+                        items: shoppingListItems,
+                    })
+                }
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to remove item")
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async handleItemChange(item) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const shoppingListItems = [...this.currentShoppingList.items]
+                const shoppingItem = shoppingListItems.find(
+                    (i) => i.name === item.name
+                )
+                shoppingItem.checked = !item.checked
+                await this.updateShoppingList({
+                    ...this.currentShoppingList,
+                    items: shoppingListItems,
+                })
+                this.updateCurrentList({
+                    ...this.currentShoppingList,
+                    items: shoppingListItems,
+                })
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to update item status")
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async removeRecipe(id) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const index = this.currentShoppingList.recipes.findIndex(
+                    (recipe) => recipe.id === id
+                )
+                if (index !== -1) {
+                    const recipes = [...this.currentShoppingList.recipes]
+                    recipes.splice(index, 1)
+                    await this.updateShoppingList({
+                        ...this.currentShoppingList,
+                        recipes,
+                    })
+                    this.updateCurrentList({
+                        ...this.currentShoppingList,
+                        recipes,
+                    })
+                }
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to remove recipe")
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async handleRecipeChange(boolean, recipe) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                recipe.ingredients.forEach((ingredient) => {
+                    ingredient.checked = boolean
+                })
+                await this.updateShoppingList(this.currentShoppingList)
+                this.updateCurrentList(this.currentShoppingList)
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to update recipe ingredients")
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async handleItem(name, category) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const shoppingListItems = [...this.currentShoppingList.items]
+                if (
+                    shoppingListItems.some(
+                        (shoppingItem) => shoppingItem.name === name
+                    )
+                ) {
+                    shoppingListItems.splice(
+                        shoppingListItems.findIndex(
+                            (shoppingItem) => shoppingItem.name === name
+                        ),
+                        1
+                    )
+                } else {
+                    shoppingListItems.push({
+                        name,
+                        category: category ?? "",
+                        checked: false,
+                    })
+                }
+                await this.updateShoppingList({
+                    ...this.currentShoppingList,
+                    items: shoppingListItems,
+                })
+                this.updateCurrentList({
+                    ...this.currentShoppingList,
+                    items: shoppingListItems,
+                })
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to handle item")
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async editShoppingList(name, members) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const editedShoppingList = {
+                    ...this.currentShoppingList,
+                    name,
+                    members,
+                }
+                await this.updateShoppingList(editedShoppingList)
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to edit shopping list")
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async leaveList() {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const editedShoppingList = {
+                    ...this.currentShoppingList,
+                    members: this.currentShoppingList.members.filter(
+                        (m) => m !== auth.currentUser.uid
+                    ),
+                }
+                await this.updateShoppingList(editedShoppingList)
+                this.updateCurrentList(editedShoppingList)
+                const response = await fetch(
+                    `${backendUrl}/shopping-lists/get-collaborated?userId=${auth.currentUser.uid}`
+                )
+                const data = await response.json()
+                this.setCollaboratedShoppingLists(
+                    data.collaboratedShoppingLists
+                )
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to leave list")
+            } finally {
+                this.setLoading(false)
             }
         },
 
         async handleIngredientChange(ing) {
-            const ingredient = this.currentRecipe.ingredients.find((i) => {
-                return i.name === ing.name && i.quantity === ing.quantity
-            })
-            ingredient.checked = !ingredient.checked
-            const recipe = this.currentShoppingList.recipes.findIndex(
-                (r) => r.id === this.currentRecipe.id
-            )
-            this.currentShoppingList.recipes[recipe] = this.currentRecipe
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                {
-                    recipes: this.currentShoppingList.recipes,
-                }
-            )
-        },
-        async removeIngredient(ingredient) {
-            const index = this.currentRecipe.ingredients.findIndex((i) => {
-                return (
-                    i.name === ingredient.name &&
-                    i.quantity === ingredient.quantity
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const ingredient = this.currentRecipe.ingredients.find((i) => {
+                    return i.name === ing.name && i.quantity === ing.quantity
+                })
+                ingredient.checked = !ingredient.checked
+                const recipeIndex = this.currentShoppingList.recipes.findIndex(
+                    (r) => r.id === this.currentRecipe.id
                 )
-            })
-            this.currentRecipe.ingredients.splice(index, 1)
-            const recipe = this.currentShoppingList.recipes.findIndex(
-                (r) => r.id === this.currentRecipe.id
-            )
-            this.currentShoppingList.recipes[recipe] = this.currentRecipe
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                {
-                    recipes: this.currentShoppingList.recipes,
-                }
-            )
-        },
-
-        async removeRecipe(id) {
-            const index = this.currentShoppingList.recipes.findIndex(
-                (recipe) => recipe.id === id
-            )
-            if (index !== -1) {
-                this.currentShoppingList.recipes.splice(index, 1)
-                await updateDocument(
-                    ["shoppingLists", this.currentShoppingList.id],
-                    {
-                        recipes: this.currentShoppingList.recipes,
-                    }
-                )
+                this.currentShoppingList.recipes[recipeIndex] =
+                    this.currentRecipe
+                await this.updateShoppingList(this.currentShoppingList)
+                this.updateCurrentList(this.currentShoppingList)
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to update ingredient status")
+            } finally {
+                this.setLoading(false)
             }
         },
-        async handleRecipeChange(boolean, recipe) {
-            recipe.ingredients.forEach((ingredient) => {
-                ingredient.checked = boolean
-            })
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                {
-                    recipes: this.currentShoppingList.recipes,
-                }
-            )
-        },
-        async leaveList() {
-            const newMembers = this.currentShoppingList.members.filter(
-                (m) => m !== auth.currentUser.uid
-            )
-            await updateDocument(
-                ["shoppingLists", this.currentShoppingList.id],
-                {
-                    members: newMembers,
-                }
-            )
-            collaboratedShoppingLists = await queryDocsInCollection(
-                "shoppingLists",
-                false,
-                [
-                    {
-                        key: "members",
-                        value: auth.currentUser.uid,
-                        statement: "array-contains",
-                    },
-                ]
-            )
+
+        async removeIngredient(ingredient) {
+            this.setLoading(true)
+            this.setError(null)
+            try {
+                const index = this.currentRecipe.ingredients.findIndex((i) => {
+                    return (
+                        i.name === ingredient.name &&
+                        i.quantity === ingredient.quantity
+                    )
+                })
+                this.currentRecipe.ingredients.splice(index, 1)
+                const recipeIndex = this.currentShoppingList.recipes.findIndex(
+                    (r) => r.id === this.currentRecipe.id
+                )
+                this.currentShoppingList.recipes[recipeIndex] =
+                    this.currentRecipe
+                await this.updateShoppingList(this.currentShoppingList)
+                this.updateCurrentList(this.currentShoppingList)
+            } catch (error) {
+                console.error(error)
+                this.setError("Failed to remove ingredient")
+            } finally {
+                this.setLoading(false)
+            }
         },
     },
     getters: {

@@ -68,7 +68,6 @@ export const useExpensesStore = defineStore({
             }
         },
         async updateExpense(expense, document, photoBase64) {
-            console.log(expense)
             await updateDocument([StateEntries.Expenses, expense.id], expense)
             if (document && photoBase64) {
                 await savePhotoToStorageWithId(
@@ -78,6 +77,10 @@ export const useExpensesStore = defineStore({
                     photoBase64
                 )
             }
+            const index = this.expenses.findIndex(
+                (item) => item.id === expense.id
+            )
+            this.expenses[index] = expense
         },
         removeExpenseFromStore(id) {
             this.expenses = this.expenses.filter((expense) => expense.id !== id)

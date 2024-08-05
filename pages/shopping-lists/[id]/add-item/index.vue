@@ -1,12 +1,10 @@
 <script setup>
-import { useRoute } from "vue-router"
 const { shoppingItems } = useShoppingItems()
 
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
-const { toggleShoppingItem } = shoppingListsStore
-
-const { currentShoppingList } = storeToRefs(shoppingListsStore)
+const { handleItem } = shoppingListsStore
+const { currentShoppingList, isLoading } = storeToRefs(shoppingListsStore)
 
 const activeCategory = ref("")
 const addingItem = ref(false)
@@ -29,12 +27,6 @@ const availableShoppingItemsByPhrase = computed(() => {
         },
     ]
 })
-
-const handleItem = async (item, category) => {
-    addingItem.value = true
-    await toggleShoppingItem(item, category)
-    addingItem.value = false
-}
 
 const handleCategory = (cat) => {
     activeCategory.value = activeCategory.value === cat ? "" : cat
@@ -122,7 +114,7 @@ const handleCategory = (cat) => {
                         @click="() => handleItem(item.name, item.category)"
                     />
                 </div>
-                <div class="background" v-if="addingItem">
+                <div class="background" v-if="isLoading">
                     <ion-spinner name="lines-sharp"></ion-spinner>
                     <span>Aktualizacja listy</span>
                 </div>

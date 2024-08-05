@@ -1,16 +1,18 @@
 <script setup>
 const router = useRouter()
 const { displayToast } = useAlerts()
+import { getAuth } from "firebase/auth"
+const auth = getAuth()
 
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
-const { addShoppingList } = shoppingListsStore
+const { addList } = shoppingListsStore
 
 const newShoppingListName = ref("")
 const input = ref()
 
-const addList = async () => {
-    await addShoppingList(newShoppingListName.value, familyMembers.value)
+const add = async () => {
+    addList(newShoppingListName.value, familyMembers.value)
     router.back()
 }
 
@@ -47,7 +49,7 @@ const handleMember = (member) => {
 
                 <FamilyDropdownSelectMember @toggleMember="handleMember" />
 
-                <uiButton expand="block" @click="addList" class="my-6"
+                <uiButton expand="block" @click="add" class="my-6"
                     >Dodaj listę</uiButton
                 >
             </div>

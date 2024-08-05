@@ -4,23 +4,33 @@ const route = useRoute()
 const router = useRouter()
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
-const { toggleMember, updateList, leaveList } = shoppingListsStore
+const { editShoppingList, leaveList } = shoppingListsStore
 const { currentShoppingList } = storeToRefs(shoppingListsStore)
-const uid = useState("uid")
+import { getAuth } from "firebase/auth"
+const auth = getAuth()
 
 const input = ref()
 
 const collaboratedList = computed(() => {
-    return uid.value !== currentShoppingList.value.ownerId
+    return auth.currentUser.uid !== currentShoppingList.value.ownerId
 })
 
+const newMembers = ref(
+    collaboratedList.value ? [] : currentShoppingList.value.members
+)
+const newName = ref(currentShoppingList.value.name)
+
 const update = async () => {
-    await updateList()
+    await editShoppingList(newName.value, newMembers.value)
     router.back()
 }
-const leave = async () => {
-    await leaveList()
-    navigateTo("/shopping-lists")
+
+const toggleMember = (member) => {
+    if (newMembers.value.includes(member.uid)) {
+        newMembers.value = newMembers.value.filter((m) => m !== member.uid)
+    } else {
+        newMembers.value.push(member.uid)
+    }
 }
 </script>
 <template>
@@ -37,15 +47,13 @@ const leave = async () => {
                     label-placement="floating"
                     ref="input"
                     type="text"
-                    v-model="currentShoppingList.name"
+                    v-model="newName"
                 ></ion-input>
             </ion-item>
 
             <FamilyDropdownSelectMember
-                :members="currentShoppingList.members"
-                @toggleMember="
-                    (member) => toggleMember(member, route.params.id)
-                "
+                :members="newMembers"
+                @toggleMember="(member) => toggleMember(member)"
                 v-if="!collaboratedList"
             />
 
@@ -54,7 +62,7 @@ const leave = async () => {
                     expand="block"
                     class="w-1/2"
                     size="small"
-                    @click="leave()"
+                    @click="leaveList()"
                 >
                     Opuść listę
                 </uiButton>

@@ -1,4 +1,6 @@
 import { Toast } from "@capacitor/toast"
+import { Dialog } from "@capacitor/dialog"
+
 export const useAlerts = () => {
     const displayToast = async (message) => {
         await Toast.show({

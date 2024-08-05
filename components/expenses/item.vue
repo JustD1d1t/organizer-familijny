@@ -19,6 +19,25 @@ const expenseValuePart = computed(() => {
         .slice(2)
 })
 
+const convertedDate = computed(() => {
+    if (props.expense.timestamp.seconds) {
+        return new Date(props.expense.timestamp.seconds * 1000).toLocaleString(
+            "default",
+            {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+            }
+        )
+    } else {
+        return new Date(props.expense.timestamp).toLocaleString("default", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+        })
+    }
+})
+
 const openEditExpense = async (item: Expense) => {
     emit("openEditExpense", item)
 }
@@ -35,13 +54,7 @@ const removeExpense = async (item: Expense) => {
                     {{ expense.shop }} - {{ expense.name }}
                 </p>
                 <p class="text-lg font-bold expense-date">
-                    {{
-                        new Date(expense.timestamp).toLocaleString("default", {
-                            day: "numeric",
-                            month: "numeric",
-                            year: "numeric",
-                        })
-                    }}
+                    {{ convertedDate }}
                 </p>
             </div>
             <div class="flex items-end font-bold">

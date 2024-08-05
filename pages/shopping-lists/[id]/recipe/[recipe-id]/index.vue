@@ -1,6 +1,4 @@
 <script setup>
-import { useRoute } from "vue-router"
-const route = useRoute()
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
 const { handleIngredientChange, removeIngredient } = shoppingListsStore

@@ -7,24 +7,26 @@ const { onSnapshotDoc, clearSnapshot } = useFirebase()
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
 const { handleItemChange, removeItem } = shoppingListsStore
+const { currentShoppingList } = storeToRefs(shoppingListsStore)
 
-const shoppingList = useState(StateEntries.CurrentShoppingList)
 const items = computed(() =>
-    shoppingList.value ? shoppingList.value.items : []
+    currentShoppingList.value ? currentShoppingList.value.items : []
 )
 const recipes = computed(() =>
-    shoppingList.value ? shoppingList.value.recipes : []
+    currentShoppingList.value ? currentShoppingList.value.recipes : []
 )
 
 const availableCategories = computed(() => {
-    const categories = shoppingList.value.items.map((item) => item.category)
+    const categories = currentShoppingList.value.items.map(
+        (item) => item.category
+    )
     return [...new Set(categories)]
 })
 
 const setShoppingListAfterSnap = (snap) => {
-    shoppingList.items = snap.items
-    shoppingList.recipes = snap.recipes
-    shoppingList.name = snap.name
+    currentShoppingList.items = snap.items
+    currentShoppingList.recipes = snap.recipes
+    currentShoppingList.name = snap.name
 }
 
 onMounted(() => {

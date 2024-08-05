@@ -1,17 +1,13 @@
 <script setup>
 import { StateEntries } from "@/types"
 
-const { queryDocsInCollection } = useFirebase()
+const { backendUrl } = useConfig()
 
 const uid = useState(StateEntries.Uid)
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
-const {
-    addShoppingListsToStore,
-    addCollaboratedShoppingListsToStore,
-    removeShoppingList,
-    setCurrentShoppingList,
-} = shoppingListsStore
+const { removeShoppingList, getAllShoppingLists, setCurrentShoppingList } =
+    shoppingListsStore
 
 const { shoppingLists } = storeToRefs(shoppingListsStore)
 const collaboratedShoppingLists = computed(
@@ -31,31 +27,10 @@ const handleClick = (shopList) => {
     setCurrentShoppingList(shopList)
 }
 
-onMounted(async () => {
-    const shoppingLists = await queryDocsInCollection(
-        [StateEntries.ShoppingLists],
-        false,
-        [
-            {
-                key: "ownerId",
-                value: uid.value,
-                statement: "==",
-            },
-        ]
-    )
-    const collaboratedShoppingLists = await queryDocsInCollection(
-        [StateEntries.ShoppingLists],
-        false,
-        [
-            {
-                key: "members",
-                value: uid.value,
-                statement: "array-contains",
-            },
-        ]
-    )
-    addShoppingListsToStore(shoppingLists)
-    addCollaboratedShoppingListsToStore(collaboratedShoppingLists)
+useAsyncData(async () => {
+    isLoading.value = true
+    await getAllShoppingLists()
+    isLoading.value = false
 })
 </script>
 <template>
