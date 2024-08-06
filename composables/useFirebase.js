@@ -9,7 +9,6 @@ import {
     orderBy,
     query,
     setDoc,
-    Timestamp,
     updateDoc,
     where,
 } from "firebase/firestore/lite"
@@ -152,9 +151,6 @@ const queryDocsInCollection = async (
         docs.push({
             ...doc.data(),
             id: doc.id,
-            timestamp: doc.data().timestamp
-                ? doc.data().timestamp.toDate()
-                : null,
         })
     })
 
@@ -202,9 +198,7 @@ const deleteDocument = async (sequence) => {
 const addDocument = async (sequence, data) => {
     return await addDoc(collection(getFirestore(), ...sequence), {
         ...data,
-        timestamp: data.timestamp
-            ? Timestamp.fromDate(new Date(data.timestamp))
-            : Timestamp.now(),
+        timestamp: new Date().getTime(),
     })
 }
 

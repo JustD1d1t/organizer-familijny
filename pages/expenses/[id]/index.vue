@@ -1,15 +1,12 @@
 <script setup>
 import { onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { useFirebase } from "../composables/useFirebase"
 import { usePhotoGallery } from "../composables/usePhotoGallery"
 import { StateEntries } from "@/types"
 const { photos, photoFromCamera, selectPhotoFromData } = usePhotoGallery()
-const { getPhotoById, deleteDocument } = useFirebase()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-const { removeExpenseFromStore, updateExpense } = expensesStore
-import { Timestamp } from "firebase/firestore/lite"
+const { removeExpenseFromStore, editExpense, getExpensePhoto } = expensesStore
 const { currentExpense } = storeToRefs(expensesStore)
 
 const router = useRouter()
@@ -21,7 +18,11 @@ const document = ref(null)
 const photoBase64 = ref(null)
 const photoEdited = ref(false)
 
-const convertedTimestamp = ref("")
+const newShopName = ref(currentExpense.value.shop)
+const newName = ref(currentExpense.value.name)
+const newValue = ref(currentExpense.value.value)
+const newTimestamp = ref(currentExpense.value.timestamp)
+const newMembers = ref(currentExpense.value.members)
 
 const convertTimestampToDate = () => {
     let date
@@ -34,7 +35,7 @@ const convertTimestampToDate = () => {
     const month = String(date.getMonth() + 1).padStart(2, "0") // Miesiące są od 0 do 11, więc dodaj 1
     const day = String(date.getDate()).padStart(2, "0") // Pad start dla jednocyfrowych dni
 
-    convertedTimestamp.value = `${year}-${month}-${day}`
+    newTimestamp.value = `${year}-${month}-${day}`
 }
 
 const closeModal = () => {
@@ -62,29 +63,28 @@ const selectPhoto = async () => {
     }
 }
 
-const editExpense = async () => {
+const edit = async () => {
     const editedExpense = {
-        name: currentExpense.value.name,
-        value: currentExpense.value.value,
-        timestamp: Timestamp.fromDate(new Date(convertedTimestamp.value)),
-        shop: currentExpense.value.shop,
-        familyMembers: currentExpense.value.familyMembers,
+        name: newName.value,
+        value: newValue.value,
+        timestamp: new Date(newTimestamp.value).getTime(),
+        shop: newShopName.value,
+        familyMembers: newMembers.value,
         userId: currentExpense.value.userId,
         id: currentExpense.value.id,
     }
-    await updateExpense(editedExpense, document.value, photoBase64.value)
+    await editExpense(editedExpense, document.value, photoBase64.value)
 
     router.back()
 }
 
 const removeExpense = async () => {
-    await deleteDocument([StateEntries.Expenses, currentExpense.value.id])
-    removeExpenseFromStore(currentExpense.value.id)
+    await removeExpenseFromStore(currentExpense.value.id)
     router.back()
 }
 
 const fetchBillUrl = async () => {
-    const url = await getPhotoById("photosCollection", currentExpense.value.id)
+    const url = await getExpensePhoto(currentExpense.value.id)
     if (url) {
         photos.value.push({
             webviewPath: url,
@@ -107,11 +107,10 @@ onMounted(async () => {
 })
 
 const handleMember = (member) => {
-    if (currentExpense.value.familyMembers.includes(member.id)) {
-        currentExpense.value.familyMembers =
-            currentExpense.value.familyMembers.filter((m) => m != member.id)
+    if (newMembers.value.includes(member.id)) {
+        newMembers.value = newMembers.value.filter((m) => m != member.id)
     } else {
-        currentExpense.value.familyMembers.push(member.id)
+        newMembers.value.push(member.id)
     }
 }
 </script>
@@ -134,7 +133,7 @@ const handleMember = (member) => {
                     slot="end"
                     v-if="currentExpense && currentExpense.userId === uid"
                 >
-                    <uiButton fill="clear" :strong="true" @click="editExpense()"
+                    <uiButton fill="clear" :strong="true" @click="edit()"
                         >Zapisz</uiButton
                     >
                 </ion-buttons>
@@ -148,7 +147,7 @@ const handleMember = (member) => {
                         label="Nazwa sklepu"
                         label-placement="floating"
                         type="text"
-                        v-model="currentExpense.shop"
+                        v-model="newShopName"
                         :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>
@@ -158,7 +157,7 @@ const handleMember = (member) => {
                         label="Nazwa wydatku"
                         label-placement="floating"
                         type="text"
-                        v-model="currentExpense.name"
+                        v-model="newName"
                         :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>
@@ -168,7 +167,7 @@ const handleMember = (member) => {
                         label="Całkowita kwota"
                         label-placement="floating"
                         type="number"
-                        v-model="currentExpense.value"
+                        v-model="newValue"
                         :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>
@@ -178,7 +177,7 @@ const handleMember = (member) => {
                         label="Data"
                         label-placement="floating"
                         type="date"
-                        v-model="convertedTimestamp"
+                        v-model="newTimestamp"
                         :disabled="currentExpense.userId !== uid"
                     ></ion-input>
                 </ion-item>

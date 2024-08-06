@@ -1,8 +1,8 @@
 import { defineStore } from "pinia"
-import { Timestamp } from "firebase/firestore/lite"
 import { StateEntries } from "@/types"
 import { getAuth } from "firebase/auth"
 const auth = getAuth()
+const { backendUrl } = useConfig()
 
 const {
     queryDocsInCollection,
@@ -33,15 +33,31 @@ export const useExpensesStore = defineStore({
             endPrice: null,
             shopName: null,
             expenseName: null,
+            isLoading: false,
+            error: null,
         }
     },
     actions: {
+        setLoading(isLoading) {
+            this.isLoading = isLoading
+        },
+        setError(error) {
+            this.error = error
+        },
         addExpensesToStore(expenses) {
             this.expenses = []
             this.expenses = [...this.expenses, ...expenses]
         },
         setCurrentExpense(expense) {
             this.currentExpense = expense
+        },
+
+        async getExpensePhoto(id) {
+            const res = await fetch(
+                `${backendUrl}/expenses/get-image?photoId=${id}`
+            )
+            const data = await res.json()
+            return data.url
         },
         async addExpenseToStore(expense, document, photoBase64) {
             const addExpenseResponse = await addDocument(
@@ -68,21 +84,38 @@ export const useExpensesStore = defineStore({
             }
         },
         async updateExpense(expense, document, photoBase64) {
-            await updateDocument([StateEntries.Expenses, expense.id], expense)
-            if (document && photoBase64) {
-                await savePhotoToStorageWithId(
-                    "photosCollection",
-                    expense.id,
-                    document,
-                    photoBase64
+            const response = await fetch(`${backendUrl}/expenses/update`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ expense, document, photoBase64 }),
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(
+                    `Error: ${errorData.message || response.status}`
                 )
             }
+
+            const data = await response.json()
+            return data
+        },
+        async editExpense(expense, document, photoBase64) {
+            await this.updateExpense(expense, document, photoBase64)
             const index = this.expenses.findIndex(
                 (item) => item.id === expense.id
             )
             this.expenses[index] = expense
         },
-        removeExpenseFromStore(id) {
+        async removeExpenseFromStore(id) {
+            const res = await fetch(
+                `${backendUrl}/expenses/delete?expenseId=${id}`,
+                {
+                    method: "DELETE",
+                }
+            )
             this.expenses = this.expenses.filter((expense) => expense.id !== id)
         },
         updateStartPrice(e) {
@@ -118,21 +151,20 @@ export const useExpensesStore = defineStore({
                 this.endDate = getLastDateOfQuarter.value
             }
         },
-        async queryExpenseByPeriod() {
-            const startPeriod = new Date(this.startDate)
-            const endPeriod = new Date(this.endDate)
-            const startPeriodTimestamp = Timestamp.fromDate(startPeriod)
-            const endPeriodTimestamp = Timestamp.fromDate(endPeriod)
+        async queryExpenses() {
+            this.setLoading(true)
+            const startPeriod = new Date(this.startDate).getTime()
+            const endPeriod = new Date(this.endDate).getTime()
             const statements = [
                 { key: "userId", value: auth.currentUser.uid, statement: "==" },
                 {
                     key: "timestamp",
-                    value: startPeriodTimestamp,
+                    value: startPeriod,
                     statement: ">=",
                 },
                 {
                     key: "timestamp",
-                    value: endPeriodTimestamp,
+                    value: endPeriod,
                     statement: "<=",
                 },
             ]
@@ -144,12 +176,12 @@ export const useExpensesStore = defineStore({
                 },
                 {
                     key: "timestamp",
-                    value: startPeriodTimestamp,
+                    value: startPeriod,
                     statement: ">=",
                 },
                 {
                     key: "timestamp",
-                    value: endPeriodTimestamp,
+                    value: endPeriod,
                     statement: "<=",
                 },
             ]
@@ -225,22 +257,17 @@ export const useExpensesStore = defineStore({
                 })
             }
 
-            const ownExpenses = await queryDocsInCollection(
-                [StateEntries.Expenses],
-                true,
-                statements
+            const respone = await fetch(
+                `${backendUrl}/expenses/get-all?userId=${auth.currentUser.uid}`
             )
-
-            const expensesMembership = await queryDocsInCollection(
-                [StateEntries.Expenses],
-                true,
-                membershipStatements
-            )
-            const allExpenses = [...ownExpenses, ...expensesMembership]
+            const data = await respone.json()
+            const allExpenses = [...data.expenses, ...data.collaboratedExpenses]
             const sortedByDateExpenses = allExpenses.sort((a, b) => {
                 return b.timestamp - a.timestamp
             })
             this.expenses = [...sortedByDateExpenses]
+
+            this.setLoading(false)
         },
     },
     getters: {

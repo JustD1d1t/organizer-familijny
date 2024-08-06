@@ -10,7 +10,7 @@ const auth = getAuth()
 const { queryDocsByCollection, queryDoc, queryDocsInCollection } = useFirebase()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-const { addExpensesToStore, queryExpenseByPeriod } = expensesStore
+const { queryExpenses } = expensesStore
 
 CapacitorApp.addListener("backButton", ({ canGoBack }) => {
     if (!canGoBack) {
@@ -59,7 +59,7 @@ const loadFamily = async () => {
 }
 
 const downloadExpenses = async () => {
-    await queryExpenseByPeriod()
+    await queryExpenses()
 }
 
 onAuthStateChanged(auth, async (user) => {
