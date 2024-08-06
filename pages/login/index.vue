@@ -1,13 +1,13 @@
 <script setup>
 import { getAuth } from "firebase/auth"
 import { StateEntries } from "@/types"
-
-const { queryDocsByCollection } = useFirebase()
 const { loginUser, error } = useFirebaseAuth()
 const auth = getAuth()
 
+const notificationsStore = useNotificationsStore()
+const { getNotifications } = notificationsStore
+
 const uid = useState(StateEntries.Uid)
-const notificationsState = useState(StateEntries.Notifications, () => [])
 const userEmail = useState(StateEntries.UserEmail)
 
 const email = ref("")
@@ -45,11 +45,7 @@ const login = async () => {
         const user = await loginUser(email.value, password.value, handleError)
         if (user) {
             uid.value = user.uid
-            notificationsState.value = await queryDocsByCollection([
-                StateEntries.Notifications,
-                "users",
-                uid.value,
-            ])
+            await getNotifications()
             userEmail.value = email.value
             confirmLoginToast()
         }

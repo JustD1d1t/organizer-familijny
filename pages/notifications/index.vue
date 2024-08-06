@@ -1,7 +1,8 @@
 <script setup>
 import { StateEntries } from "@/types"
 
-const { updateDocument } = useFirebase()
+const notificationsStore = useNotificationsStore()
+const { updateNotification } = notificationsStore
 
 const notificationsState = useState(StateEntries.Notifications, () => [])
 
@@ -10,17 +11,7 @@ const uid = useState(StateEntries.Uid)
 const openNotification = async (notification) => {
     if (!notification.read) {
         const editedNotification = { ...notification, read: true }
-        await updateDocument(
-            [StateEntries.Notifications, "users", uid.value, notification.id],
-            editedNotification
-        )
-        const notificationIndex = notificationsState.value.findIndex(
-            (n) => n.id === notification.id
-        )
-        notificationsState.value.splice(notificationIndex, 1, {
-            ...editedNotification,
-            id: notification.id,
-        })
+        await updateNotification(editedNotification)
     }
     navigateTo(`/notifications/${notification.id}`)
 }

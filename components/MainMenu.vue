@@ -3,6 +3,10 @@ import { getAuth } from "firebase/auth"
 import { useRoute } from "vue-router"
 import { StateEntries } from "@/types"
 
+const notificationsStore = useNotificationsStore()
+const { clearNotifications } = notificationsStore
+const { notifications } = storeToRefs(notificationsStore)
+
 const { logoutUser } = useFirebaseAuth()
 const route = useRoute()
 const { onSnapshotCollection } = useFirebase()
@@ -14,7 +18,6 @@ const userEmail = useState(StateEntries.UserEmail)
 const shoppingLists = useState(StateEntries.ShoppingLists)
 const recipes = useState(StateEntries.Recipes)
 const expenses = useState(StateEntries.Expenses)
-const notifications = useState(StateEntries.Notifications)
 const collaboratedPantries = useState(StateEntries.CollaboratedPantries)
 
 const setNotificationsAfterSnap = (notifications) => {
@@ -40,7 +43,7 @@ const handleLogout = () => {
     shoppingLists.value = []
     recipes.value = []
     expenses.value = []
-    notifications.value = []
+    clearNotifications()
     collaboratedPantries.value = []
 }
 

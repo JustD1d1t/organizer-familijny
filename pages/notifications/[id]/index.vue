@@ -3,7 +3,9 @@ import { useRoute } from "vue-router"
 import { StateEntries } from "@/types"
 
 const { updateDocument, queryDoc } = useFirebase()
-const { sendNotification } = useNotifications()
+
+const notificationsStore = useNotificationsStore()
+const { updateNotification, sendNotification } = notificationsStore
 
 const route = useRoute()
 const params = route.params
@@ -16,11 +18,8 @@ const notification = computed(() =>
 const userEmail = useState(StateEntries.UserEmail)
 
 const handleFamilyInvitation = async (accepted) => {
-    await updateDocument(
-        [StateEntries.Notifications, "users", uid.value, notification.value.id],
-        { accepted }
-    )
     const editedNotification = { ...notification.value, accepted }
+    await updateNotification(editedNotification)
     let family = await queryDoc(["family"], editedNotification.ownerId)
     let membersDetails = family.membersDetails
 
