@@ -7,13 +7,12 @@ const pantriesStore = usePantriesStore()
 const { increaseQuantity, decreaseQuantity } = pantriesStore
 const { currentPantry } = storeToRefs(pantriesStore)
 
-const { updateDocument, queryDocsInCollection } = useFirebase()
+const { updateDocument } = useFirebase()
 
 const route = useRoute()
-const uid = useState(StateEntries.Uid)
 
-import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
+const { getAllShoppingLists, updateShoppingList } = shoppingListsStore
 const { shoppingLists, collaboratedShoppingLists } =
     storeToRefs(shoppingListsStore)
 
@@ -54,7 +53,8 @@ const setRemovedItem = (name) => {
 const confirmSelectShoppingListModal = async (list) => {
     isOpenSelectShoppingListModal.value = false
     const newItem = { name: removedItem.value, checked: false }
-    await updateDocument([StateEntries.ShoppingLists, list.id], {
+    await updateShoppingList({
+        ...list,
         items: [...list.items, newItem],
     })
     list.items.push(newItem)
@@ -62,28 +62,7 @@ const confirmSelectShoppingListModal = async (list) => {
 
 const confirmShoppingModal = async () => {
     if (!shoppingLists.value.length) {
-        shoppingLists.value = await queryDocsInCollection(
-            [StateEntries.ShoppingLists],
-            false,
-            [
-                {
-                    key: "ownerId",
-                    value: uid.value,
-                    statement: "==",
-                },
-            ]
-        )
-        collaboratedShoppingLists.value = await queryDocsInCollection(
-            [StateEntries.ShoppingLists],
-            false,
-            [
-                {
-                    key: "members",
-                    value: uid.value,
-                    statement: "array-contains",
-                },
-            ]
-        )
+        await getAllShoppingLists()
     }
 
     await updateDocument([StateEntries.Pantries, currentPantry.value.id], {

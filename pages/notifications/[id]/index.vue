@@ -2,10 +2,12 @@
 import { useRoute } from "vue-router"
 import { StateEntries } from "@/types"
 
-const { updateDocument, queryDoc } = useFirebase()
-
 const notificationsStore = useNotificationsStore()
 const { updateNotification, sendNotification } = notificationsStore
+
+const familyMembersStore = useFamilyMembersStore()
+const { updateFamilyMembers } = familyMembersStore
+const { membersDetails, members } = familyMembersStore
 
 const route = useRoute()
 const params = route.params
@@ -20,10 +22,9 @@ const userEmail = useState(StateEntries.UserEmail)
 const handleFamilyInvitation = async (accepted) => {
     const editedNotification = { ...notification.value, accepted }
     await updateNotification(editedNotification)
-    let family = await queryDoc(["family"], editedNotification.ownerId)
-    let membersDetails = family.membersDetails
 
-    const searchedMember = membersDetails.find((m) => m.id === uid.value)
+    const copiedMembersDetails = [...membersDetails.value]
+    const searchedMember = copiedMembersDetails.find((m) => m.id === uid.value)
 
     notification.value.accepted = accepted
 
@@ -32,10 +33,10 @@ const handleFamilyInvitation = async (accepted) => {
             searchedMember.status = "accepted"
         }
 
-        await updateDocument(["family", notification.value.ownerId], {
-            members: [...family.members, uid.value],
-            membersDetails,
-        })
+        await updateFamilyMembers(membersDetails, [
+            ...copiedMembersDetails,
+            uid.value,
+        ])
         await sendNotification(
             {
                 title: `Użytkownik "${userEmail.value}" nie zaakceptował zaproszenie do rodziny`,
@@ -53,9 +54,7 @@ const handleFamilyInvitation = async (accepted) => {
         )
 
         membersDetails = membersDetails.filter((m) => m.id !== uid.value)
-        await updateDocument(["family", notification.value.ownerId], {
-            membersDetails,
-        })
+        await updateFamilyMembers(membersDetails)
     }
 }
 </script>

@@ -29,7 +29,7 @@ export const useFamilyMembersStore = defineStore({
             this.familyMembersDetails = []
             this.familyId = null
         },
-        async updateMembers(membersDetails, members) {
+        async updateMembers(membersDetails, members = this.familyMembers) {
             const response = await fetch(
                 `${backendUrl}/family/update-members`,
                 {
