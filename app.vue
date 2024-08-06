@@ -18,12 +18,10 @@ CapacitorApp.addListener("backButton", ({ canGoBack }) => {
     }
 })
 
-const familyMembersDetails = useState(
-    StateEntries.FamilyMembersDetails,
-    () => []
-)
-const familyMembers = useState(StateEntries.FamilyMembers, () => [])
-const familyId = useState(StateEntries.FamilyId)
+const familyMembersStore = useFamilyMembersStore()
+const { getFamilyDetails } = familyMembersStore
+const { familyMembers, familyMembersDetails, familyId } = familyMembersStore
+
 const notificationsState = useState(StateEntries.Notifications, () => [])
 const pantries = useState(StateEntries.Pantries, () => [])
 const collaboratedPantries = useState(
@@ -35,28 +33,6 @@ const uid = useState(StateEntries.Uid)
 const isLoading = ref(true)
 
 const userEmail = useState(StateEntries.UserEmail)
-const loadFamily = async () => {
-    let family = await queryDoc(["family"], uid.value)
-    if (family.membersDetails?.length) {
-        familyMembersDetails.value = family.membersDetails
-        familyMembers.value = family.members
-        familyId.value = family.id
-    } else {
-        family = await queryDocsInCollection(["family"], false, [
-            {
-                key: "members",
-                value: uid.value,
-                statement: "array-contains",
-            },
-        ])
-        if (family.length) {
-            const searchedFamily = family[0]
-            familyMembersDetails.value = searchedFamily.membersDetails
-            familyMembers.value = searchedFamily.members
-            familyId.value = searchedFamily.id
-        }
-    }
-}
 
 const downloadExpenses = async () => {
     await queryExpenses()
@@ -98,7 +74,7 @@ onAuthStateChanged(auth, async (user) => {
 
         notificationsState.value = notifications
         isLoading.value = false
-        await loadFamily()
+        await getFamilyDetails()
     } else {
         isLoading.value = false
         uid.value = null

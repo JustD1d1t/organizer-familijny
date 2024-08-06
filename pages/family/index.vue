@@ -1,21 +1,13 @@
 <script setup>
-import { useRoute } from "vue-router"
-import { StateEntries } from "@/types"
 
-const { updateDocument, deleteDocument, onSnapshotDoc, clearSnapshot } =
-    useFirebase()
-const { sendNotification } = useNotifications()
+const notificationsStore = useNotificationsStore()
+const { sendNotification } = notificationsStore
 
-const route = useRoute()
-
-const uid = useState(StateEntries.Uid)
-const familyMembersDetails = useState(
-    StateEntries.FamilyMembersDetails,
-    () => []
-)
-const familyMembers = useState(StateEntries.FamilyMembers, () => [])
-const familyId = useState(StateEntries.FamilyId)
-
+const familyMembersStore = useFamilyMembersStore()
+const { updateMembers, removeFamily, leaveFamily } =
+    familyMembersStore
+const { familyMembers, familyMembersDetails, familyId } =
+    storeToRefs(familyMembersStore)
 const modal = ref()
 
 import { getAuth } from "firebase/auth"
@@ -25,72 +17,39 @@ const familyOwner = computed(() => {
     return familyId.value === auth.currentUser?.uid
 })
 
-const setFamilyAfterSnap = (snap) => {
-    familyMembersDetails.value = [...snap.membersDetails]
-    familyMembers.value = [...snap.members]
-}
-
-onMounted(async () => {
-    onSnapshotDoc(["family", familyId.value], setFamilyAfterSnap)
-})
-
 const cancel = () => modal.value.$el.dismiss(null, "cancel")
 const confirmModal = () => modal.value.$el.dismiss(null, "confirm")
-
-const clearFamilyDetails = () => {
-    familyMembersDetails.value = []
-    familyMembers.value = []
-    familyOwner.value = false
-}
 
 const addMember = (newMembers) => {
     confirmModal()
     familyMembersDetails.value = newMembers
     familyOwner.value = true
 }
-const removeFamilyMember = async (member) => {
+const remove = async (member) => {
     const newMembersDetails = familyMembersDetails.value.filter(
         (m) => m.id !== member.id
     )
     const newMembers = familyMembers.value.filter((m) => m !== member.id)
-    await updateDocument(["family", uid.value], {
-        membersDetails: newMembersDetails,
-        members: newMembers,
-    })
-    familyMembersDetails.value = [...newMembersDetails]
+    await updateMembers(newMembersDetails, newMembers)
     await sendNotification(
         {
-            title: `Zostałeś usunięty z rodziny "${auth.value.currentUser.email}"`,
-            content: `Zostałeś usunięty z rodziny przez użytkownika "${auth.value.currentUser.email}"`,
+            title: `Zostałeś usunięty z rodziny "${auth.currentUser.email}"`,
+            content: `Zostałeś usunięty z rodziny przez użytkownika "${auth.currentUser.email}"`,
         },
         member.id
     )
 }
 
-const leaveFamily = async () => {
+const leave = async () => {
     const newMembersDetails = familyMembersDetails.value.filter(
         (m) => m.id !== auth.currentUser.uid
     )
     const newMembers = familyMembers.value.filter(
         (m) => m !== auth.currentUser.uid
     )
-    await updateDocument(["family", familyId.value], {
-        membersDetails: newMembersDetails,
-        members: newMembers,
-    })
-    clearFamilyDetails()
+    await leaveFamily(newMembersDetails, newMembers)
     navigateTo("/")
 }
-
-const removeFamily = async () => {
-    await deleteDocument(["family", auth.currentUser.uid])
-    clearFamilyDetails()
-    navigateTo("/")
-}
-
-watch(route, async (newRoute, oldRoute) => {
-    clearSnapshot()
-})
 </script>
 <template>
     <ion-page>
@@ -122,8 +81,7 @@ watch(route, async (newRoute, oldRoute) => {
                         </template>
                         <template #end>
                             <uiButton
-                                slot="end"
-                                @click="() => removeFamilyMember(member)"
+                                @click="() => remove(member)"
                                 size="small"
                                 v-if="
                                     familyOwner &&
@@ -155,7 +113,7 @@ watch(route, async (newRoute, oldRoute) => {
                     >
                         <ion-icon :icon="ioniconsAdd"></ion-icon>
                     </ion-fab-button>
-                    <ion-fab-button v-if="!familyOwner" @click="leaveFamily">
+                    <ion-fab-button v-if="!familyOwner" @click="leave">
                         <ion-icon :icon="ioniconsTrash"></ion-icon>
                     </ion-fab-button>
                     <ion-fab-button v-if="familyOwner" @click="removeFamily">

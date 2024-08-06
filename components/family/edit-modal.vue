@@ -2,9 +2,13 @@
 import { getAuth } from "firebase/auth"
 import { StateEntries } from "@/types"
 
-const { queryDocsInCollection, queryDoc, setDocument, updateDocument } =
-    useFirebase()
-const { sendNotification } = useNotifications()
+const { queryDocsInCollection } = useFirebase()
+const notificationsStore = useNotificationsStore()
+const { sendNotification } = notificationsStore
+
+const familyMembersStore = useFamilyMembersStore()
+const { updateMembers, createFamily } = familyMembersStore
+const { familyMembersDetails } = storeToRefs(familyMembersStore)
 
 const emit = defineEmits("cancel", "confirmModal")
 
@@ -18,14 +22,12 @@ const addMember = async (family, user) => {
         ...family.membersDetails,
         { ...user, status: "pending" },
     ]
-    await updateDocument(["family", uid.value], {
-        membersDetails: newMembersDetails,
-    })
+    await updateMembers(newMembersDetails)
     return newMembersDetails
 }
 
-const createFamily = async (currUser) => {
-    newMembersDetails = [
+const create = async (currUser, user) => {
+    const newMembersDetails = [
         {
             email: currUser.email,
             id: currUser.uid,
@@ -35,10 +37,7 @@ const createFamily = async (currUser) => {
         },
         { ...user, status: "pending" },
     ]
-    await setDocument(["family", uid.value], {
-        members: [uid.value],
-        membersDetails: newMembersDetails,
-    })
+    await createFamily(newMembersDetails)
     return newMembersDetails
 }
 
@@ -47,20 +46,19 @@ const handleFamilyMember = async () => {
         {
             key: "email",
             value: email.value.toLowerCase(),
-            statement,
+            statement: "==",
         },
     ])
     if (!users.length) {
         return
     }
     const user = users[0]
-    const family = await queryDoc(["family"], uid.value)
     const currUser = auth.currentUser
     let newMembersDetails
-    if (family.membersDetails?.length) {
+    if (familyMembersDetails.length) {
         newMembersDetails = await addMember(family, user)
     } else {
-        newMembersDetails = await createFamily(currUser)
+        newMembersDetails = await create(currUser, user)
     }
 
     await sendNotification(
@@ -88,7 +86,7 @@ const cancel = () => {
                 <ion-buttons fill="clear" slot="start">
                     <uiButton @click="cancel()">Anuluj</uiButton>
                 </ion-buttons>
-                <ion-buttons  slot="end">
+                <ion-buttons slot="end">
                     <uiButton :strong="true" @click="handleFamilyMember()"
                         >Dodaj</uiButton
                     >
