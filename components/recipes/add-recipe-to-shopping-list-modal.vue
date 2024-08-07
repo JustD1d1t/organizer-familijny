@@ -1,7 +1,8 @@
 <script setup>
-import { StateEntries } from "@/types"
-
-const { updateDocument, queryDocsInCollection } = useFirebase()
+const shoppingListsStore = useShoppingListsStore()
+const { updateShoppingList, getAllShoppingLists } = shoppingListsStore
+const { shoppingLists, collaboratedShoppingLists } =
+    storeToRefs(shoppingListsStore)
 
 const props = defineProps({
     recipe: {
@@ -18,15 +19,8 @@ const props = defineProps({
     },
 })
 
-const uid = useState(StateEntries.Uid)
-const shoppingLists = useState(StateEntries.ShoppingLists)
-const collaboratedShoppingLists = useState(
-    StateEntries.CollaboratedShoppingLists
-)
-
 const isOpen = ref(false)
 const toastMessage = ref("")
-const isLoading = ref(!shoppingLists.value)
 
 const handleRecipeToShoppingList = async (list) => {
     const recipes = list.recipes
@@ -48,33 +42,15 @@ const handleRecipeToShoppingList = async (list) => {
         isOpen.value = false
     }, 2000)
 
-    await updateDocument([StateEntries.ShoppingLists, list.id], { recipes })
+    await updateShoppingList({
+        ...list,
+        recipes,
+    })
+    list.recipes = recipes
 }
 
 onMounted(async () => {
-    shoppingLists.value = await queryDocsInCollection(
-        [StateEntries.ShoppingLists],
-        false,
-        [
-            {
-                key: "ownerId",
-                value: uid.value,
-                statement: "==",
-            },
-        ]
-    )
-    collaboratedShoppingLists.value = await queryDocsInCollection(
-        [StateEntries.ShoppingLists],
-        false,
-        [
-            {
-                key: "members",
-                value: uid.value,
-                statement: "array-contains",
-            },
-        ]
-    )
-    isLoading.value = false
+    await getAllShoppingLists()
 })
 </script>
 <template>

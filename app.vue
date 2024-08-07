@@ -7,7 +7,6 @@ import { StateEntries } from "./types"
 const route = useRoute()
 defineCustomElements(window)
 const auth = getAuth()
-const { queryDocsByCollection, queryDoc, queryDocsInCollection } = useFirebase()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
 const { queryExpenses } = expensesStore
@@ -20,14 +19,12 @@ CapacitorApp.addListener("backButton", ({ canGoBack }) => {
 
 const familyMembersStore = useFamilyMembersStore()
 const { getFamilyDetails } = familyMembersStore
-const { familyMembers, familyMembersDetails, familyId } = familyMembersStore
 
-const notificationsState = useState(StateEntries.Notifications, () => [])
-const pantries = useState(StateEntries.Pantries, () => [])
-const collaboratedPantries = useState(
-    StateEntries.CollaboratedPantries,
-    () => []
-)
+const pantriesStore = usePantriesStore()
+const { getAllPantries } = pantriesStore
+
+const notificationsStore = useNotificationsStore()
+const { getNotifications } = notificationsStore
 
 const uid = useState(StateEntries.Uid)
 const isLoading = ref(true)
@@ -43,36 +40,9 @@ onAuthStateChanged(auth, async (user) => {
         userEmail.value = user.email
         isLoading.value = true
         uid.value = user.uid
-        if (notificationsState.value.length) return
-        const notifications = await queryDocsByCollection([
-            StateEntries.Notifications,
-            "users",
-            uid.value,
-        ])
-        pantries.value = await queryDocsInCollection(
-            [StateEntries.Pantries],
-            false,
-            [
-                {
-                    key: "ownerId",
-                    value: uid.value,
-                    statement: "==",
-                },
-            ]
-        )
-        collaboratedPantries.value = await queryDocsInCollection(
-            [StateEntries.Pantries],
-            false,
-            [
-                {
-                    key: "members",
-                    value: uid.value,
-                    statement: "array-contains",
-                },
-            ]
-        )
+        await getNotifications()
+        await getAllPantries()
 
-        notificationsState.value = notifications
         isLoading.value = false
         await getFamilyDetails()
     } else {

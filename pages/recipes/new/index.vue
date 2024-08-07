@@ -1,12 +1,14 @@
 <script setup>
 import axios from "axios"
 import { StateEntries } from "@/types"
+const router = useRouter()
 
-const { addDocument } = useFirebase()
 const { backendUrl } = useConfig()
 
 const uid = useState(StateEntries.Uid)
-const recipes = useState(StateEntries.Recipes)
+
+const recipesStore = useRecipesStore()
+const { addRecipe } = recipesStore
 
 const props = defineProps({
     cancel: {
@@ -35,7 +37,7 @@ const fetchContent = async (url) => {
     }
 }
 
-const addRecipe = async () => {
+const add = async () => {
     const recipeResponse = await fetchContent(recipeLink.value)
     const el = document.createElement("html")
     el.innerHTML = recipeResponse
@@ -75,16 +77,8 @@ const addRecipe = async () => {
         ingredients: ingredientsArray,
         userId: uid.value,
     }
-
-    const addRecipeResponse = await addDocument([StateEntries.Recipes], recipe)
-    if (addRecipeResponse.type === "document") {
-        const id = addRecipeResponse._key.path.segments[1]
-        recipes.value.push({
-            ...recipe,
-            id,
-        })
-        props.confirmModal()
-    }
+    await addRecipe(recipe)
+    router.back()
 }
 </script>
 <template>
@@ -111,7 +105,7 @@ const addRecipe = async () => {
                 ></ion-input>
             </ion-item>
 
-            <uiButton expand="block" @click="addRecipe" class="my-6"
+            <uiButton expand="block" @click="add" class="my-6"
                 >Dodaj listę</uiButton
             >
         </ion-content>

@@ -1,16 +1,13 @@
 <script setup>
 import { useRoute } from "vue-router"
-import { StateEntries } from "@/types"
 
 const route = useRoute()
-const { onSnapshotDoc, clearSnapshot, updateDocument } = useFirebase()
 
-import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
 const { handlePantryItemsFromShoppingList } = pantriesStore
 
-import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
+const { updateShoppingList } = shoppingListsStore
 const { currentShoppingList } = storeToRefs(shoppingListsStore)
 
 const layout = ref("products")
@@ -29,7 +26,8 @@ const confirmModal = async (pantry) => {
         (item) => !item.checked
     )
     await handlePantryItemsFromShoppingList(selectedItems, pantry)
-    updateDocument([StateEntries.ShoppingLists, route.params.id], {
+    await updateShoppingList({
+        ...currentShoppingList.value,
         items: currentShoppingList.value.items,
     })
     selectPantryModalOpen.value = false
@@ -38,12 +36,6 @@ const confirmModal = async (pantry) => {
 const name = computed(() =>
     currentShoppingList?.value ? currentShoppingList.value.name : ""
 )
-
-const setShoppingListAfterSnap = (snap) => {
-    currentShoppingList.value.items = snap.items
-    currentShoppingList.value.recipes = snap.recipes
-    currentShoppingList.value.name = snap.name
-}
 
 const sortByCategory = () => {
     dir.value = dir.value === "asc" ? "desc" : "asc"
@@ -70,17 +62,6 @@ const goToAddItemPage = () => {
 const openPantryModal = () => {
     selectPantryModalOpen.value = true
 }
-
-onMounted(() => {
-    onSnapshotDoc(
-        [StateEntries.ShoppingLists, route.params.id],
-        setShoppingListAfterSnap
-    )
-})
-
-watch(route, async (newRoute, oldRoute) => {
-    clearSnapshot()
-})
 </script>
 <template>
     <ion-page>

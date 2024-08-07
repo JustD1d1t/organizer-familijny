@@ -1,12 +1,10 @@
 import { defineStore } from "pinia"
-const { addDocument, deleteDocument, updateDocument, queryDocsInCollection } =
-    useFirebase()
 import { getAuth } from "firebase/auth"
 const auth = getAuth()
 const { backendUrl } = useConfig()
 
 export const useNotificationsStore = defineStore({
-    id: "pantries-store",
+    id: "notifications-store",
     state: () => {
         return {
             notifications: [],

@@ -5,13 +5,6 @@ const auth = getAuth()
 const { backendUrl } = useConfig()
 
 const {
-    queryDocsInCollection,
-    savePhotoToStorageWithId,
-    addDocument,
-    updateDocument,
-} = useFirebase()
-
-const {
     getFirstDateOfCurrentMonth,
     getLastDateOfMonth,
     getFirstDayOfWeek,
@@ -60,28 +53,13 @@ export const useExpensesStore = defineStore({
             return data.url
         },
         async addExpenseToStore(expense, document, photoBase64) {
-            const addExpenseResponse = await addDocument(
-                [StateEntries.Expenses],
-                expense
-            )
-            if (addExpenseResponse.type === "document") {
-                const id = addExpenseResponse._key.path.segments[1]
-                this.expenses.unshift({
-                    ...expense,
-                    id,
-                })
-                this.expenses.sort(
-                    (a, b) => new Date(a.date) - new Date(b.date)
-                )
-                if (document && photoBase64) {
-                    await savePhotoToStorageWithId(
-                        "photosCollection",
-                        id,
-                        document,
-                        photoBase64
-                    )
-                }
-            }
+            await fetch(`${backendUrl}/expenses/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ expense, document, photoBase64 }),
+            })
         },
         async updateExpense(expense, document, photoBase64) {
             const response = await fetch(`${backendUrl}/expenses/update`, {

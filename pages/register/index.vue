@@ -1,6 +1,6 @@
 <script setup>
-const { setDocument } = useFirebase()
 const { registerUser } = useFirebaseAuth()
+const { backendUrl } = useConfig()
 
 const email = ref("")
 const password = ref("")
@@ -27,10 +27,16 @@ const register = async () => {
             handleError
         )
         const uid = user.uid
-        await setDocument(["users", uid], {
-            email: email.value.toLowerCase(),
-            uid,
-            nickname: nickname.value,
+        await fetch(`${backendUrl}/users/add-user`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                uid,
+                email: email.value.toLowerCase(),
+                nickname: nickname.value,
+            }),
         })
     } catch (error) {
         console.log(error)

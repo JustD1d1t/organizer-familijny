@@ -1,9 +1,7 @@
 import { defineStore } from "pinia"
 import { getAuth } from "firebase/auth"
-import { StateEntries } from "@/types"
 const auth = getAuth()
-const { addDocument, deleteDocument, updateDocument, queryDocsInCollection } =
-    useFirebase()
+const { backendUrl } = useConfig()
 
 export const usePantriesStore = defineStore({
     id: "pantries-store",
@@ -12,6 +10,7 @@ export const usePantriesStore = defineStore({
             pantries: [],
             collaboratedPantries: [],
             currentPantry: null,
+            isLoading: false,
         }
     },
     actions: {
@@ -24,6 +23,84 @@ export const usePantriesStore = defineStore({
         setCurrentPantry(pantry) {
             this.currentPantry = pantry
         },
+
+        setPantryAfterSnap(snap) {
+            this.currentPantry.items = snap.items
+            this.currentPantry.name = snap.name
+        },
+        setLoading(isLoading) {
+            this.isLoading = isLoading
+        },
+
+        async getAllPantries() {
+            this.setLoading(true)
+            try {
+                const response = await fetch(
+                    `${backendUrl}/pantries/get-all?userId=${auth.currentUser.uid}`
+                )
+                const data = await response.json()
+                this.addPantriesToStore(data.pantries)
+                this.addCollaboratedPantriesToStore(data.collaboratedPantries)
+            } catch (error) {
+                console.error("Failed to get pantries:", error)
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async getCollaboratedPantries() {
+            this.setLoading(true)
+            try {
+                const response = await fetch(
+                    `${backendUrl}/pantries/get-collaborated?userId=${auth.currentUser.uid}`
+                )
+                const data = await response.json()
+                this.addCollaboratedPantriesToStore(data.collaboratedPantries)
+            } catch (error) {
+                console.error("Failed to get collaborated pantries:", error)
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async updatePantry(pantry) {
+            this.setLoading(true)
+            try {
+                const response = await fetch(`${backendUrl}/pantries/update`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ pantry }),
+                })
+
+                if (!response.ok) {
+                    const errorData = await response.json()
+                    throw new Error(
+                        `Error: ${errorData.message || response.status}`
+                    )
+                }
+
+                const data = await response.json()
+                return data
+            } catch (error) {
+                console.error("Failed to update pantry:", error)
+                throw error
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        async editPantry(pantry) {
+            await this.updatePantry(pantry)
+            const index = this.pantries.findIndex(
+                (item) => item.id === pantry.id
+            )
+            this.pantries[index] = pantry
+        },
+
+        async handleItem() {},
+
         async addPantry(pantryName, members = []) {
             const newPantry = {
                 name: pantryName,
@@ -31,12 +108,16 @@ export const usePantriesStore = defineStore({
                 members,
                 ownerId: auth.currentUser.uid,
             }
-            const addPantryResponse = await addDocument(
-                [StateEntries.Pantries],
-                newPantry
-            )
-            if (addPantryResponse.type === "document") {
-                const id = addPantryResponse._key.path.segments[1]
+            const response = await fetch(`${backendUrl}/pantries/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ pantry: newPantry }),
+            })
+            const data = await response.json()
+            if (data.id) {
+                const id = data.id
                 this.pantries.push({
                     ...newPantry,
                     id,
@@ -60,13 +141,10 @@ export const usePantriesStore = defineStore({
                     quantity: 1,
                 })
             }
-
-            await updateDocument(
-                [StateEntries.Pantries, this.currentPantry.id],
-                {
-                    items: pantryItems,
-                }
-            )
+            await this.updatePantry({
+                ...this.currentPantry,
+                items: pantryItems,
+            })
             this.currentPantry.items = pantryItems
         },
 
@@ -92,80 +170,81 @@ export const usePantriesStore = defineStore({
                 }
             })
 
-            await updateDocument([StateEntries.Pantries, selectedPantry.id], {
+            await this.updatePantry({
+                ...selectedPantry,
                 items: pantryItems,
             })
-            this.currentPantry.items = pantryItems
+            this.selectedPantry.items = pantryItems
         },
 
-        setPantryAfterSnap(snap) {
-            this.currentPantry.items = snap.items
-            this.currentPantry.name = snap.name
-        },
-
-        async decreaseQuantity(item, setRemovedItem) {
-            item.quantity--
-            if (item.quantity === 0) {
-                this.currentPantry.items = this.currentPantry.items.filter(
-                    (i) => i.name !== item.name
-                )
-                setRemovedItem(item.name)
-            }
-            await updateDocument(
-                [StateEntries.Pantries, this.currentPantry.id],
-                {
-                    items: this.currentPantry.items,
-                }
+        async decreaseQuantity(item) {
+            const items = [...this.currentPantry.items]
+            const itemIndex = items.findIndex(
+                (pantryItem) => pantryItem.name === item.name
             )
+            items[itemIndex].quantity--
+            await fetch(`${backendUrl}/pantries/update`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    items,
+                    pantryId: this.currentPantry.id,
+                }),
+            })
+            this.currentPantry.items = items
         },
 
         async increaseQuantity(item) {
-            item.quantity++
-            await updateDocument(
-                [StateEntries.Pantries, this.currentPantry.id],
-                {
-                    items: this.currentPantry.items,
-                }
+            const items = [...this.currentPantry.items]
+            const itemIndex = items.findIndex(
+                (pantryItem) => pantryItem.name === item.name
             )
+            items[itemIndex].quantity++
+            await fetch(`${backendUrl}/pantries/update`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    items,
+                    pantryId: this.currentPantry.id,
+                }),
+            })
+            this.currentPantry.items = items
         },
 
         async leaveList() {
-            const newMembers = this.currentPantry.members.filter(
-                (member) => member !== auth.currentUser.uid
-            )
-            await updateDocument(
-                [StateEntries.Pantries, this.currentPantry.id],
-                {
-                    members: newMembers,
+            try {
+                const editedPantry = {
+                    ...this.currentPantry,
+                    members: this.currentPantry.members.filter(
+                        (m) => m !== auth.currentUser.uid
+                    ),
                 }
-            )
-            this.currentPantry.members = this.currentPantry.members.filter(
-                (member) => member !== auth.currentUser.uid
-            )
-            collaboratedPantries.value = collaboratedPantries.value.filter(
-                (pan) => pan.id !== this.currentPantry.id
-            )
-            router.back()
-        },
-
-        async toggleMember(member) {
-            if (this.currentPantry.members.includes(member.id)) {
-                this.currentPantry.members = this.currentPantry.members.filter(
-                    (m) => m != member.id
+                await this.updatePantry(editedPantry)
+                this.setCurrentPantry(editedPantry)
+                const response = await fetch(
+                    `${backendUrl}/shopping-lists/get-collaborated?userId=${auth.currentUser.uid}`
                 )
-            } else {
-                this.currentPantry.members.push(member.id)
+                const data = await response.json()
+                this.setCollaboratedShoppingLists(
+                    data.collaboratedShoppingLists
+                )
+            } catch (error) {
+                console.error(error)
             }
-            await updateDocument(
-                [StateEntries.Pantries, this.currentPantry.id],
-                {
-                    members: this.currentPantry.members,
-                }
-            )
         },
 
         async removePantry(pan) {
-            await deleteDocument([StateEntries.Pantries, pan.id])
+            await fetch(`${backendUrl}/pantries/delete`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ pantryId: pan.id }),
+            })
             this.pantries = this.pantries.filter((list) => list.id !== pan.id)
         },
     },

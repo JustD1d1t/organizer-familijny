@@ -9,20 +9,12 @@ const { notifications } = storeToRefs(notificationsStore)
 
 const { logoutUser } = useFirebaseAuth()
 const route = useRoute()
-const { onSnapshotCollection } = useFirebase()
 
-const auth = getAuth()
-
-const notificationsState = useState(StateEntries.Notifications)
 const userEmail = useState(StateEntries.UserEmail)
 const shoppingLists = useState(StateEntries.ShoppingLists)
 const recipes = useState(StateEntries.Recipes)
 const expenses = useState(StateEntries.Expenses)
 const collaboratedPantries = useState(StateEntries.CollaboratedPantries)
-
-const setNotificationsAfterSnap = (notifications) => {
-    notificationsState.value = notifications
-}
 
 const isActive = (path) => {
     if (path === "/") {
@@ -33,8 +25,8 @@ const isActive = (path) => {
 }
 
 const unreadNotifications = computed(() => {
-    return notificationsState.value
-        ? notificationsState.value.filter((notification) => !notification.read)
+    return notifications.value
+        ? notifications.value.filter((notification) => !notification.read)
         : []
 })
 
@@ -46,13 +38,6 @@ const handleLogout = () => {
     clearNotifications()
     collaboratedPantries.value = []
 }
-
-onMounted(() => {
-    onSnapshotCollection(
-        [StateEntries.Notifications, "users", auth.currentUser.uid],
-        setNotificationsAfterSnap
-    )
-})
 </script>
 <template>
     <ion-menu side="end" content-id="main-content">

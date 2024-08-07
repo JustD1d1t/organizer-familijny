@@ -4,19 +4,12 @@ import { StateEntries } from "@/types"
 
 const route = useRoute()
 const uid = useState(StateEntries.Uid)
-const { queryDocsInCollection } = useFirebase()
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
-const {
-    addPantriesToStore,
-    addCollaboratedPantriesToStore,
-    setCurrentPantry,
-    removePantry,
-} = pantriesStore
+const { setCurrentPantry, removePantry, getAllPantries } = pantriesStore
 
-const { pantries, collaboratedPantries, currentPantry } =
-    storeToRefs(pantriesStore)
+const { pantries, collaboratedPantries } = storeToRefs(pantriesStore)
 const isLoading = ref(false)
 
 const handleClick = (pantry) => {
@@ -29,30 +22,7 @@ const handleClick = (pantry) => {
 }
 
 onMounted(async () => {
-    const pantries = await queryDocsInCollection(
-        [StateEntries.Pantries],
-        false,
-        [
-            {
-                key: "ownerId",
-                value: uid.value,
-                statement: "==",
-            },
-        ]
-    )
-    addPantriesToStore(pantries)
-    const collaboratedPantries = await queryDocsInCollection(
-        [StateEntries.Pantries],
-        false,
-        [
-            {
-                key: "members",
-                value: uid.value,
-                statement: "array-contains",
-            },
-        ]
-    )
-    addCollaboratedPantriesToStore(collaboratedPantries)
+    await getAllPantries()
 })
 </script>
 <template>

@@ -1,19 +1,12 @@
 <script setup>
-import { useRoute } from "vue-router"
-import { StateEntries } from "@/types"
+const recipesStore = useRecipesStore()
+const { getRecipes, deleteRecipe } = recipesStore
+const { recipes } = storeToRefs(recipesStore)
 
-const { queryDocsInCollection, deleteDocument } = useFirebase()
-const uid = useState(StateEntries.Uid)
-const recipes = useState(StateEntries.Recipes, () => [])
-
-const modal = ref()
 const isLoading = ref(false)
 
 const removeRecipe = async (recipeToRemove) => {
-    await deleteDocument([StateEntries.Recipes, recipeToRemove.id])
-    recipes.value = recipes.value.filter(
-        (recipe) => recipe.id !== recipeToRemove.id
-    )
+    await deleteRecipe(recipeToRemove.id)
 }
 
 const handleClick = (recipe) => {
@@ -21,13 +14,7 @@ const handleClick = (recipe) => {
 }
 
 onMounted(async () => {
-    recipes.value = await queryDocsInCollection([StateEntries.Recipes], false, [
-        {
-            key: "userId",
-            value: uid.value,
-            statement: "==",
-        },
-    ])
+    await getRecipes()
 })
 
 const goToAddRecipePage = () => {

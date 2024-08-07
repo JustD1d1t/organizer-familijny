@@ -1,9 +1,6 @@
 <script setup>
-const { updateDocument } = useFirebase()
 import { useRoute } from "vue-router"
-import { StateEntries } from "@/types"
 
-const route = useRoute()
 const emit = defineEmits([
     "changeLayout",
     "sortByName",
@@ -29,36 +26,51 @@ const props = defineProps({
     },
 })
 
-import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
 const { currentShoppingList } = storeToRefs(shoppingListsStore)
+const { updateShoppingList } = shoppingListsStore
 
-const removeAllItems = () => {
+const removeAllItems = async () => {
+    await updateShoppingList({
+        ...currentShoppingList.value,
+        items: [],
+    })
     currentShoppingList.value.items = []
-    updateDocument([StateEntries.ShoppingLists, route.params.id], { items: [] })
 }
 
-const selectAllItems = () => {
-    currentShoppingList.value.items.forEach((item) => (item.checked = true))
-    updateDocument([StateEntries.ShoppingLists, route.params.id], {
-        items: currentShoppingList.value.items,
+const selectAllItems = async () => {
+    const updatedItems = [...currentShoppingList.value].items.map((item) => {
+        item.checked = true
+        return item
     })
-}
-
-const deselectAllItems = () => {
-    currentShoppingList.value.items.forEach((item) => (item.checked = false))
-    updateDocument([StateEntries.ShoppingLists, route.params.id], {
-        items: currentShoppingList.value.items,
+    await updateShoppingList({
+        ...currentShoppingList.value,
+        items: updatedItems,
     })
+    currentShoppingList.value.items = updatedItems
 }
 
-const removeSelectedItems = () => {
-    currentShoppingList.value.items = currentShoppingList.value.items.filter(
+const deselectAllItems = async () => {
+    const updatedItems = [...currentShoppingList.value].items.map((item) => {
+        item.checked = false
+        return item
+    })
+    await updateShoppingList({
+        ...currentShoppingList.value,
+        items: updatedItems,
+    })
+    currentShoppingList.value.items = updatedItems
+}
+
+const removeSelectedItems = async () => {
+    const updatedItems = [...currentShoppingList.value].items.filter(
         (item) => !item.checked
     )
-    updateDocument([StateEntries.ShoppingLists, route.params.id], {
-        items: currentShoppingList.value.items,
+    await updateShoppingList({
+        ...currentShoppingList.value,
+        items: updatedItems,
     })
+    currentShoppingList.value.items = updatedItems
 }
 </script>
 

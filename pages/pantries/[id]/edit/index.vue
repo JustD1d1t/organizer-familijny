@@ -1,19 +1,31 @@
 <script setup>
-const { updateDocument } = useFirebase()
 const router = useRouter()
 const uid = useState("uid")
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
-const { toggleMember } = pantriesStore
+const { editPantry } = pantriesStore
 const { currentPantry } = storeToRefs(pantriesStore)
 
+const newPantryName = ref(currentPantry.value.name)
+const newMembers = ref(currentPantry.value.members)
+
 const updatePantry = async () => {
-    await updateDocument(
-        ["pantries", currentPantry.value.id],
-        currentPantry.value
-    )
+    const editedPantry = {
+        ...currentPantry.value,
+        name: newPantryName.value,
+        members: newMembers.value,
+    }
+    await editPantry(editedPantry)
     router.back()
+}
+
+const handleMember = (member) => {
+    if (newMembers.value.includes(member.id)) {
+        newMembers.value = newMembers.value.filter((m) => m != member.id)
+    } else {
+        newMembers.value.push(member.id)
+    }
 }
 
 const collaboratedPantry = computed(
@@ -39,12 +51,12 @@ const leave = async () => {
                     label-placement="floating"
                     ref="input"
                     type="text"
-                    v-model="currentPantry.name"
+                    v-model="newPantryName"
                 ></ion-input>
             </ion-item>
             <FamilyDropdownSelectMember
                 :members="currentPantry.members"
-                @toggleMember="toggleMember"
+                @toggleMember="handleMember"
                 v-if="!collaboratedPantry"
             />
             <uiButton expand="block" class="my-6" @click="leave">

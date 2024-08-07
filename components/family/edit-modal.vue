@@ -2,9 +2,9 @@
 import { getAuth } from "firebase/auth"
 import { StateEntries } from "@/types"
 
-const { queryDocsInCollection } = useFirebase()
 const notificationsStore = useNotificationsStore()
 const { sendNotification } = notificationsStore
+const { backendUrl } = useConfig()
 
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, createFamily } = familyMembersStore
@@ -42,13 +42,10 @@ const create = async (currUser, user) => {
 }
 
 const handleFamilyMember = async () => {
-    const users = await queryDocsInCollection(["users"], false, [
-        {
-            key: "email",
-            value: email.value.toLowerCase(),
-            statement: "==",
-        },
-    ])
+    const data = await fetch(
+        `${backendUrl}/users/get-users?email=${email.value}`
+    ).then((res) => res.json())
+    const users = data.users
     if (!users.length) {
         return
     }

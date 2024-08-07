@@ -1,9 +1,7 @@
 <script setup>
 import { StateEntries } from "@/types"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 const { logoutUser } = useFirebaseAuth()
-const { onSnapshotCollection } = useFirebase()
 
 const notificationsState = useState(StateEntries.Notifications)
 const userEmail = useState(StateEntries.UserEmail)
@@ -13,25 +11,10 @@ const expenses = useState(StateEntries.Expenses)
 const notifications = useState(StateEntries.Notifications)
 const collaboratedPantries = useState(StateEntries.CollaboratedPantries)
 
-const auth = getAuth()
-
 const unreadNotifications = computed(() => {
     return notificationsState.value
         ? notificationsState.value.filter((notification) => !notification.read)
         : []
-})
-
-const setNotificationsAfterSnap = (notifications) => {
-    notificationsState.value = notifications
-}
-
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        onSnapshotCollection(
-            [StateEntries.Notifications, "users", user.uid],
-            setNotificationsAfterSnap
-        )
-    }
 })
 
 const handleLogout = () => {

@@ -1,13 +1,10 @@
 <script setup>
 import { useRoute } from "vue-router"
-import { StateEntries } from "@/types"
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
 const { increaseQuantity, decreaseQuantity } = pantriesStore
 const { currentPantry } = storeToRefs(pantriesStore)
-
-const { updateDocument } = useFirebase()
 
 const route = useRoute()
 
@@ -64,12 +61,15 @@ const confirmShoppingModal = async () => {
     if (!shoppingLists.value.length) {
         await getAllShoppingLists()
     }
-
-    await updateDocument([StateEntries.Pantries, currentPantry.value.id], {
-        items: currentPantry.value.items,
-    })
     isOpenShoppingModal.value = false
     isOpenSelectShoppingListModal.value = true
+}
+
+const decrease = async (item) => {
+    await decreaseQuantity(item)
+    if (item.quantity === 0) {
+        setRemovedItem(item.name)
+    }
 }
 
 const editPantry = () => {
@@ -107,9 +107,7 @@ const goToAddItemPage = () => {
                         v-for="item in itemsToDisplay"
                         :key="item.name"
                         @increaseQuantity="() => increaseQuantity(item)"
-                        @decreaseQuantity="
-                            () => decreaseQuantity(item, setRemovedItem)
-                        "
+                        @decreaseQuantity="() => decrease(item)"
                         :quantity="item.quantity"
                         class="h-9"
                     >

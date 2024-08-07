@@ -1,6 +1,4 @@
 import { defineStore } from "pinia"
-const { addDocument, deleteDocument, updateDocument, queryDocsInCollection } =
-    useFirebase()
 import { getAuth } from "firebase/auth"
 const auth = getAuth()
 const { backendUrl } = useConfig()

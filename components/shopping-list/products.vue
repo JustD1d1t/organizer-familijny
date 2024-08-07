@@ -1,12 +1,8 @@
 <script setup>
 import { useRoute } from "vue-router"
-import { StateEntries } from "@/types"
-import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
-const { handleItemChange, removeItem } = shoppingListsStore
 
 const route = useRoute()
-const { onSnapshotDoc, clearSnapshot } = useFirebase()
 const props = defineProps({
     nameDir: {
         type: String,
@@ -50,23 +46,6 @@ const itemsToDisplay = computed(() => {
         return list
     }
     return []
-})
-
-const setShoppingListAfterSnap = (snap) => {
-    currentShoppingList.value.items = snap.items
-    currentShoppingList.value.recipes = snap.recipes
-    currentShoppingList.value.name = snap.name
-}
-
-onMounted(() => {
-    onSnapshotDoc(
-        [StateEntries.ShoppingLists, route.params.id],
-        setShoppingListAfterSnap
-    )
-})
-
-watch(route, async (newRoute, oldRoute) => {
-    clearSnapshot()
 })
 </script>
 
