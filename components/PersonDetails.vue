@@ -20,6 +20,7 @@ const unreadNotifications = computed(() => {
 })
 
 const handleLogout = () => {
+    localStorage.removeItem("uid")
     logoutUser()
     shoppingLists.value = []
     recipes.value = []
