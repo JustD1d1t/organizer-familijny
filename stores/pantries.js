@@ -35,7 +35,9 @@ export const usePantriesStore = defineStore({
             this.setLoading(true)
             try {
                 const data = await request(
-                    `${backendUrl}/pantries/get-all?userId=${localStorage.getItem("uid")}`
+                    `${backendUrl}/pantries/get-all?userId=${localStorage.getItem(
+                        "uid"
+                    )}`
                 )
                 this.addPantriesToStore(data.pantries)
                 this.addCollaboratedPantriesToStore(data.collaboratedPantries)
@@ -50,7 +52,9 @@ export const usePantriesStore = defineStore({
             this.setLoading(true)
             try {
                 const data = await request(
-                    `${backendUrl}/pantries/get-collaborated?userId=${localStorage.getItem("uid")}`
+                    `${backendUrl}/pantries/get-collaborated?userId=${localStorage.getItem(
+                        "uid"
+                    )}`
                 )
                 this.addCollaboratedPantriesToStore(data.collaboratedPantries)
             } catch (error) {
@@ -176,8 +180,8 @@ export const usePantriesStore = defineStore({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    ...this.currentPantry,
                     items,
-                    pantryId: this.currentPantry.id,
                 }),
             })
             this.currentPantry.items = items
@@ -213,7 +217,9 @@ export const usePantriesStore = defineStore({
                 await this.updatePantry(editedPantry)
                 this.setCurrentPantry(editedPantry)
                 const data = await request(
-                    `${backendUrl}/shopping-lists/get-collaborated?userId=${localStorage.getItem("uid")}`
+                    `${backendUrl}/shopping-lists/get-collaborated?userId=${localStorage.getItem(
+                        "uid"
+                    )}`
                 )
                 this.setCollaboratedShoppingLists(
                     data.collaboratedShoppingLists
