@@ -36,7 +36,6 @@ export const useUserStore = defineStore({
             return data
         },
         async logoutUser() {
-            console.log("logout")
             await request(`${backendUrl}/user/logout`, {
                 method: "POST",
                 headers: {
