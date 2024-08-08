@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
 const { backendUrl } = useConfig()
+const uid = localStorage.getItem("uid")
+const { request } = useFetch()
 
 export const useNotificationsStore = defineStore({
     id: "notifications-store",
@@ -18,14 +18,13 @@ export const useNotificationsStore = defineStore({
             this.notifications = []
         },
         async getNotifications() {
-            const response = await fetch(
-                `${backendUrl}/notifications/get-all?userId=${auth.currentUser.uid}`
+            const data = await request(
+                `${backendUrl}/notifications/get-all?userId=${uid}`
             )
-            const data = await response.json()
             this.setNotifications(data.notifications)
         },
         async updateNotification(notification) {
-            const response = await fetch(
+            await request(
                 `${backendUrl}/notifications/update?userId=${notification.id}`,
                 {
                     method: "PATCH",
@@ -44,17 +43,13 @@ export const useNotificationsStore = defineStore({
             })
         },
         async sendNotification(notification, userId) {
-            const response = await fetch(`${backendUrl}/notifications/add`, {
+            const data = await request(`${backendUrl}/notifications/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    notification,
-                    userId,
-                }),
+                body: JSON.stringify({ notification, userId }),
             })
-            const data = await response.json()
             return data.id
         },
     },

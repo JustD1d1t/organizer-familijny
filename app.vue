@@ -1,12 +1,8 @@
 <script setup>
 import { App as CapacitorApp } from "@capacitor/app"
 import { defineCustomElements } from "@ionic/pwa-elements/loader"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
 import "swiper/swiper-bundle.css"
-import { StateEntries } from "./types"
-const route = useRoute()
 defineCustomElements(window)
-const auth = getAuth()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
 const { queryExpenses } = expensesStore
@@ -16,40 +12,13 @@ CapacitorApp.addListener("backButton", ({ canGoBack }) => {
         CapacitorApp.exitApp()
     }
 })
+// TODO:
+const isLoading = ref(false)
 
-const familyMembersStore = useFamilyMembersStore()
-const { getFamilyDetails } = familyMembersStore
-
-const pantriesStore = usePantriesStore()
-const { getAllPantries } = pantriesStore
-
-const notificationsStore = useNotificationsStore()
-const { getNotifications } = notificationsStore
-
-const uid = useState(StateEntries.Uid)
-const isLoading = ref(true)
-
-const userEmail = useState(StateEntries.UserEmail)
 
 const downloadExpenses = async () => {
     await queryExpenses()
 }
-
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        userEmail.value = user.email
-        isLoading.value = true
-        uid.value = user.uid
-        await getNotifications()
-        await getAllPantries()
-
-        isLoading.value = false
-        await getFamilyDetails()
-    } else {
-        isLoading.value = false
-        uid.value = null
-    }
-})
 </script>
 <template>
     <ion-app>

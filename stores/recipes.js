@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
 const { backendUrl } = useConfig()
+const { request } = useFetch()
+const uid = localStorage.getItem("uid")
 
 export const useRecipesStore = defineStore({
     id: "recipes-store",
@@ -15,14 +15,13 @@ export const useRecipesStore = defineStore({
             this.recipes = [...recipes]
         },
         async getRecipes() {
-            const response = await fetch(
-                `${backendUrl}/recipes/get-all?userId=${auth.currentUser.uid}`
+            const data = await request(
+                `${backendUrl}/recipes/get-all?userId=${uid}`
             )
-            const data = await response.json()
             this.setRecipes(data.recipes)
         },
         async deleteRecipe(recipeId) {
-            await fetch(`${backendUrl}/recipes/delete?recipeId=${recipeId}`, {
+            await request(`${backendUrl}/recipes/delete?recipeId=${recipeId}`, {
                 method: "DELETE",
             })
             this.recipes = this.recipes.filter(
@@ -30,17 +29,16 @@ export const useRecipesStore = defineStore({
             )
         },
         async addRecipe(recipe) {
-            const response = await fetch(`${backendUrl}/recipes/add`, {
+            const data = await request(`${backendUrl}/recipes/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     recipe,
-                    userId: auth.currentUser.uid,
+                    userId: uid,
                 }),
             })
-            const data = await response.json()
             this.recipes.push({
                 ...recipe,
                 id: data.id,

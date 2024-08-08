@@ -1,8 +1,7 @@
 import { defineStore } from "pinia"
 import { StateEntries } from "@/types"
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
 const { backendUrl } = useConfig()
+const { request } = useFetch()
 
 const {
     getFirstDateOfCurrentMonth,
@@ -46,14 +45,13 @@ export const useExpensesStore = defineStore({
         },
 
         async getExpensePhoto(id) {
-            const res = await fetch(
+            const data = await request(
                 `${backendUrl}/expenses/get-image?photoId=${id}`
             )
-            const data = await res.json()
             return data.url
         },
         async addExpenseToStore(expense, document, photoBase64) {
-            await fetch(`${backendUrl}/expenses/add`, {
+            await request(`${backendUrl}/expenses/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -62,22 +60,13 @@ export const useExpensesStore = defineStore({
             })
         },
         async updateExpense(expense, document, photoBase64) {
-            const response = await fetch(`${backendUrl}/expenses/update`, {
+            const data = await request(`${backendUrl}/expenses/update`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ expense, document, photoBase64 }),
             })
-
-            if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(
-                    `Error: ${errorData.message || response.status}`
-                )
-            }
-
-            const data = await response.json()
             return data
         },
         async editExpense(expense, document, photoBase64) {
@@ -88,12 +77,9 @@ export const useExpensesStore = defineStore({
             this.expenses[index] = expense
         },
         async removeExpenseFromStore(id) {
-            const res = await fetch(
-                `${backendUrl}/expenses/delete?expenseId=${id}`,
-                {
-                    method: "DELETE",
-                }
-            )
+            await request(`${backendUrl}/expenses/delete?expenseId=${id}`, {
+                method: "DELETE",
+            })
             this.expenses = this.expenses.filter((expense) => expense.id !== id)
         },
         updateStartPrice(e) {
@@ -134,7 +120,7 @@ export const useExpensesStore = defineStore({
             const startPeriod = new Date(this.startDate).getTime()
             const endPeriod = new Date(this.endDate).getTime()
             const statements = [
-                { key: "userId", value: auth.currentUser.uid, statement: "==" },
+                { key: "userId", value: localStorage.getItem("uid"), statement: "==" },
                 {
                     key: "timestamp",
                     value: startPeriod,
@@ -149,7 +135,7 @@ export const useExpensesStore = defineStore({
             const membershipStatements = [
                 {
                     key: StateEntries.FamilyMembers,
-                    value: auth.currentUser.uid,
+                    value: localStorage.getItem("uid"),
                     statement: "array-contains",
                 },
                 {
@@ -234,11 +220,9 @@ export const useExpensesStore = defineStore({
                     statement: "<=",
                 })
             }
-
-            const respone = await fetch(
-                `${backendUrl}/expenses/get-all?userId=${auth.currentUser.uid}`
+            const data = await request(
+                `${backendUrl}/expenses/get-all?userId=${localStorage.getItem("uid")}`
             )
-            const data = await respone.json()
             const allExpenses = [...data.expenses, ...data.collaboratedExpenses]
             const sortedByDateExpenses = allExpenses.sort((a, b) => {
                 return b.timestamp - a.timestamp

@@ -1,20 +1,15 @@
 <script setup>
-
 const notificationsStore = useNotificationsStore()
 const { sendNotification } = notificationsStore
 
 const familyMembersStore = useFamilyMembersStore()
-const { updateMembers, removeFamily, leaveFamily } =
-    familyMembersStore
+const { updateMembers, removeFamily, leaveFamily } = familyMembersStore
 const { familyMembers, familyMembersDetails, familyId } =
     storeToRefs(familyMembersStore)
 const modal = ref()
 
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
-
 const familyOwner = computed(() => {
-    return familyId.value === auth.currentUser?.uid
+    return familyId.value === localStorage.getItem("uid")
 })
 
 const cancel = () => modal.value.$el.dismiss(null, "cancel")
@@ -33,8 +28,12 @@ const remove = async (member) => {
     await updateMembers(newMembersDetails, newMembers)
     await sendNotification(
         {
-            title: `Zostałeś usunięty z rodziny "${auth.currentUser.email}"`,
-            content: `Zostałeś usunięty z rodziny przez użytkownika "${auth.currentUser.email}"`,
+            title: `Zostałeś usunięty z rodziny "${localStorage.getItem(
+                "email"
+            )}"`,
+            content: `Zostałeś usunięty z rodziny przez użytkownika "${localStorage.getItem(
+                "email"
+            )}`,
         },
         member.id
     )
@@ -42,10 +41,10 @@ const remove = async (member) => {
 
 const leave = async () => {
     const newMembersDetails = familyMembersDetails.value.filter(
-        (m) => m.id !== auth.currentUser.uid
+        (m) => m.id !== localStorage.getItem("uid")
     )
     const newMembers = familyMembers.value.filter(
-        (m) => m !== auth.currentUser.uid
+        (m) => m !== localStorage.getItem("uid")
     )
     await leaveFamily(newMembersDetails, newMembers)
     navigateTo("/")
@@ -85,7 +84,7 @@ const leave = async () => {
                                 size="small"
                                 v-if="
                                     familyOwner &&
-                                    member.id !== auth.currentUser?.uid
+                                    member.id !== localStorage.getItem('uid')
                                 "
                             >
                                 <ion-icon :icon="ioniconsTrash"></ion-icon>

@@ -1,8 +1,7 @@
 <script setup>
-import { StateEntries } from "@/types"
 
 const pages = usePages()
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 
 const openPersonMenu = async () => {
     await menuController.open("person")

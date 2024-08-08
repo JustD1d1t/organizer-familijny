@@ -1,9 +1,4 @@
 <script setup>
-import { StateEntries } from "@/types"
-
-const { backendUrl } = useConfig()
-
-const uid = useState(StateEntries.Uid)
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
 const { removeShoppingList, getAllShoppingLists, setCurrentShoppingList } =

@@ -1,8 +1,7 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
 const { displayToast, showAlert, showConfirm, showPrompt } = useAlerts()
+const { request } = useFetch()
 export const useShoppingListsStore = defineStore({
     id: "shopping-lists-store",
     state: () => {
@@ -50,7 +49,7 @@ export const useShoppingListsStore = defineStore({
             this.setLoading(true)
             this.setError(null)
             try {
-                const response = await fetch(
+                const data = await request(
                     `${backendUrl}/shopping-lists/update`,
                     {
                         method: "PUT",
@@ -60,15 +59,6 @@ export const useShoppingListsStore = defineStore({
                         body: JSON.stringify({ shoppingList }),
                     }
                 )
-
-                if (!response.ok) {
-                    const errorData = await response.json()
-                    throw new Error(
-                        `Error: ${errorData.message || response.status}`
-                    )
-                }
-
-                const data = await response.json()
                 return data
             } catch (error) {
                 console.error("Failed to update shopping list:", error)
@@ -83,10 +73,11 @@ export const useShoppingListsStore = defineStore({
             this.setLoading(true)
             this.setError(null)
             try {
-                const response = await fetch(
-                    `${backendUrl}/shopping-lists/get-all?userId=${auth.currentUser.uid}`
+                const data = await request(
+                    `${backendUrl}/shopping-lists/get-all?userId=${localStorage.getItem(
+                        "uid"
+                    )}`
                 )
-                const data = await response.json()
                 this.setShoppingLists(data.shoppingLists)
                 this.setCollaboratedShoppingLists(
                     data.collaboratedShoppingLists
@@ -107,21 +98,17 @@ export const useShoppingListsStore = defineStore({
                 const newShoppingList = {
                     name: name,
                     members: members,
-                    ownerId: auth.currentUser.uid,
+                    ownerId: localStorage.getItem("uid"),
                     items: [],
                     recipes: [],
                 }
-                const response = await fetch(
-                    `${backendUrl}/shopping-lists/add`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ shoppingList: newShoppingList }),
-                    }
-                )
-                const data = await response.json()
+                const data = await request(`${backendUrl}/shopping-lists/add`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ shoppingList: newShoppingList }),
+                })
                 if (data.id) {
                     this.addShoppingListToStore({
                         ...newShoppingList,
@@ -140,17 +127,13 @@ export const useShoppingListsStore = defineStore({
             this.setLoading(true)
             this.setError(null)
             try {
-                const response = await fetch(
+                await request(
                     `${backendUrl}/shopping-lists/remove?shoppingListId=${id}`,
                     {
                         method: "DELETE",
                     }
                 )
-                if (response.ok) {
-                    this.removeShoppingListFromStore(id)
-                } else {
-                    throw new Error("Failed to remove shopping list")
-                }
+                this.removeShoppingListFromStore(id)
             } catch (error) {
                 console.error(error)
                 this.setError("Failed to remove shopping list")
@@ -319,15 +302,16 @@ export const useShoppingListsStore = defineStore({
                 const editedShoppingList = {
                     ...this.currentShoppingList,
                     members: this.currentShoppingList.members.filter(
-                        (m) => m !== auth.currentUser.uid
+                        (m) => m !== localStorage.getItem("uid")
                     ),
                 }
                 await this.updateShoppingList(editedShoppingList)
                 this.updateCurrentList(editedShoppingList)
-                const response = await fetch(
-                    `${backendUrl}/shopping-lists/get-collaborated?userId=${auth.currentUser.uid}`
+                const data = await request(
+                    `${backendUrl}/shopping-lists/get-collaborated?userId=${localStorage.getItem(
+                        "uid"
+                    )}`
                 )
-                const data = await response.json()
                 this.setCollaboratedShoppingLists(
                     data.collaboratedShoppingLists
                 )

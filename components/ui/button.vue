@@ -10,6 +10,10 @@ const props = defineProps({
         default: "solid",
         validator: (value) => ["solid", "outline", "clear"].includes(value),
     },
+    link: {
+        type: String,
+        default: "",
+    },
 })
 
 const buttonClass = computed(() => {
@@ -20,7 +24,7 @@ const buttonClass = computed(() => {
 })
 </script>
 <template>
-    <ion-button :class="buttonClass" :fill="props.fill">
+    <ion-button :class="buttonClass" :fill="props.fill" :router-link="link">
         <slot />
     </ion-button>
 </template>

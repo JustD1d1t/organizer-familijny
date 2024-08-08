@@ -1,5 +1,5 @@
 <script setup>
-const { sendVeritifactionEmail } = useFirebaseAuth()
+// const { sendVeritifactionEmail } = useFirebaseAuth()
 
 const toastMessage = ref("")
 const isOpen = ref(false)
@@ -7,25 +7,9 @@ const isOpen = ref(false)
 const openPersonMenu = async () => {
     await menuController.open("person")
 }
-const sendEmail = () => {
-    sendVeritifactionEmail()
-}
-
-const confirmResendToast = () => {
-    toastMessage.value = "Email weryfikacyjny wysłany ponownie"
-    isOpen.value = true
-    setTimeout(() => {
-        isOpen.value = false
-    }, 2000)
-}
-
-const errorResendToast = () => {
-    toastMessage.value = "Błąd przy wysyłaniu emaila weryfikacyjnego"
-    isOpen.value = true
-    setTimeout(() => {
-        isOpen.value = false
-    }, 2000)
-}
+// const sendEmail = () => {
+//     sendVeritifactionEmail()
+// }
 </script>
 <template>
     <ion-page>
@@ -45,7 +29,7 @@ const errorResendToast = () => {
                     <div>Zweryfikuj emaila</div>
                     <div>Nie otrzymałeś/aś maila?</div>
                     <div class="flex">
-                        <uiButton class="w-full" @click="sendEmail">Wyslij ponownie</uiButton>
+                        <uiButton class="w-full">Wyslij ponownie</uiButton>
                     </div>
                 </uiCard>
             </div>

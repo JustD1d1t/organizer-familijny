@@ -5,7 +5,7 @@ const { photos, photoFromCamera, selectPhotoFromData } = usePhotoGallery()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
 const { addExpenseToStore } = expensesStore
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 
 const router = useRouter()
 

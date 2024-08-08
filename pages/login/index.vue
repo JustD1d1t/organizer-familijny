@@ -1,36 +1,14 @@
 <script setup>
-import { getAuth } from "firebase/auth"
-import { StateEntries } from "@/types"
-const { loginUser, error } = useFirebaseAuth()
-const auth = getAuth()
-
 const notificationsStore = useNotificationsStore()
 const { getNotifications } = notificationsStore
 
-const uid = useState(StateEntries.Uid)
-const userEmail = useState(StateEntries.UserEmail)
+const userStore = useUserStore()
+const { loginUser, logoutUser } = userStore
 
-const email = ref("")
+const emailValue = ref("")
 const password = ref("")
 const toastMessage = ref("")
 const isOpen = ref(false)
-
-if (auth.currentUser) {
-    window.location.href = "/"
-}
-
-const handleError = (errorMessage) => {
-    if (
-        errorMessage === "auth/invalid-email" ||
-        errorMessage === "auth/invalid-credential"
-    ) {
-        toastMessage.value = "Niepoprawne dane logowania"
-    }
-    isOpen.value = true
-    setTimeout(() => {
-        isOpen.value = false
-    }, 2000)
-}
 
 const confirmLoginToast = () => {
     toastMessage.value = "Zalogowano pomyślnie"
@@ -42,11 +20,10 @@ const confirmLoginToast = () => {
 
 const login = async () => {
     try {
-        const user = await loginUser(email.value, password.value, handleError)
+        const user = await loginUser(emailValue.value, password.value)
         if (user) {
-            uid.value = user.uid
+            navigateTo("/")
             await getNotifications()
-            userEmail.value = email.value
             confirmLoginToast()
         }
     } catch (error) {
@@ -67,7 +44,11 @@ const login = async () => {
                 <uiCard class="p-8 w-full">
                     <template v-slot:title> Logowanie </template>
                     <ion-list>
-                        <uiInput label="Email" type="email" v-model="email" />
+                        <uiInput
+                            label="Email"
+                            type="email"
+                            v-model="emailValue"
+                        />
                         <uiInput
                             label="Hasło"
                             type="password"
@@ -81,14 +62,14 @@ const login = async () => {
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
-                        router-link="/register"
+                        @click="navigateTo('/register')"
                         >Rejestracja</uiButton
                     >
                     <uiButton
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
-                        router-link="/reset-password"
+                        @click="navigateTo('/forgot-password')"
                         >Zapomniałem hasła</uiButton
                     >
                 </uiCard>

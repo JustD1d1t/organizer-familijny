@@ -3,7 +3,7 @@ import { useRoute } from "vue-router"
 import { StateEntries } from "@/types"
 
 const route = useRoute()
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()

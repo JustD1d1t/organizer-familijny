@@ -1,6 +1,6 @@
 <script setup>
 import { StateEntries } from "@/types"
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 
 const expensesStore = useExpensesStore()
 const { queryExpenses, setCurrentExpense } = expensesStore

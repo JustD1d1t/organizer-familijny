@@ -1,16 +1,8 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default defineNuxtRouteMiddleware((to, from) => {
-    const auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            return navigateTo("/")
-            // if (user.emailVerified) {
-            //   return navigateTo("/");
-            // } else {
-            //   return navigateTo("/verify-email");
-            // }
-        } else {
-            return navigateTo("/login")
-        }
-    })
+    const uid = localStorage.getItem("uid")
+    if (to.path !== "/login" && to.path !== "/register" && !uid) {
+        return navigateTo("/login")
+    } else if (to.path === "/login" && uid) {
+        return navigateTo("/")
+    }
 })

@@ -6,13 +6,11 @@ import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
 const { editShoppingList, leaveList } = shoppingListsStore
 const { currentShoppingList } = storeToRefs(shoppingListsStore)
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
 
 const input = ref()
 
 const collaboratedList = computed(() => {
-    return auth.currentUser.uid !== currentShoppingList.value.ownerId
+    return localStorage.getItem("uid") !== currentShoppingList.value.ownerId
 })
 
 const newMembers = ref(

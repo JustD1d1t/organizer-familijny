@@ -12,7 +12,7 @@ const { membersDetails, members } = familyMembersStore
 const route = useRoute()
 const params = route.params
 
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 const notificationsState = useState(StateEntries.Notifications)
 const notification = computed(() =>
     notificationsState.value.find((n) => n.id === params.id)

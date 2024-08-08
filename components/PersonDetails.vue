@@ -1,7 +1,9 @@
 <script setup>
 import { StateEntries } from "@/types"
 
-const { logoutUser } = useFirebaseAuth()
+// const { logoutUser } = useFirebaseAuth()
+const userStore = useUserStore()
+const { logoutUser } = userStore
 
 const notificationsState = useState(StateEntries.Notifications)
 const userEmail = useState(StateEntries.UserEmail)

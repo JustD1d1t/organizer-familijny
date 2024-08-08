@@ -6,7 +6,7 @@ const { updateNotification } = notificationsStore
 
 const notificationsState = useState(StateEntries.Notifications, () => [])
 
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 
 const openNotification = async (notification) => {
     if (!notification.read) {

@@ -5,7 +5,7 @@ const router = useRouter()
 
 const { backendUrl } = useConfig()
 
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 
 const recipesStore = useRecipesStore()
 const { addRecipe } = recipesStore

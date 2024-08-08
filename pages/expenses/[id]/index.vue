@@ -11,7 +11,7 @@ const { currentExpense } = storeToRefs(expensesStore)
 
 const router = useRouter()
 
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 
 const openModal = ref(false)
 const document = ref(null)

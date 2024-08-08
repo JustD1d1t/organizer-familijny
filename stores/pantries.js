@@ -1,7 +1,6 @@
 import { defineStore } from "pinia"
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
 const { backendUrl } = useConfig()
+const { request } = useFetch()
 
 export const usePantriesStore = defineStore({
     id: "pantries-store",
@@ -35,10 +34,9 @@ export const usePantriesStore = defineStore({
         async getAllPantries() {
             this.setLoading(true)
             try {
-                const response = await fetch(
-                    `${backendUrl}/pantries/get-all?userId=${auth.currentUser.uid}`
+                const data = await request(
+                    `${backendUrl}/pantries/get-all?userId=${localStorage.getItem("uid")}`
                 )
-                const data = await response.json()
                 this.addPantriesToStore(data.pantries)
                 this.addCollaboratedPantriesToStore(data.collaboratedPantries)
             } catch (error) {
@@ -51,10 +49,9 @@ export const usePantriesStore = defineStore({
         async getCollaboratedPantries() {
             this.setLoading(true)
             try {
-                const response = await fetch(
-                    `${backendUrl}/pantries/get-collaborated?userId=${auth.currentUser.uid}`
+                const data = await request(
+                    `${backendUrl}/pantries/get-collaborated?userId=${localStorage.getItem("uid")}`
                 )
-                const data = await response.json()
                 this.addCollaboratedPantriesToStore(data.collaboratedPantries)
             } catch (error) {
                 console.error("Failed to get collaborated pantries:", error)
@@ -66,22 +63,13 @@ export const usePantriesStore = defineStore({
         async updatePantry(pantry) {
             this.setLoading(true)
             try {
-                const response = await fetch(`${backendUrl}/pantries/update`, {
+                const data = await request(`${backendUrl}/pantries/update`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({ pantry }),
                 })
-
-                if (!response.ok) {
-                    const errorData = await response.json()
-                    throw new Error(
-                        `Error: ${errorData.message || response.status}`
-                    )
-                }
-
-                const data = await response.json()
                 return data
             } catch (error) {
                 console.error("Failed to update pantry:", error)
@@ -106,16 +94,15 @@ export const usePantriesStore = defineStore({
                 name: pantryName,
                 items: [],
                 members,
-                ownerId: auth.currentUser.uid,
+                ownerId: localStorage.getItem("uid"),
             }
-            const response = await fetch(`${backendUrl}/pantries/add`, {
+            const data = await request(`${backendUrl}/pantries/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ pantry: newPantry }),
             })
-            const data = await response.json()
             if (data.id) {
                 const id = data.id
                 this.pantries.push({
@@ -183,7 +170,7 @@ export const usePantriesStore = defineStore({
                 (pantryItem) => pantryItem.name === item.name
             )
             items[itemIndex].quantity--
-            await fetch(`${backendUrl}/pantries/update`, {
+            await request(`${backendUrl}/pantries/update`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -202,7 +189,7 @@ export const usePantriesStore = defineStore({
                 (pantryItem) => pantryItem.name === item.name
             )
             items[itemIndex].quantity++
-            await fetch(`${backendUrl}/pantries/update`, {
+            await request(`${backendUrl}/pantries/update`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -220,15 +207,14 @@ export const usePantriesStore = defineStore({
                 const editedPantry = {
                     ...this.currentPantry,
                     members: this.currentPantry.members.filter(
-                        (m) => m !== auth.currentUser.uid
+                        (m) => m !== localStorage.getItem("uid")
                     ),
                 }
                 await this.updatePantry(editedPantry)
                 this.setCurrentPantry(editedPantry)
-                const response = await fetch(
-                    `${backendUrl}/shopping-lists/get-collaborated?userId=${auth.currentUser.uid}`
+                const data = await request(
+                    `${backendUrl}/shopping-lists/get-collaborated?userId=${localStorage.getItem("uid")}`
                 )
-                const data = await response.json()
                 this.setCollaboratedShoppingLists(
                     data.collaboratedShoppingLists
                 )
@@ -238,7 +224,7 @@ export const usePantriesStore = defineStore({
         },
 
         async removePantry(pan) {
-            await fetch(`${backendUrl}/pantries/delete`, {
+            await request(`${backendUrl}/pantries/delete`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 <script setup>
-const { resetPassword } = useFirebaseAuth()
+// const { resetPassword } = useFirebaseAuth()
 
 import { Toast } from "@capacitor/toast"
 
@@ -11,16 +11,16 @@ const openPersonMenu = async () => {
     await menuController.open("person")
 }
 
-const sendPasswordResetRequest = () => {
-    resetPassword(email.value)
-}
+// const sendPasswordResetRequest = () => {
+//     resetPassword(email.value)
+// }
 </script>
 <template>
     <ion-page>
         <ion-header>
             <ion-toolbar class="ion-color-primary ion-color">
                 <ion-title>Zresetuj hasło</ion-title>
-                <ion-buttons  slot="end">
+                <ion-buttons slot="end">
                     <uiButton fill="clear" @click="openPersonMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsPerson" />
                     </uiButton>
@@ -42,10 +42,7 @@ const sendPasswordResetRequest = () => {
                             ></ion-input>
                         </ion-item>
                     </ion-list>
-                    <uiButton
-                        class="w-full mt-4"
-                        expand="block"
-                        @click="sendPasswordResetRequest"
+                    <uiButton class="w-full mt-4" expand="block"
                         >Resetuj hasło</uiButton
                     >
                 </uiCard>

@@ -6,6 +6,7 @@ import { useRoute } from "vue-router"
 import { StateEntries } from "@/types"
 
 const { backendUrl } = useConfig()
+const { request } = useFetch()
 
 GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.worker.min.mjs"

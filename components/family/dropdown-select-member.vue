@@ -10,7 +10,7 @@ const props = defineProps({
 
 const emit = defineEmits(["toggleMember"])
 
-const uid = useState(StateEntries.Uid)
+const uid = localStorage.getItem("uid")
 const familyMembersDetails = useState(
     StateEntries.FamilyMembersDetails,
     () => []

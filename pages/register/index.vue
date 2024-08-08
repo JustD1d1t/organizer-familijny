@@ -1,6 +1,8 @@
 <script setup>
-const { registerUser } = useFirebaseAuth()
 const { backendUrl } = useConfig()
+
+const userStore = useUserStore()
+const { registerUser } = userStore
 
 const email = ref("")
 const password = ref("")
@@ -8,36 +10,27 @@ const nickname = ref("")
 const toastMessage = ref("")
 const isOpen = ref(false)
 
-const handleError = (errorMessage) => {
-    if (errorMessage === "auth/email-already-in-use") {
-        toastMessage.value = "Adres e-mail jest używany"
-    }
-    isOpen.value = true
-    setTimeout(() => {
-        isOpen.value = false
-    }, 2000)
-}
-
 const register = async () => {
     try {
         const user = await registerUser(
             email.value,
             password.value,
-            nickname.value,
-            handleError
+            nickname.value
         )
-        const uid = user.uid
+        const uid = user.localId
         await fetch(`${backendUrl}/users/add-user`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                uid,
-                email: email.value.toLowerCase(),
-                nickname: nickname.value,
+                user: {
+                    uid,
+                    email: email.value.toLowerCase(),
+                },
             }),
         })
+        navigateTo("/login")
     } catch (error) {
         console.log(error)
     }
@@ -55,34 +48,25 @@ const register = async () => {
             <div class="flex items-center h-full w-full">
                 <uiCard class="p-8 w-full">
                     <template v-slot:title> Rejestracja </template>
-                    <ion-list lines="none">
-                        <ion-item class="">
-                            <ion-input
-                                class="w-full"
-                                label="Email"
-                                label-placement="floating"
-                                type="email"
-                                v-model="email"
-                            ></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-input
-                                class="w-full"
-                                label="Hasło"
-                                label-placement="floating"
-                                type="password"
-                                v-model="password"
-                            ></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-input
-                                class="w-full"
-                                label="Nazwa"
-                                label-placement="floating"
-                                type="text"
-                                v-model="nickname"
-                            ></ion-input>
-                        </ion-item>
+                    <ion-list>
+                        <uiInput
+                            class="w-full"
+                            label="Email"
+                            type="email"
+                            v-model="email"
+                        ></uiInput>
+                        <uiInput
+                            class="w-full"
+                            label="Hasło"
+                            type="password"
+                            v-model="password"
+                        ></uiInput>
+                        <uiInput
+                            class="w-full"
+                            label="Nazwa"
+                            type="text"
+                            v-model="nickname"
+                        ></uiInput>
                     </ion-list>
                     <uiButton
                         class="w-full mt-4"

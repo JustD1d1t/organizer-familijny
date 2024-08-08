@@ -1,8 +1,6 @@
 <script setup>
 const router = useRouter()
 const { displayToast } = useAlerts()
-import { getAuth } from "firebase/auth"
-const auth = getAuth()
 
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()

@@ -1,10 +1,8 @@
 <script setup>
-import { getAuth } from "firebase/auth"
-import { StateEntries } from "@/types"
-
 const notificationsStore = useNotificationsStore()
 const { sendNotification } = notificationsStore
 const { backendUrl } = useConfig()
+const { request } = useFetch()
 
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, createFamily } = familyMembersStore
@@ -14,8 +12,7 @@ const emit = defineEmits("cancel", "confirmModal")
 
 const email = ref("")
 const emailInput = ref()
-const uid = useState(StateEntries.Uid)
-const auth = getAuth()
+const uid = localStorage.getItem("uid")
 
 const addMember = async (family, user) => {
     const newMembersDetails = [
@@ -42,15 +39,14 @@ const create = async (currUser, user) => {
 }
 
 const handleFamilyMember = async () => {
-    const data = await fetch(
+    const data = await request(
         `${backendUrl}/users/get-users?email=${email.value}`
-    ).then((res) => res.json())
+    )
     const users = data.users
     if (!users.length) {
         return
     }
     const user = users[0]
-    const currUser = auth.currentUser
     let newMembersDetails
     if (familyMembersDetails.length) {
         newMembersDetails = await addMember(family, user)
@@ -60,8 +56,12 @@ const handleFamilyMember = async () => {
 
     await sendNotification(
         {
-            title: `Zaproszenie do rodziny użytkownika "${currUser.email}"`,
-            content: `Zostałeś zaproszony do rodziny przez użytkownika "${currUser.email}"`,
+            title: `Zaproszenie do rodziny użytkownika "${localStorage.getItem(
+                "email"
+            )}"`,
+            content: `Zostałeś zaproszony do rodziny przez użytkownika "${localStorage.getItem(
+                "email"
+            )}"`,
             type: "invitation-to-family",
             ownerId: uid.value,
         },

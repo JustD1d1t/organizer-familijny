@@ -9,7 +9,6 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@nuxt/fonts"
     ],
-    plugins: ["~/plugins/firebase"],
     css: ["@/assets/scss/styles.scss", "@/theme/variables.css"],
     nitro: {
         serverHandlers: [
