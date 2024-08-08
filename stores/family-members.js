@@ -45,6 +45,7 @@ export const useFamilyMembersStore = defineStore({
             const data = await request(
                 `${backendUrl}/family/get-family-details?familyId=${localStorage.getItem("uid")}`
             )
+            console.log(data)
             if (data.members) {
                 this.familyMembers = data.members
                 this.familyMembersDetails = data.membersDetails

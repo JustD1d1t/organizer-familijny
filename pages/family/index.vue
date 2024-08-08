@@ -2,6 +2,8 @@
 const notificationsStore = useNotificationsStore()
 const { sendNotification } = notificationsStore
 
+const uid = localStorage.getItem("uid")
+
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, removeFamily, leaveFamily } = familyMembersStore
 const { familyMembers, familyMembersDetails, familyId } =
@@ -9,7 +11,7 @@ const { familyMembers, familyMembersDetails, familyId } =
 const modal = ref()
 
 const familyOwner = computed(() => {
-    return familyId.value === localStorage.getItem("uid")
+    return familyId.value === uid
 })
 
 const cancel = () => modal.value.$el.dismiss(null, "cancel")
@@ -41,11 +43,9 @@ const remove = async (member) => {
 
 const leave = async () => {
     const newMembersDetails = familyMembersDetails.value.filter(
-        (m) => m.id !== localStorage.getItem("uid")
+        (m) => m.id !== uid
     )
-    const newMembers = familyMembers.value.filter(
-        (m) => m !== localStorage.getItem("uid")
-    )
+    const newMembers = familyMembers.value.filter((m) => m !== uid)
     await leaveFamily(newMembersDetails, newMembers)
     navigateTo("/")
 }
@@ -82,10 +82,7 @@ const leave = async () => {
                             <uiButton
                                 @click="() => remove(member)"
                                 size="small"
-                                v-if="
-                                    familyOwner &&
-                                    member.id !== localStorage.getItem('uid')
-                                "
+                                v-if="familyOwner && member.id !== uid"
                             >
                                 <ion-icon :icon="ioniconsTrash"></ion-icon>
                             </uiButton>

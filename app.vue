@@ -6,15 +6,19 @@ defineCustomElements(window)
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
 const { queryExpenses } = expensesStore
+const familyMembersStore = useFamilyMembersStore()
+const { getFamilyDetails } = familyMembersStore
 
 CapacitorApp.addListener("backButton", ({ canGoBack }) => {
     if (!canGoBack) {
         CapacitorApp.exitApp()
     }
 })
-// TODO:
 const isLoading = ref(false)
 
+onMounted(async () => {
+    await getFamilyDetails()
+})
 
 const downloadExpenses = async () => {
     await queryExpenses()
