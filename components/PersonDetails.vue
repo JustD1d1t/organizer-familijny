@@ -26,6 +26,7 @@ const handleLogout = () => {
     expenses.value = []
     notifications.value = []
     collaboratedPantries.value = []
+    navigateTo("/login")
 }
 
 const navigate = (url) => {
