@@ -9,10 +9,10 @@ const { queryExpenses } = expensesStore
 const familyMembersStore = useFamilyMembersStore()
 const { getFamilyDetails } = familyMembersStore
 
-CapacitorApp.addListener("backButton", ({ canGoBack }) => {
-    if (!canGoBack) {
+CapacitorApp.addListener("backButton", (e) => {
+    if (!e.canGoBack) {
         CapacitorApp.exitApp()
-    } else {
+    } else if (this.router.url === "/pantries") {
         setTimeout(() => {
             window.location.reload()
         }, 100)
