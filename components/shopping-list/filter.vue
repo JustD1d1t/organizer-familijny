@@ -39,7 +39,7 @@ const removeAllItems = async () => {
 }
 
 const selectAllItems = async () => {
-    const updatedItems = [...currentShoppingList.value].items.map((item) => {
+    const updatedItems = [...currentShoppingList.value.items].map((item) => {
         item.checked = true
         return item
     })
@@ -51,7 +51,7 @@ const selectAllItems = async () => {
 }
 
 const deselectAllItems = async () => {
-    const updatedItems = [...currentShoppingList.value].items.map((item) => {
+    const updatedItems = [...currentShoppingList.value.items].map((item) => {
         item.checked = false
         return item
     })
@@ -63,7 +63,7 @@ const deselectAllItems = async () => {
 }
 
 const removeSelectedItems = async () => {
-    const updatedItems = [...currentShoppingList.value].items.filter(
+    const updatedItems = [...currentShoppingList.value.items].filter(
         (item) => !item.checked
     )
     await updateShoppingList({

@@ -213,7 +213,7 @@ const recipes = useState(StateEntries.Recipes, () =&gt; [])
 &nbsp;
 const { queryDocsByCollection, deleteDocument } = useFirebase();
 &nbsp;
-recipes.value = await queryDocsByCollection([StateEntries.Recipes], 'userId', uid.value);
+recipes.value = await queryDocsByCollection([StateEntries.Recipes], 'userId', uid);
 &nbsp;
 const removeRecipe = async (recipeToRemove) =&gt; {
     await deleteDocument([StateEntries.Recipes, recipeToRemove.id]);

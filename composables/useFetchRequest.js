@@ -1,4 +1,4 @@
-export const useFetch = () => {
+export const useFetchRequest = () => {
     const request = async (url, options) => {
         try {
             const response = await fetch(url, {

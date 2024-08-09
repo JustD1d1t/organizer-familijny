@@ -280,13 +280,13 @@ const { addDocument, updateDocument, queryDoc, queryDocsInCollection } = useFire
 const userEmail = useState(StateEntries.UserEmail)
 &nbsp;
 const handleInvitation = async (accepted) =&gt; {
-    await updateDocument([StateEntries.Notifications, 'users', uid.value, notification.value.id], { accepted })
+    await updateDocument([StateEntries.Notifications, 'users', uid, notification.value.id], { accepted })
     const editedNotification = { ...notification.value, accepted };
 &nbsp;
     let shoppingList = await queryDoc([StateEntries.ShoppingLists], notification.value.listId);
     let collaborators = shoppingList.collaborators;
 &nbsp;
-    const searchedCollaborator = collaborators.find(c =&gt; c.id === uid.value);
+    const searchedCollaborator = collaborators.find(c =&gt; c.id === uid);
 &nbsp;
     notification.value.accepted = accepted;
     if (accepted) {
@@ -298,7 +298,7 @@ const handleInvitation = async (accepted) =&gt; {
         await updateDocument([StateEntries.ShoppingLists, notification.value.listId], {
             collaboratorsIds: [
                 ...shoppingList.collaboratorsIds,
-                uid.value
+                uid
             ],
             collaborators
         });
@@ -310,18 +310,18 @@ const handleInvitation = async (accepted) =&gt; {
         const notificationToResend = { title: `Użytkownik "${userEmail.value}" odrzucił zaproszenie do listy "${notification.value.listName}"`, content: `Zaproszenie do listy zostało odrzucone`, listId: notification.value.listId, userId: notification.value.ownerId };
         await addDocument([StateEntries.Notifications, 'users', notification.value.ownerId], notificationToResend);
 &nbsp;
-        collaborators = collaborators.filter(c =&gt; c.id !== uid.value);
+        collaborators = collaborators.filter(c =&gt; c.id !== uid);
         await updateDocument([StateEntries.ShoppingLists, editedNotification.listId], { collaborators })
     }
 }
 &nbsp;
 const handlePantryInvitation = async (accepted) =&gt; {
-    await updateDocument([StateEntries.Notifications, 'users', uid.value, notification.value.id], { accepted })
+    await updateDocument([StateEntries.Notifications, 'users', uid, notification.value.id], { accepted })
     const editedNotification = { ...notification.value, accepted };
     let pantry = await queryDoc([StateEntries.Pantries], editedNotification.pantryId);
     let collaborators = pantry.collaborators;
 &nbsp;
-    const searchedCollaborator = collaborators.find(c =&gt; c.id === uid.value);
+    const searchedCollaborator = collaborators.find(c =&gt; c.id === uid);
 &nbsp;
     notification.value.accepted = accepted;
     if (accepted) {
@@ -331,7 +331,7 @@ const handlePantryInvitation = async (accepted) =&gt; {
         await updateDocument([StateEntries.Pantries, notification.value.pantryId], {
             collaboratorsIds: [
                 ...pantry.collaboratorsIds,
-                uid.value
+                uid
             ],
             collaborators
         });
@@ -343,7 +343,7 @@ const handlePantryInvitation = async (accepted) =&gt; {
         const notificationToResend = { title: `Użytkownik "${userEmail.value}" odrzucił zaproszenie do listy "${notification.value.name}"`, content: `Zaproszenie do spiżarni zostało odrzucone`, pantryId: notification.value.pantryId, userId: notification.value.ownerId };
         await addDocument([StateEntries.Notifications, 'users', notification.value.ownerId], notificationToResend);
 &nbsp;
-        collaborators = collaborators.filter(c =&gt; c.id !== uid.value);
+        collaborators = collaborators.filter(c =&gt; c.id !== uid);
         await updateDocument([StateEntries.Pantries, editedNotification.pantryId], { collaborators })
 &nbsp;
     }

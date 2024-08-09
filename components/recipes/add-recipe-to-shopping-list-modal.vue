@@ -58,7 +58,7 @@ onMounted(async () => {
         <ion-header class="text-lg text-center"
             >Wybierz listę do której chcesz dodać przepis</ion-header
         >
-        <ion-list :inset="true" :lines="inset">
+        <ion-list :inset="true" lines="inset">
             <ion-list-header> Twoje listy </ion-list-header>
             <ion-item
                 @click="() => handleRecipeToShoppingList(list)"

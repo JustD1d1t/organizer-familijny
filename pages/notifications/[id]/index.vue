@@ -24,7 +24,7 @@ const handleFamilyInvitation = async (accepted) => {
     await updateNotification(editedNotification)
 
     const copiedMembersDetails = [...membersDetails.value]
-    const searchedMember = copiedMembersDetails.find((m) => m.id === uid.value)
+    const searchedMember = copiedMembersDetails.find((m) => m.id === uid)
 
     notification.value.accepted = accepted
 
@@ -35,7 +35,7 @@ const handleFamilyInvitation = async (accepted) => {
 
         await updateFamilyMembers(membersDetails, [
             ...copiedMembersDetails,
-            uid.value,
+            uid,
         ])
         await sendNotification(
             {
@@ -53,7 +53,7 @@ const handleFamilyInvitation = async (accepted) => {
             notification.value.ownerId
         )
 
-        membersDetails = membersDetails.filter((m) => m.id !== uid.value)
+        membersDetails = membersDetails.filter((m) => m.id !== uid)
         await updateFamilyMembers(membersDetails)
     }
 }

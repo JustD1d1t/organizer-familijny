@@ -4,18 +4,16 @@ import { StateEntries } from "@/types"
 
 const route = useRoute()
 
-const recipes = useState(StateEntries.Recipes)
-
+const recipesStore = useRecipesStore()
+const { currentRecipe } = storeToRefs(recipesStore)
 const modal = ref()
 
-const recipe = computed(() => {
-    const recipe = recipes.value.find((recipe) => recipe.id === route.params.id)
-    return recipe
-})
 const ingredients = computed(() =>
-    recipe.value ? recipe.value.ingredients : []
+    currentRecipe.value ? currentRecipe.value.ingredients : []
 )
-const name = computed(() => (recipe.value ? recipe.value.name : ""))
+const name = computed(() =>
+    currentRecipe.value ? currentRecipe.value.name : ""
+)
 
 const cancel = () => modal.value.$el.dismiss(null, "cancel")
 const confirmModal = () => modal.value.$el.dismiss(null, "confirm")
@@ -49,7 +47,7 @@ watch(route, async (newRoute, oldRoute) => {
                 <RecipesAddRecipeToShoppingListModal
                     :cancel="cancel"
                     :confirm-modal="confirmModal"
-                    :recipe="recipe"
+                    :recipe="currentRecipe"
                 />
             </ion-modal>
         </ion-content>

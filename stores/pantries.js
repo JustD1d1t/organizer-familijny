@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
-const { request } = useFetch()
+const { request } = useFetchRequest()
 
 export const usePantriesStore = defineStore({
     id: "pantries-store",
@@ -72,11 +72,11 @@ export const usePantriesStore = defineStore({
             this.setLoading(true)
             try {
                 const data = await request(`${backendUrl}/pantries/update`, {
-                    method: "PUT",
+                    method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ pantry }),
+                    body: JSON.stringify({ ...pantry }),
                 })
                 return data
             } catch (error) {

@@ -76,11 +76,19 @@ const edit = async () => {
     await editExpense(editedExpense, document.value, photoBase64.value)
 
     router.back()
+
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
 }
 
 const removeExpense = async () => {
     await removeExpenseFromStore(currentExpense.value.id)
     router.back()
+
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
 }
 
 const fetchBillUrl = async () => {

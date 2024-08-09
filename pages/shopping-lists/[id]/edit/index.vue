@@ -21,6 +21,9 @@ const newName = ref(currentShoppingList.value.name)
 const update = async () => {
     await editShoppingList(newName.value, newMembers.value)
     router.back()
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
 }
 
 const toggleMember = (member) => {

@@ -1,6 +1,7 @@
 <script setup>
+const router = useRouter()
 const goToAddNewShoppingList = () => {
-    navigateTo("/shopping-lists/new")
+    router.push("/shopping-lists/new")
 }
 </script>
 <template>

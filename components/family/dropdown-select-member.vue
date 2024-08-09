@@ -19,7 +19,7 @@ const membersToShow = computed(() => {
         (member) =>
             member.status === "accepted" &&
             familyMembers.value.includes(member.id) &&
-            member.id !== uid.value
+            member.id !== uid
     )
 })
 

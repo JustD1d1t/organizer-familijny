@@ -2,7 +2,7 @@
 const notificationsStore = useNotificationsStore()
 const { sendNotification } = notificationsStore
 const { backendUrl } = useConfig()
-const { request } = useFetch()
+const { request } = useFetchRequest()
 
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, createFamily } = familyMembersStore
@@ -63,7 +63,7 @@ const handleFamilyMember = async () => {
                 "email"
             )}"`,
             type: "invitation-to-family",
-            ownerId: uid.value,
+            ownerId: uid,
         },
         user.uid
     )

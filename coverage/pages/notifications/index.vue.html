@@ -161,7 +161,7 @@ const uid = useState(StateEntries.Uid);
 const openNotification = async (notification) =&gt; {
     if (!notification.read) {
         const editedNotification = { ...notification, read: true };
-        await updateDocument([StateEntries.Notifications, 'users', uid.value, notification.id], editedNotification);
+        await updateDocument([StateEntries.Notifications, 'users', uid, notification.id], editedNotification);
         const notificationIndex = notificationsState.value.findIndex(n =&gt; n.id === notification.id);
         notificationsState.value.splice(notificationIndex, 1, { ...editedNotification, id: notification.id });
     }

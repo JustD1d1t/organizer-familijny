@@ -44,11 +44,14 @@ const addExpense = async () => {
         value: parseFloat(newExpenseValue.value),
         timestamp: new Date(newExpenseDate.value).getTime(),
         shop: newShopName.value.toLowerCase(),
-        userId: uid.value,
+        userId: uid,
         familyMembers: expenseMembers.value,
     }
     await addExpenseToStore(newExpense, document.value, photoBase64.value)
     router.back()
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
 }
 
 const handleMember = (member) => {

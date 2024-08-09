@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const uid = localStorage.getItem("uid")
-const { request } = useFetch()
+const { request } = useFetchRequest()
 
 export const useNotificationsStore = defineStore({
     id: "notifications-store",

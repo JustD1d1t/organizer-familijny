@@ -247,8 +247,8 @@ const login = async () =&gt; {
     try {
         const user = await loginUser(email.value, password.value, handleError);
         if (user) {
-            uid.value = user.uid;
-            notificationsState.value = await queryDocsByCollection([StateEntries.Notifications, 'users', uid.value]);
+            uid = user.uid;
+            notificationsState.value = await queryDocsByCollection([StateEntries.Notifications, 'users', uid]);
             userEmail.value = email.value;
             confirmLoginToast();
         }

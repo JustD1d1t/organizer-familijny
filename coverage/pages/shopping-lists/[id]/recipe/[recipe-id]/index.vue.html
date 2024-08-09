@@ -213,7 +213,7 @@ const uid = useState(StateEntries.Uid);
 const shoppingLists = useState(StateEntries.ShoppingLists);
 const collaboratedShoppingLists = useState(StateEntries.CollaboratedShoppingLists);
 const recipes = ref([])
-collaboratedShoppingLists.value = await queryDocsInCollection([StateEntries.ShoppingLists], 'collaboratorsIds', uid.value, "array-contains");
+collaboratedShoppingLists.value = await queryDocsInCollection([StateEntries.ShoppingLists], 'collaboratorsIds', uid, "array-contains");
 const recipe = computed(() =&gt; {
     let shoppingList = shoppingLists.value.find(list =&gt; list.id === route.params.id);
     if (!shoppingList) {
@@ -231,7 +231,7 @@ const removeIngredient = async (ingredient) =&gt; {
     if (!shoppingList) {
         shoppingList = collaboratedShoppingLists.value.find(list =&gt; list.id === route.params.id);
     }
-    const userId = shoppingList.ownerId ?? uid.value;
+    const userId = shoppingList.ownerId ?? uid;
     const index = recipe.value.ingredients.findIndex(i =&gt; {
         return i.name === ingredient.name &amp;&amp; i.quantity === ingredient.quantity
     })
@@ -245,7 +245,7 @@ const handleItemChange = async (ing) =&gt; {
     if (!shoppingList) {
         shoppingList = collaboratedShoppingLists.value.find(list =&gt; list.id === route.params.id);
     }
-    const userId = shoppingList.ownerId ?? uid.value;
+    const userId = shoppingList.ownerId ?? uid;
     const ingredient = recipe.value.ingredients.find(i =&gt; {
         return i.name === ing.name &amp;&amp; i.quantity === ing.quantity
     })

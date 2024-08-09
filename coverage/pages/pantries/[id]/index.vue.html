@@ -384,8 +384,8 @@ const shoppingLists = useState(StateEntries.ShoppingLists);
 const collaboratedShoppingLists = useState(StateEntries.CollaboratedShoppingLists, () =&gt; [
 ]);
 &nbsp;
-shoppingLists.value = await queryDocsInCollection([StateEntries.ShoppingLists], 'ownerId', uid.value);
-collaboratedShoppingLists.value = await queryDocsInCollection([StateEntries.ShoppingLists], 'collaboratorsIds', uid.value, "array-contains");
+shoppingLists.value = await queryDocsInCollection([StateEntries.ShoppingLists], 'ownerId', uid);
+collaboratedShoppingLists.value = await queryDocsInCollection([StateEntries.ShoppingLists], 'collaboratorsIds', uid, "array-contains");
 &nbsp;
 const modal = ref();
 const cancel = () =&gt; modal.value.$el.dismiss(null, 'cancel');
@@ -423,7 +423,7 @@ watch(route, async (newRoute, oldRoute) =&gt; {
 &nbsp;
 const confirmShoppingModal = async () =&gt; {
     if (!shoppingLists.value) {
-        shoppingLists.value = await queryDocsByCollection(['users', uid.value, StateEntries.ShoppingLists]);
+        shoppingLists.value = await queryDocsByCollection(['users', uid, StateEntries.ShoppingLists]);
     }
     await updateDocument([StateEntries.Pantries, pantry.value.id], {
         items: pantry.value.items

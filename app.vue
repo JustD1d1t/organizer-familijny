@@ -9,19 +9,19 @@ const { queryExpenses } = expensesStore
 const familyMembersStore = useFamilyMembersStore()
 const { getFamilyDetails } = familyMembersStore
 
-CapacitorApp.addListener("backButton", ({ canGoBack }) => {
-    if (!canGoBack) {
-        CapacitorApp.exitApp()
-    }
-})
+// CapacitorApp.addListener("backButton", ({ canGoBack }) => {
+//     if (!canGoBack) {
+//         CapacitorApp.exitApp()
+//     }
+// })
 const isLoading = ref(false)
 
 onMounted(async () => {
-    await getFamilyDetails()
+    // await getFamilyDetails()
 })
 
 const downloadExpenses = async () => {
-    await queryExpenses()
+    // await queryExpenses()
 }
 </script>
 <template>

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { displayToast, showAlert, showConfirm, showPrompt } = useAlerts()
-const { request } = useFetch()
+const { request } = useFetchRequest()
 export const useShoppingListsStore = defineStore({
     id: "shopping-lists-store",
     state: () => {

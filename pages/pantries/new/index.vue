@@ -10,6 +10,9 @@ const { addPantry } = pantriesStore
 const add = async () => {
     await addPantry(pantryName.value, familyMembers.value)
     router.back()
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
 }
 const handleMember = (member) => {
     if (familyMembers.value.includes(member.id)) {

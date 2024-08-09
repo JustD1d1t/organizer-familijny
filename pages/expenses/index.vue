@@ -36,15 +36,15 @@ const expensesToShow = computed(() => {
     } else if (showSelect.value === "my") {
         return expenses.value.filter(
             (expense) =>
-                expense.userId === uid.value &&
+                expense.userId === uid &&
                 expense.familyMembers.length === 0
         )
     } else {
         return expenses.value.filter(
             (expense) =>
-                (expense.userId === uid.value &&
+                (expense.userId === uid &&
                     expense.familyMembers.length > 0) ||
-                expense.familyMembers.includes(uid.value)
+                expense.familyMembers.includes(uid)
         )
     }
 })

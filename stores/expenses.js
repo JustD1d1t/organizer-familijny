@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { StateEntries } from "@/types"
 const { backendUrl } = useConfig()
-const { request } = useFetch()
+const { request } = useFetchRequest()
 
 const {
     getFirstDateOfCurrentMonth,
@@ -64,6 +64,7 @@ export const useExpensesStore = defineStore({
                 },
                 body: JSON.stringify({ expense, document, photoBase64 }),
             })
+            this.expenses.unshift(expense)
             this.setLoading(false)
         },
         async updateExpense(expense, document, photoBase64) {

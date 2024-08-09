@@ -189,7 +189,7 @@ const nameInput = ref();
 const pantries = useState(StateEntries.Pantries, () =&gt; []);
 &nbsp;
 const addPantry = async () =&gt; {
-	const newPantry = { name: pantryName.value, items: [], collaborators: [], collaboratorsIds: [], ownerId: uid.value };
+	const newPantry = { name: pantryName.value, items: [], collaborators: [], collaboratorsIds: [], ownerId: uid };
 	console.log(newPantry);
 	const addPantryResponse = await addDocument([StateEntries.Pantries], newPantry);
 	if (addPantryResponse.type === 'document') {

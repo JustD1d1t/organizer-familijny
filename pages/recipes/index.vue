@@ -1,12 +1,13 @@
 <script setup>
 const recipesStore = useRecipesStore()
-const { getRecipes, deleteRecipe } = recipesStore
+const { getRecipes, deleteRecipe, setCurrentRecipe } = recipesStore
 const { recipes, isLoading } = storeToRefs(recipesStore)
 const removeRecipe = async (recipeToRemove) => {
     await deleteRecipe(recipeToRemove.id)
 }
 
 const handleClick = (recipe) => {
+    setCurrentRecipe(recipe)
     navigateTo(`/recipes/${recipe.id}`)
 }
 
@@ -14,7 +15,7 @@ onMounted(async () => {
     await getRecipes()
 })
 
-const goToAddRecipePage = () => {
+const goToAddRecipePage = (recipe) => {
     navigateTo("/recipes/new")
 }
 </script>

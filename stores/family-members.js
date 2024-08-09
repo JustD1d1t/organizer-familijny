@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
-const { request } = useFetch()
+const { request } = useFetchRequest()
 
 export const useFamilyMembersStore = defineStore({
     id: "family-members-store",

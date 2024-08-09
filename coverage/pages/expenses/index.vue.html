@@ -337,7 +337,7 @@ const uid = useState(StateEntries.Uid);
 &nbsp;
 const { queryDocsInCollection, deleteDocument } = useFirebase();
 &nbsp;
-expensesState.value = await queryDocsInCollection([StateEntries.Expenses], 'userId', uid.value);
+expensesState.value = await queryDocsInCollection([StateEntries.Expenses], 'userId', uid);
 &nbsp;
 const openEditExpense = (expense) =&gt; {
     editingExpense.value = expense;

@@ -75,10 +75,13 @@ const add = async () => {
     const recipe = {
         name: name,
         ingredients: ingredientsArray,
-        userId: uid.value,
+        userId: uid,
     }
     await addRecipe(recipe)
     router.back()
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
 }
 </script>
 <template>

@@ -10,8 +10,11 @@ const newShoppingListName = ref("")
 const input = ref()
 
 const add = async () => {
-    addList(newShoppingListName.value, familyMembers.value)
+    await addList(newShoppingListName.value, familyMembers.value)
     router.back()
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
 }
 
 const familyMembers = ref([])
