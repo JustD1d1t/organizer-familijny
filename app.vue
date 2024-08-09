@@ -8,11 +8,12 @@ const expensesStore = useExpensesStore()
 const { queryExpenses } = expensesStore
 const familyMembersStore = useFamilyMembersStore()
 const { getFamilyDetails } = familyMembersStore
+const route = useRoute()
 
 CapacitorApp.addListener("backButton", (e) => {
     if (!e.canGoBack) {
         CapacitorApp.exitApp()
-    } else if (this.router.url === "/pantries") {
+    } else if (route.path === "/pantries") {
         setTimeout(() => {
             window.location.reload()
         }, 100)
