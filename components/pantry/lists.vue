@@ -1,16 +1,11 @@
 <script setup>
 import { useRoute } from "vue-router"
-import { StateEntries } from "@/types"
-
-const route = useRoute()
-const uid = localStorage.getItem("uid")
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
 const { setCurrentPantry, removePantry, getAllPantries } = pantriesStore
 
-const { pantries, collaboratedPantries } = storeToRefs(pantriesStore)
-const isLoading = ref(false)
+const { pantries, collaboratedPantries, isLoading } = storeToRefs(pantriesStore)
 
 const handleClick = (pantry) => {
     let list = pantries.value.find((list) => list.id === pantry.id)

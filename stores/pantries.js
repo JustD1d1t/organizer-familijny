@@ -30,6 +30,10 @@ export const usePantriesStore = defineStore({
         setLoading(isLoading) {
             this.isLoading = isLoading
         },
+        clearPantries() {
+            this.pantries = []
+            this.collaboratedPantries = []
+        },
 
         async getAllPantries() {
             this.setLoading(true)

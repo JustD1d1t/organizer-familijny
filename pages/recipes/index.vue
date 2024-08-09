@@ -1,10 +1,7 @@
 <script setup>
 const recipesStore = useRecipesStore()
 const { getRecipes, deleteRecipe } = recipesStore
-const { recipes } = storeToRefs(recipesStore)
-
-const isLoading = ref(false)
-
+const { recipes, isLoading } = storeToRefs(recipesStore)
 const removeRecipe = async (recipeToRemove) => {
     await deleteRecipe(recipeToRemove.id)
 }

@@ -8,6 +8,7 @@ export const useNotificationsStore = defineStore({
     state: () => {
         return {
             notifications: [],
+            isLoading: false,
         }
     },
     actions: {
@@ -17,13 +18,19 @@ export const useNotificationsStore = defineStore({
         clearNotifications() {
             this.notifications = []
         },
+        setLoading(isLoading) {
+            this.isLoading = isLoading
+        },
         async getNotifications() {
+            this.setLoading(true)
             const data = await request(
                 `${backendUrl}/notifications/get-all?userId=${uid}`
             )
+            this.setLoading(false)
             this.setNotifications(data.notifications)
         },
         async updateNotification(notification) {
+            this.setLoading(true)
             await request(
                 `${backendUrl}/notifications/update?userId=${notification.id}`,
                 {
@@ -34,6 +41,7 @@ export const useNotificationsStore = defineStore({
                     body: JSON.stringify(notification),
                 }
             )
+            this.setLoading(false)
             const notificationIndex = this.notifications.findIndex(
                 (n) => n.id === notification.id
             )
@@ -43,6 +51,7 @@ export const useNotificationsStore = defineStore({
             })
         },
         async sendNotification(notification, userId) {
+            this.setLoading(true)
             const data = await request(`${backendUrl}/notifications/add`, {
                 method: "POST",
                 headers: {
@@ -50,6 +59,7 @@ export const useNotificationsStore = defineStore({
                 },
                 body: JSON.stringify({ notification, userId }),
             })
+            this.setLoading(false)
             return data.id
         },
     },

@@ -11,11 +11,8 @@ const props = defineProps({
 const emit = defineEmits(["toggleMember"])
 
 const uid = localStorage.getItem("uid")
-const familyMembersDetails = useState(
-    StateEntries.FamilyMembersDetails,
-    () => []
-)
-const familyMembers = useState(StateEntries.FamilyMembers, () => [])
+const familyMembersStore = useFamilyMembersStore()
+const { familyMembersDetails, familyMembers } = storeToRefs(familyMembersStore)
 
 const membersToShow = computed(() => {
     return familyMembersDetails.value.filter(

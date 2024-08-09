@@ -21,6 +21,10 @@ export const useShoppingListsStore = defineStore({
         setCollaboratedShoppingLists(shoppingLists) {
             this.collaboratedShoppingLists = [...shoppingLists]
         },
+        clearShoppingLists() {
+            this.shoppingLists = []
+            this.collaboratedShoppingLists = []
+        },
         setCurrentShoppingList(shoppingList) {
             this.currentShoppingList = shoppingList
         },

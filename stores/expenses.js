@@ -43,14 +43,20 @@ export const useExpensesStore = defineStore({
         setCurrentExpense(expense) {
             this.currentExpense = expense
         },
+        clearExpenses() {
+            this.expenses = []
+        },
 
         async getExpensePhoto(id) {
+            this.setLoading(true)
             const data = await request(
                 `${backendUrl}/expenses/get-image?photoId=${id}`
             )
+            this.setLoading(false)
             return data.url
         },
         async addExpenseToStore(expense, document, photoBase64) {
+            this.setLoading(true)
             await request(`${backendUrl}/expenses/add`, {
                 method: "POST",
                 headers: {
@@ -58,8 +64,10 @@ export const useExpensesStore = defineStore({
                 },
                 body: JSON.stringify({ expense, document, photoBase64 }),
             })
+            this.setLoading(false)
         },
         async updateExpense(expense, document, photoBase64) {
+            this.setLoading(true)
             const data = await request(`${backendUrl}/expenses/update`, {
                 method: "PUT",
                 headers: {
@@ -67,6 +75,7 @@ export const useExpensesStore = defineStore({
                 },
                 body: JSON.stringify({ expense, document, photoBase64 }),
             })
+            this.setLoading(false)
             return data
         },
         async editExpense(expense, document, photoBase64) {
@@ -77,9 +86,11 @@ export const useExpensesStore = defineStore({
             this.expenses[index] = expense
         },
         async removeExpenseFromStore(id) {
+            this.setLoading(true)
             await request(`${backendUrl}/expenses/delete?expenseId=${id}`, {
                 method: "DELETE",
             })
+            this.setLoading(false)
             this.expenses = this.expenses.filter((expense) => expense.id !== id)
         },
         updateStartPrice(e) {
@@ -120,7 +131,11 @@ export const useExpensesStore = defineStore({
             const startPeriod = new Date(this.startDate).getTime()
             const endPeriod = new Date(this.endDate).getTime()
             const statements = [
-                { key: "userId", value: localStorage.getItem("uid"), statement: "==" },
+                {
+                    key: "userId",
+                    value: localStorage.getItem("uid"),
+                    statement: "==",
+                },
                 {
                     key: "timestamp",
                     value: startPeriod,
@@ -220,9 +235,13 @@ export const useExpensesStore = defineStore({
                     statement: "<=",
                 })
             }
+            this.setLoading(true)
             const data = await request(
-                `${backendUrl}/expenses/get-all?userId=${localStorage.getItem("uid")}`
+                `${backendUrl}/expenses/get-all?userId=${localStorage.getItem(
+                    "uid"
+                )}`
             )
+            this.setLoading(false)
             const allExpenses = [...data.expenses, ...data.collaboratedExpenses]
             const sortedByDateExpenses = allExpenses.sort((a, b) => {
                 return b.timestamp - a.timestamp

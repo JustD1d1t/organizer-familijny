@@ -9,6 +9,7 @@ export const useUserStore = defineStore({
             email: "",
             nickname: "",
             uid: "",
+            isLoading: false,
         }
     },
     actions: {
@@ -18,7 +19,11 @@ export const useUserStore = defineStore({
         setNickname(nickname) {
             this.nickname = nickname
         },
+        setLoading(isLoading) {
+            this.isLoading = isLoading
+        },
         async loginUser(email, password) {
+            this.setLoading(true)
             const data = await request(`${backendUrl}/user/login`, {
                 method: "POST",
                 headers: {
@@ -33,9 +38,11 @@ export const useUserStore = defineStore({
             localStorage.setItem("uid", data.localId)
             localStorage.setItem("email", email)
             localStorage.setItem("nickname", data.nickname)
+            this.setLoading(false)
             return data
         },
         async logoutUser() {
+            this.setLoading(true)
             await request(`${backendUrl}/user/logout`, {
                 method: "POST",
                 headers: {
@@ -46,8 +53,10 @@ export const useUserStore = defineStore({
             localStorage.removeItem("uid")
             localStorage.removeItem("email")
             localStorage.removeItem("nickname")
+            this.setLoading(false)
         },
         async registerUser(email, password, nickname) {
+            this.setLoading(true)
             const data = await request(`${backendUrl}/user/register`, {
                 method: "POST",
                 headers: {
@@ -60,6 +69,7 @@ export const useUserStore = defineStore({
                 }),
                 credentials: "include",
             })
+            this.setLoading(false)
             return data
         },
     },

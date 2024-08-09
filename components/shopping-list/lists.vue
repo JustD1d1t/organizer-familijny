@@ -4,12 +4,11 @@ const shoppingListsStore = useShoppingListsStore()
 const { removeShoppingList, getAllShoppingLists, setCurrentShoppingList } =
     shoppingListsStore
 
-const { shoppingLists } = storeToRefs(shoppingListsStore)
+const { shoppingLists, isLoading } = storeToRefs(shoppingListsStore)
 const collaboratedShoppingLists = computed(
     () => shoppingListsStore.collaboratedShoppingLists
 )
 
-const isLoading = ref(false)
 const shoppingListsWithMembers = computed(() =>
     shoppingLists.value.filter((list) => !list.members?.length)
 )
@@ -23,9 +22,7 @@ const handleClick = (shopList) => {
 }
 
 useAsyncData(async () => {
-    isLoading.value = true
     await getAllShoppingLists()
-    isLoading.value = false
 })
 </script>
 <template>

@@ -9,6 +9,7 @@ export const useFamilyMembersStore = defineStore({
             familyMembers: [],
             familyMembersDetails: [],
             familyId: null,
+            isLoading: false,
         }
     },
     actions: {
@@ -26,7 +27,11 @@ export const useFamilyMembersStore = defineStore({
             this.familyMembersDetails = []
             this.familyId = null
         },
+        setLoading(isLoading) {
+            this.isLoading = isLoading
+        },
         async updateMembers(membersDetails, members = this.familyMembers) {
+            this.setLoading(true)
             await request(`${backendUrl}/family/update-members`, {
                 method: "PATCH",
                 headers: {
@@ -38,14 +43,16 @@ export const useFamilyMembersStore = defineStore({
                     familyId: localStorage.getItem("uid"),
                 }),
             })
+            this.setLoading(false)
             this.familyMembers = members
             this.familyMembersDetails = membersDetails
         },
         async getFamilyDetails() {
+            this.setLoading(true)
             const data = await request(
                 `${backendUrl}/family/get-family-details?familyId=${localStorage.getItem("uid")}`
             )
-            console.log(data)
+            this.setLoading(false)
             if (data.members) {
                 this.familyMembers = data.members
                 this.familyMembersDetails = data.membersDetails
@@ -53,6 +60,7 @@ export const useFamilyMembersStore = defineStore({
             }
         },
         async removeFamily() {
+            this.setLoading(true)
             await request(`${backendUrl}/family/remove-family`, {
                 method: "DELETE",
                 headers: {
@@ -62,9 +70,11 @@ export const useFamilyMembersStore = defineStore({
                     familyId: localStorage.getItem("uid"),
                 }),
             })
+            this.setLoading(false)
             this.clearFamilyMembers()
         },
         async leaveFamily(membersDetails, members) {
+            this.setLoading(true)
             await request(`${backendUrl}/family/leave-family`, {
                 method: "PATCH",
                 headers: {
@@ -76,9 +86,11 @@ export const useFamilyMembersStore = defineStore({
                     familyId: localStorage.getItem("uid"),
                 }),
             })
+            this.setLoading(false)
             this.clearFamilyMembers()
         },
         async createFamily(membersDetails) {
+            this.setLoading(true)
             await request(`${backendUrl}/family/create-family`, {
                 method: "POST",
                 headers: {
@@ -89,6 +101,7 @@ export const useFamilyMembersStore = defineStore({
                     familyId: localStorage.getItem("uid"),
                 }),
             })
+            this.setLoading(false)
             this.familyMembers = [localStorage.getItem("uid")]
             this.familyMembersDetails = membersDetails
             this.familyId = localStorage.getItem("uid")

@@ -5,28 +5,36 @@ import { StateEntries } from "@/types"
 const userStore = useUserStore()
 const { logoutUser } = userStore
 
-const notificationsState = useState(StateEntries.Notifications)
-const userEmail = useState(StateEntries.UserEmail)
-const shoppingLists = useState(StateEntries.ShoppingLists)
-const recipes = useState(StateEntries.Recipes)
-const expenses = useState(StateEntries.Expenses)
-const notifications = useState(StateEntries.Notifications)
-const collaboratedPantries = useState(StateEntries.CollaboratedPantries)
+const userEmail = localStorage.getItem("email")
+
+const shoppingListsStore = useShoppingListsStore()
+const recipesStore = useRecipesStore()
+const expensesStore = useExpensesStore()
+const notificationsStore = useNotificationsStore()
+const pantriesStore = usePantriesStore()
+
+const { clearShoppingLists } = shoppingListsStore
+const { clearRecipes } = recipesStore
+const { clearExpenses } = expensesStore
+const { clearNotifications } = notificationsStore
+const { clearPantries } = pantriesStore
+
+const { notifications } = storeToRefs(notificationsStore)
 
 const unreadNotifications = computed(() => {
-    return notificationsState.value
-        ? notificationsState.value.filter((notification) => !notification.read)
+    return notifications.value
+        ? notifications.value.filter((notification) => !notification.read)
         : []
 })
 
 const handleLogout = () => {
     localStorage.removeItem("uid")
     logoutUser()
-    shoppingLists.value = []
-    recipes.value = []
-    expenses.value = []
-    notifications.value = []
-    collaboratedPantries.value = []
+    clearShoppingLists()
+    clearRecipes()
+    clearExpenses()
+    clearNotifications()
+    clearPantries()
     navigateTo("/login")
 }
 
