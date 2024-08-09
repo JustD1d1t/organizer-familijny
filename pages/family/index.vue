@@ -79,13 +79,13 @@ const leave = async () => {
                             >
                         </template>
                         <template #end>
-                            <uiButton
+                            <ion-button
                                 @click="() => remove(member)"
                                 size="small"
                                 v-if="familyOwner && member.id !== uid"
                             >
                                 <ion-icon :icon="ioniconsTrash"></ion-icon>
-                            </uiButton>
+                            </ion-button>
                         </template>
                     </UiListItem>
                 </ion-list>

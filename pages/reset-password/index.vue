@@ -21,9 +21,9 @@ const openPersonMenu = async () => {
             <ion-toolbar class="ion-color-primary ion-color">
                 <ion-title>Zresetuj hasło</ion-title>
                 <ion-buttons slot="end">
-                    <uiButton fill="clear" @click="openPersonMenu">
+                    <ion-button fill="clear" @click="openPersonMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsPerson" />
-                    </uiButton>
+                    </ion-button>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
@@ -42,8 +42,8 @@ const openPersonMenu = async () => {
                             ></ion-input>
                         </ion-item>
                     </ion-list>
-                    <uiButton class="w-full mt-4" expand="block"
-                        >Resetuj hasło</uiButton
+                    <ion-button class="w-full mt-4" expand="block"
+                        >Resetuj hasło</ion-button
                     >
                 </uiCard>
             </div>

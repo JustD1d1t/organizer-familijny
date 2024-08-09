@@ -81,11 +81,11 @@ const cancel = () => {
         <ion-header>
             <ion-toolbar class="ion-color-primary ion-color">
                 <ion-buttons fill="clear" slot="start">
-                    <uiButton @click="cancel()">Anuluj</uiButton>
+                    <ion-button @click="cancel()">Anuluj</ion-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
-                    <uiButton :strong="true" @click="handleFamilyMember()"
-                        >Dodaj</uiButton
+                    <ion-button :strong="true" @click="handleFamilyMember()"
+                        >Dodaj</ion-button
                     >
                 </ion-buttons>
             </ion-toolbar>

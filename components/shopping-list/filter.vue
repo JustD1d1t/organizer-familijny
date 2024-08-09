@@ -75,9 +75,9 @@ const removeSelectedItems = async () => {
 </script>
 
 <template>
-    <uiButton fill="clear" id="open-menu">
+    <ion-button fill="clear" id="open-menu">
         <ion-icon slot="icon-only" :icon="ioniconsEllipsisVerticalOutline" />
-    </uiButton>
+    </ion-button>
     <ion-popover
         trigger="open-menu"
         trigger-action="click"

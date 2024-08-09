@@ -79,9 +79,7 @@ const add = async () => {
     }
     await addRecipe(recipe)
     router.back()
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 </script>
 <template>
@@ -108,8 +106,8 @@ const add = async () => {
                 ></ion-input>
             </ion-item>
 
-            <uiButton expand="block" @click="add" class="my-6"
-                >Dodaj listę</uiButton
+            <ion-button expand="block" @click="add" class="my-6"
+                >Dodaj listę</ion-button
             >
         </ion-content>
     </ion-page>

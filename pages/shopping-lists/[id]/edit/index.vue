@@ -21,9 +21,7 @@ const newName = ref(currentShoppingList.value.name)
 const update = async () => {
     await editShoppingList(newName.value, newMembers.value)
     router.back()
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 
 const toggleMember = (member) => {
@@ -59,25 +57,25 @@ const toggleMember = (member) => {
             />
 
             <div class="flex justify-center" v-else>
-                <uiButton
+                <ion-button
                     expand="block"
                     class="w-1/2"
                     size="small"
                     @click="leaveList()"
                 >
                     Opuść listę
-                </uiButton>
-                <uiButton
+                </ion-button>
+                <ion-button
                     expand="block"
                     class="w-1/2"
                     size="small"
                     @click="leave()"
                 >
                     Opuść listę
-                </uiButton>
+                </ion-button>
             </div>
-            <uiButton expand="block" @click="update" class="my-6"
-                >Aktualizuj listę</uiButton
+            <ion-button expand="block" @click="update" class="my-6"
+                >Aktualizuj listę</ion-button
             >
         </ion-content>
     </ion-page>

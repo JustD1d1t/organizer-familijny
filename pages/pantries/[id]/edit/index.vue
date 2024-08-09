@@ -18,9 +18,7 @@ const updatePantry = async () => {
     }
     await editPantry(editedPantry)
     router.back()
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 
 const handleMember = (member) => {
@@ -38,9 +36,7 @@ const collaboratedPantry = computed(
 const leave = async () => {
     await leaveList()
     router.back()
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 </script>
 <template>
@@ -65,11 +61,11 @@ const leave = async () => {
                 @toggleMember="handleMember"
                 v-if="!collaboratedPantry"
             />
-            <uiButton expand="block" class="my-6" @click="leave">
+            <ion-button expand="block" class="my-6" @click="leave">
                 Opuść spiżarnię
-            </uiButton>
-            <uiButton expand="block" @click="updatePantry" class="my-6"
-                >Aktualizuj spiżarnię</uiButton
+            </ion-button>
+            <ion-button expand="block" @click="updatePantry" class="my-6"
+                >Aktualizuj spiżarnię</ion-button
             >
         </ion-content>
     </ion-page>

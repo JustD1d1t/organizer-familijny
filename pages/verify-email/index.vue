@@ -17,9 +17,9 @@ const openPersonMenu = async () => {
             <ion-toolbar class="ion-color-primary ion-color">
                 <ion-title>Email niezweryfikowany</ion-title>
                 <ion-buttons slot="end">
-                    <uiButton fill="clear" @click="openPersonMenu">
+                    <ion-button fill="clear" @click="openPersonMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsPerson" />
-                    </uiButton>
+                    </ion-button>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
@@ -29,7 +29,7 @@ const openPersonMenu = async () => {
                     <div>Zweryfikuj emaila</div>
                     <div>Nie otrzymałeś/aś maila?</div>
                     <div class="flex">
-                        <uiButton class="w-full">Wyslij ponownie</uiButton>
+                        <ion-button class="w-full">Wyslij ponownie</ion-button>
                     </div>
                 </uiCard>
             </div>

@@ -10,9 +10,7 @@ const { addPantry } = pantriesStore
 const add = async () => {
     await addPantry(pantryName.value, familyMembers.value)
     router.back()
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 const handleMember = (member) => {
     if (familyMembers.value.includes(member.id)) {
@@ -40,8 +38,8 @@ const handleMember = (member) => {
                 ></ion-input>
             </ion-item>
             <FamilyDropdownSelectMember @toggleMember="handleMember" />
-            <uiButton expand="block" @click="add" class="my-6"
-                >Dodaj listę</uiButton
+            <ion-button expand="block" @click="add" class="my-6"
+                >Dodaj listę</ion-button
             >
         </ion-content>
     </ion-page>

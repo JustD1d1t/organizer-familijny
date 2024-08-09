@@ -14,9 +14,9 @@ const openPersonMenu = async () => {
             <ion-toolbar class="ion-color-primary ion-color">
                 <ion-title>Family organizer</ion-title>
                 <ion-buttons slot="end">
-                    <uiButton fill="clear" @click="openPersonMenu">
+                    <ion-button fill="clear" @click="openPersonMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsPerson" />
-                    </uiButton>
+                    </ion-button>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>

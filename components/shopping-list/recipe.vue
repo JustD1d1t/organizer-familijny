@@ -42,12 +42,12 @@ const goToRecipe = (id) => {
             @click="() => goToRecipe(recipe.id)"
             >{{ recipe.name }}</ion-label
         >
-        <uiButton
+        <ion-button
             slot="end"
             @click="() => removeRecipe(props.recipe.id)"
             size="small"
         >
             <ion-icon :icon="ioniconsTrash"></ion-icon>
-        </uiButton>
+        </ion-button>
     </ion-item>
 </template>

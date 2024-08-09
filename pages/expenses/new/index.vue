@@ -49,9 +49,7 @@ const addExpense = async () => {
     }
     await addExpenseToStore(newExpense, document.value, photoBase64.value)
     router.back()
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 
 const handleMember = (member) => {
@@ -70,8 +68,8 @@ const handleMember = (member) => {
         <ion-header>
             <ion-toolbar class="ion-color-primary ion-color">
                 <ion-buttons slot="end">
-                    <uiButton fill="clear" :strong="true" @click="addExpense()"
-                        >Dodaj</uiButton
+                    <ion-button fill="clear" :strong="true" @click="addExpense()"
+                        >Dodaj</ion-button
                     >
                 </ion-buttons>
             </ion-toolbar>
@@ -121,9 +119,9 @@ const handleMember = (member) => {
                     </ion-item>
                     <FamilyDropdownSelectMember @toggleMember="handleMember" />
                     <ion-item>
-                        <uiButton @click="addPhoto">Zrób zdjęcie</uiButton>
-                        <uiButton @click="selectPhoto" class="ml-auto"
-                            >Wybierz zdjęcie</uiButton
+                        <ion-button @click="addPhoto">Zrób zdjęcie</ion-button>
+                        <ion-button @click="selectPhoto" class="ml-auto"
+                            >Wybierz zdjęcie</ion-button
                         >
                     </ion-item>
                 </ion-list>

@@ -85,8 +85,8 @@ onMounted(() => {
                         :key="newspaper.title"
                     >
                         <ion-label>{{ newspaper.title }}</ion-label>
-                        <uiButton @click="goToNewspaper(index)"
-                            >View</uiButton
+                        <ion-button @click="goToNewspaper(index)"
+                            >View</ion-button
                         >
                     </ion-item>
                 </ion-list>

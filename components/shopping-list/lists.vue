@@ -53,14 +53,14 @@ useAsyncData(async () => {
                     {{ shoppingList.name }}
                 </div>
                 <div class="flex">
-                    <uiButton
+                    <ion-button
                         @click="() => removeShoppingList(shoppingList.id)"
                         :color="'danger'"
                         :size="'small'"
                         class="w-full"
                     >
                         Usuń
-                    </uiButton>
+                    </ion-button>
                 </div>
             </uiCard>
         </div>
@@ -87,14 +87,14 @@ useAsyncData(async () => {
                     {{ shoppingList.name }}
                 </div>
                 <div class="flex">
-                    <uiButton
+                    <ion-button
                         @click="() => removeShoppingList(shoppingList.id)"
                         :color="'danger'"
                         :size="'small'"
                         class="w-full"
                     >
                         Usuń
-                    </uiButton>
+                    </ion-button>
                 </div>
             </uiCard>
         </div>

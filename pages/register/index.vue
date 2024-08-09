@@ -68,18 +68,18 @@ const register = async () => {
                             v-model="nickname"
                         ></uiInput>
                     </ion-list>
-                    <uiButton
+                    <ion-button
                         class="w-full mt-4"
                         expand="block"
                         @click="register"
-                        >Zarejestruj</uiButton
+                        >Zarejestruj</ion-button
                     >
-                    <uiButton
+                    <ion-button
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
                         router-link="/login"
-                        >Logowanie</uiButton
+                        >Logowanie</ion-button
                     >
                 </uiCard>
             </div>

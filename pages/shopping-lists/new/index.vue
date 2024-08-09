@@ -12,9 +12,7 @@ const input = ref()
 const add = async () => {
     await addList(newShoppingListName.value, familyMembers.value)
     router.back()
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 
 const familyMembers = ref([])
@@ -50,8 +48,8 @@ const handleMember = (member) => {
 
                 <FamilyDropdownSelectMember @toggleMember="handleMember" />
 
-                <uiButton expand="block" @click="add" class="my-6"
-                    >Dodaj listę</uiButton
+                <ion-button expand="block" @click="add" class="my-6"
+                    >Dodaj listę</ion-button
                 >
             </div>
         </ion-content>

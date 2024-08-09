@@ -48,14 +48,14 @@ onMounted(async () => {
                 </p>
             </div>
             <div class="flex">
-                <uiButton
+                <ion-button
                     @click="() => removePantry(pantry)"
                     :color="'danger'"
                     :size="'small'"
                     class="w-full"
                 >
                     Usuń
-                </uiButton>
+                </ion-button>
             </div>
         </uiCard>
         <div

@@ -144,9 +144,9 @@ onMounted(() => {
                     </ion-item>
                     <ion-item>
                         <div class="w-[100%] flex justify-between items-center">
-                            <uiButton @click="prevPage">Poprzednia</uiButton>
+                            <ion-button @click="prevPage">Poprzednia</ion-button>
                             <span>{{ pageIndicator }}</span>
-                            <uiButton @click="nextPage">Następna</uiButton>
+                            <ion-button @click="nextPage">Następna</ion-button>
                         </div>
                     </ion-item>
                 </ion-list>

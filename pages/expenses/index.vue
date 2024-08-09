@@ -71,17 +71,17 @@ const openFilterMenu = async () => {
             <ion-toolbar class="ion-color-primary ion-color">
                 <ion-title>Wydatki</ion-title>
                 <ion-buttons slot="start">
-                    <uiButton fill="clear" @click="openFilterMenu">
+                    <ion-button fill="clear" @click="openFilterMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsFilter" />
-                    </uiButton>
+                    </ion-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
-                    <uiButton fill="clear" id="open-menu">
+                    <ion-button fill="clear" id="open-menu">
                         <ion-icon
                             slot="icon-only"
                             :icon="ioniconsEllipsisVerticalOutline"
                         />
-                    </uiButton>
+                    </ion-button>
                     <ion-popover trigger="open-menu" trigger-action="click">
                         <ion-content class="ion-padding">
                             <ion-list lines="none">

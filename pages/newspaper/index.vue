@@ -94,8 +94,8 @@ onMounted(() => {
                     </ion-item>
                     <ion-item v-for="shop in shopsToDisplay" :key="shop.title">
                         <ion-label>{{ shop.title }}</ion-label>
-                        <uiButton @click="goToShop(shop.title)"
-                            >View</uiButton
+                        <ion-button @click="goToShop(shop.title)"
+                            >View</ion-button
                         >
                     </ion-item>
                 </ion-list>

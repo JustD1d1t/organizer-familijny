@@ -76,15 +76,15 @@ const handleFamilyInvitation = async (accepted) => {
                     notification.accepted === undefined
                 "
             >
-                <uiButton
+                <ion-button
                     @click="() => handleFamilyInvitation(false)"
                     color="danger"
-                    >Odrzuć</uiButton
+                    >Odrzuć</ion-button
                 >
-                <uiButton
+                <ion-button
                     @click="() => handleFamilyInvitation(true)"
                     color="success"
-                    >Akceptuj</uiButton
+                    >Akceptuj</ion-button
                 >
             </div>
         </ion-content>

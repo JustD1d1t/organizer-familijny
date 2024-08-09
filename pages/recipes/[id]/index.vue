@@ -31,13 +31,13 @@ watch(route, async (newRoute, oldRoute) => {
         </ion-header>
         <ion-content>
             <RecipesIngredientsList :ingredients="ingredients" />
-            <uiButton
+            <ion-button
                 expand="block"
                 class="mt-8"
                 id="open-recipe-to-shopping-list-modal"
             >
                 Dodaj do listy zakupowej
-            </uiButton>
+            </ion-button>
 
             <ion-modal
                 class="auto-height"

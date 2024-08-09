@@ -55,22 +55,22 @@ const login = async () => {
                             v-model="password"
                         />
                     </ion-list>
-                    <uiButton class="w-full mt-4" expand="block" @click="login"
-                        >Zaloguj</uiButton
+                    <ion-button class="w-full mt-4" expand="block" @click="login"
+                        >Zaloguj</ion-button
                     >
-                    <uiButton
+                    <ion-button
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
                         @click="navigateTo('/register')"
-                        >Rejestracja</uiButton
+                        >Rejestracja</ion-button
                     >
-                    <uiButton
+                    <ion-button
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
                         @click="navigateTo('/forgot-password')"
-                        >Zapomniałem hasła</uiButton
+                        >Zapomniałem hasła</ion-button
                     >
                 </uiCard>
             </div>

@@ -15,17 +15,17 @@ const props = defineProps({
             zakupowej?
         </h2>
         <div class="w-full flex justify-between flex-wrap">
-            <uiButton
+            <ion-button
                 @click="emit('cancelShoppingModal')"
                 color="danger"
                 data-test="cancel-button"
-                >Nie</uiButton
+                >Nie</ion-button
             >
-            <uiButton
+            <ion-button
                 @click="emit('confirmShoppingModal')"
                 color="success"
                 data-test="submit-button"
-                >Tak</uiButton
+                >Tak</ion-button
             >
         </div>
     </div>

@@ -13,10 +13,6 @@ const route = useRoute()
 CapacitorApp.addListener("backButton", (e) => {
     if (!e.canGoBack) {
         CapacitorApp.exitApp()
-    } else if (route.path === "/pantries") {
-        setTimeout(() => {
-            window.location.reload()
-        }, 100)
     }
 })
 const isLoading = ref(false)

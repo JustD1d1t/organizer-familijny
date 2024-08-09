@@ -77,18 +77,14 @@ const edit = async () => {
 
     router.back()
 
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 
 const removeExpense = async () => {
     await removeExpenseFromStore(currentExpense.value.id)
     router.back()
 
-    setTimeout(() => {
-        window.location.reload()
-    }, 100)
+
 }
 
 const fetchBillUrl = async () => {
@@ -130,19 +126,19 @@ const handleMember = (member) => {
                     slot="start"
                     v-if="currentExpense && currentExpense.userId === uid"
                 >
-                    <uiButton
+                    <ion-button
                         fill="clear"
                         :strong="true"
                         @click="removeExpense()"
-                        >Usuń</uiButton
+                        >Usuń</ion-button
                     >
                 </ion-buttons>
                 <ion-buttons
                     slot="end"
                     v-if="currentExpense && currentExpense.userId === uid"
                 >
-                    <uiButton fill="clear" :strong="true" @click="edit()"
-                        >Zapisz</uiButton
+                    <ion-button fill="clear" :strong="true" @click="edit()"
+                        >Zapisz</ion-button
                     >
                 </ion-buttons>
             </ion-toolbar>
@@ -195,9 +191,9 @@ const handleMember = (member) => {
                     v-if="currentExpense.userId === uid"
                 />
                 <ion-item v-if="currentExpense.userId === uid">
-                    <uiButton @click="editPhoto">Zrób zdjęcie</uiButton>
-                    <uiButton @click="selectPhoto" class="ml-auto"
-                        >Wybierz zdjęcie</uiButton
+                    <ion-button @click="editPhoto">Zrób zdjęcie</ion-button>
+                    <ion-button @click="selectPhoto" class="ml-auto"
+                        >Wybierz zdjęcie</ion-button
                     >
                 </ion-item>
                 <div v-if="photos.length" @click="openImageInPreview">

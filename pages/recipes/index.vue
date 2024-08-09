@@ -53,14 +53,14 @@ const goToAddRecipePage = (recipe) => {
                         </p>
                     </div>
                     <div class="flex">
-                        <uiButton
+                        <ion-button
                             @click="() => removeRecipe(recipe)"
                             :color="'danger'"
                             :size="'small'"
                             class="w-full"
                         >
                             Usuń
-                        </uiButton>
+                        </ion-button>
                     </div>
                 </uiCard>
             </div>
