@@ -57,14 +57,17 @@ export const useExpensesStore = defineStore({
         },
         async addExpenseToStore(expense, document, photoBase64) {
             this.setLoading(true)
-            await request(`${backendUrl}/expenses/add`, {
+            const data = await request(`${backendUrl}/expenses/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ expense, document, photoBase64 }),
             })
-            this.expenses.unshift(expense)
+            this.expenses.unshift({
+                ...expense,
+                id: data.id,
+            })
             this.setLoading(false)
         },
         async updateExpense(expense, document, photoBase64) {
@@ -131,117 +134,24 @@ export const useExpensesStore = defineStore({
             this.setLoading(true)
             const startPeriod = new Date(this.startDate).getTime()
             const endPeriod = new Date(this.endDate).getTime()
-            const statements = [
-                {
-                    key: "userId",
-                    value: localStorage.getItem("uid"),
-                    statement: "==",
-                },
-                {
-                    key: "timestamp",
-                    value: startPeriod,
-                    statement: ">=",
-                },
-                {
-                    key: "timestamp",
-                    value: endPeriod,
-                    statement: "<=",
-                },
-            ]
-            const membershipStatements = [
-                {
-                    key: StateEntries.FamilyMembers,
-                    value: localStorage.getItem("uid"),
-                    statement: "array-contains",
-                },
-                {
-                    key: "timestamp",
-                    value: startPeriod,
-                    statement: ">=",
-                },
-                {
-                    key: "timestamp",
-                    value: endPeriod,
-                    statement: "<=",
-                },
-            ]
-            if (this.startPrice) {
-                statements.push({
-                    key: "value",
-                    value: Number(this.startPrice),
-                    statement: ">=",
-                })
-                membershipStatements.push({
-                    key: "value",
-                    value: Number(this.startPrice),
-                    statement: ">=",
-                })
-            }
 
-            if (this.endPrice) {
-                statements.push({
-                    key: "value",
-                    value: Number(this.endPrice),
-                    statement: "<=",
-                })
-                membershipStatements.push({
-                    key: "value",
-                    value: Number(this.endPrice),
-                    statement: "<=",
-                })
-            }
-
-            if (this.shopName) {
-                statements.push({
-                    key: "shop",
-                    value: this.shopName,
-                    statement: ">=",
-                })
-                statements.push({
-                    key: "shop",
-                    value: this.shopName + "\uf8ff",
-                    statement: "<=",
-                })
-                membershipStatements.push({
-                    key: "shop",
-                    value: this.shopName,
-                    statement: ">=",
-                })
-                membershipStatements.push({
-                    key: "shop",
-                    value: this.shopName + "\uf8ff",
-                    statement: "<=",
-                })
-            }
-
-            if (this.expenseName) {
-                statements.push({
-                    key: "name",
-                    value: this.expenseName,
-                    statement: ">=",
-                })
-                statements.push({
-                    key: "name",
-                    value: this.expenseName + "\uf8ff",
-                    statement: "<=",
-                })
-                membershipStatements.push({
-                    key: "name",
-                    value: this.expenseName,
-                    statement: ">=",
-                })
-                membershipStatements.push({
-                    key: "name",
-                    value: this.expenseName + "\uf8ff",
-                    statement: "<=",
-                })
-            }
             this.setLoading(true)
-            const data = await request(
-                `${backendUrl}/expenses/get-all?userId=${localStorage.getItem(
-                    "uid"
-                )}`
-            )
+            let url = `${backendUrl}/expenses/get-all?userId=${localStorage.getItem(
+                "uid"
+            )}&start=${startPeriod}&end=${endPeriod}`
+            if (this.startPrice) {
+                url += `&startPrice=${this.startPrice}`
+            }
+            if (this.endPrice) {
+                url += `&endPrice=${this.endPrice}`
+            }
+            if (this.shopName) {
+                url += `&shop=${this.shopName}`
+            }
+            if (this.expenseName) {
+                url += `&name=${this.expenseName}`
+            }
+            const data = await request(url)
             this.setLoading(false)
             const allExpenses = [...data.expenses, ...data.collaboratedExpenses]
             const sortedByDateExpenses = allExpenses.sort((a, b) => {
