@@ -22,7 +22,7 @@ const newShopName = ref(currentExpense.value.shop)
 const newName = ref(currentExpense.value.name)
 const newValue = ref(currentExpense.value.value)
 const newTimestamp = ref(currentExpense.value.timestamp)
-const newMembers = ref(currentExpense.value.members)
+const newMembers = ref(currentExpense.value.familyMembers)
 
 const convertTimestampToDate = () => {
     let date

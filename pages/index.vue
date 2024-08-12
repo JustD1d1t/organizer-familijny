@@ -10,7 +10,7 @@ const nickname = localStorage.getItem("nickname")
 
 <template>
     <ion-page id="main-content">
-        <ion-header>
+        <ion-header :translucent="true">
             <ion-toolbar>
                 <ion-title>Cześć, {{ nickname }}!</ion-title>
                 <ion-buttons slot="end">

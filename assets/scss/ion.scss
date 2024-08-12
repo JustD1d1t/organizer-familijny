@@ -31,8 +31,11 @@ ion-header {
     ion-toolbar {
         --background: $background-color;
         --color: var(--ion-color-primary-contrast);
+        padding-left: 1rem;
         ion-title {
             font-size: 1.5rem;
+            width: auto;
+            padding: 0;
         }
         ion-icon {
             fill: blue;
