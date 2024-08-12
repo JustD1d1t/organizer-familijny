@@ -18,7 +18,9 @@ CapacitorApp.addListener("backButton", (e) => {
 const isLoading = ref(false)
 
 onMounted(async () => {
-    await getFamilyDetails()
+    if (localStorage.getItem("uid")) {
+        await getFamilyDetails()
+    }
 })
 
 const downloadExpenses = async () => {

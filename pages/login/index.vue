@@ -3,7 +3,10 @@ const notificationsStore = useNotificationsStore()
 const { getNotifications } = notificationsStore
 
 const userStore = useUserStore()
-const { loginUser, logoutUser } = userStore
+const { loginUser } = userStore
+
+const familyMembersStore = useFamilyMembersStore()
+const { getFamilyDetails } = familyMembersStore
 
 const emailValue = ref("")
 const password = ref("")
@@ -24,6 +27,7 @@ const login = async () => {
         if (user) {
             navigateTo("/")
             await getNotifications()
+            await getFamilyDetails()
             confirmLoginToast()
         }
     } catch (error) {
@@ -55,7 +59,10 @@ const login = async () => {
                             v-model="password"
                         />
                     </ion-list>
-                    <ion-button class="w-full mt-4" expand="block" @click="login"
+                    <ion-button
+                        class="w-full mt-4"
+                        expand="block"
+                        @click="login"
                         >Zaloguj</ion-button
                     >
                     <ion-button

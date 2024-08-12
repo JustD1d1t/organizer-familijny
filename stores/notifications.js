@@ -1,6 +1,5 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
-const uid = localStorage.getItem("uid")
 const { request } = useFetchRequest()
 
 export const useNotificationsStore = defineStore({
@@ -22,6 +21,7 @@ export const useNotificationsStore = defineStore({
             this.isLoading = isLoading
         },
         async getNotifications() {
+            const uid = localStorage.getItem("uid")
             this.setLoading(true)
             const data = await request(
                 `${backendUrl}/notifications/get-all?userId=${uid}`
