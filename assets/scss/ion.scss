@@ -26,3 +26,16 @@ ion-content {
 ion-checkbox {
     --checkbox-background: #fff;
 }
+
+ion-header {
+    ion-toolbar {
+        --background: $background-color;
+        --color: var(--ion-color-primary-contrast);
+        ion-title {
+            font-size: 1.5rem;
+        }
+        ion-icon {
+            fill: blue;
+        }
+    }
+}

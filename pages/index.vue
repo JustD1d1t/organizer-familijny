@@ -1,18 +1,18 @@
 <script setup>
-
 const pages = usePages()
 const uid = localStorage.getItem("uid")
 
 const openPersonMenu = async () => {
     await menuController.open("person")
 }
+const nickname = localStorage.getItem("nickname")
 </script>
 
 <template>
     <ion-page id="main-content">
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
-                <ion-title>Family organizer</ion-title>
+            <ion-toolbar>
+                <ion-title>Cześć, {{ nickname }}!</ion-title>
                 <ion-buttons slot="end">
                     <ion-button fill="clear" @click="openPersonMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsPerson" />

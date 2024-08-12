@@ -37,7 +37,9 @@ export const useUserStore = defineStore({
             })
             localStorage.setItem("uid", data.localId)
             localStorage.setItem("email", email)
-            localStorage.setItem("nickname", data.nickname)
+            localStorage.setItem("nickname", data.displayName)
+            this.setEmail(email)
+            this.setNickname(data.displayName)
             this.setLoading(false)
             return data
         },

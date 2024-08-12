@@ -68,6 +68,9 @@ export const useExpensesStore = defineStore({
                 ...expense,
                 id: data.id,
             })
+            this.expenses.sort((a, b) => {
+                return b.timestamp - a.timestamp
+            })
             this.setLoading(false)
         },
         async updateExpense(expense, document, photoBase64) {
