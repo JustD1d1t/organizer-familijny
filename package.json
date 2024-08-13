@@ -19,6 +19,7 @@
         "@capacitor/preferences": "^6.0.1",
         "@capacitor/toast": "^6.0.1",
         "@ionic/pwa-elements": "^3.3.0",
+        "@nuxtjs/style-resources": "^1.2.2",
         "@pinia/nuxt": "^0.5.1",
         "axios": "^1.7.2",
         "pdf-lib": "^1.17.1",

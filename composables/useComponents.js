@@ -1,4 +1,4 @@
-import components from "@/data/components.json"
+import components from "@/data/components.js"
 
 export const useComponents = () => {
     return {

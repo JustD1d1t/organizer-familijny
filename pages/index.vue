@@ -25,22 +25,23 @@ const nickname = localStorage.getItem("nickname")
             <MainPageComponentsSlider />
 
             <div
-                class="w-full p-2 grid-cols-2 grid auto-rows-max overflow-auto"
+                class="w-full py-2 grid-cols-2 gap-4 grid auto-rows-max overflow-auto py-8"
             >
-                <uiCard
+                <UiImageWithTitle
                     v-for="page in pages.pages"
                     :key="page.name"
-                    class="flex flex-col m-2 py-12 px-8 text-center"
-                    @click="() => navigateTo(page.path)"
+                    :src="page.src"
+                    :alt="page.src"
+                    @click="navigateTo(page.path)"
                 >
-                    {{ page.name }}
-                </uiCard>
+                    <span>{{ page.name }}</span>
+                </UiImageWithTitle>
             </div>
         </ion-content>
     </ion-page>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .swiper {
     padding-bottom: 1rem;
 }

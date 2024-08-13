@@ -2,7 +2,9 @@
 http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
+
 :root {
+    --white: #fff;
     /* --ion-safe-area-top: 20px;
   --ion-safe-area-bottom: 100px; */
     /** primary **/

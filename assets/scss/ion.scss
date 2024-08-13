@@ -19,8 +19,8 @@ ion-item {
 }
 
 ion-content {
-    --padding-start: 0;
-    --padding-end: 0;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
 }
 
 ion-checkbox {
@@ -41,4 +41,8 @@ ion-header {
             fill: blue;
         }
     }
+}
+
+.header-md {
+    box-shadow: unset !important;
 }

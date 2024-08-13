@@ -1,18 +1,26 @@
 [
     {
         "id": 1,
-        "name": "Listy zakupowe"
+        "name": "Udane zakupy?",
+        "content": "Zrób listę, żeby o niczym nie zapomnieć",
+        "src": "@/assets/img/main/zakupy_90x90.png"
     },
     {
         "id": 2,
-        "name": "Przepisy"
+        "name": "Pomysł na obiad?",
+        "content": "Zapisz swoje ulubione przepisy z internetu i miej je zawsze pod ręką",
+        "src": "https://st4.depositphotos.com/14431644/22076/i/450/depositphotos_220767694-stock-photo-handwriting-text-writing-example-concept.jpg"
     },
     {
         "id": 3,
-        "name": "Wydatki"
+        "name": "Chcesz zaoszczędzić",
+        "content": "Dodaj kwotę racunku ze sklepu i miej swoje wydatki pod kontrolą",
+        "src": "https://st4.depositphotos.com/14431644/22076/i/450/depositphotos_220767694-stock-photo-handwriting-text-writing-example-concept.jpg"
     },
     {
         "id": 4,
-        "name": "Spiżarnia"
+        "name": "Kończą się zapasy?",
+        "content": "A może nie? Sprawdź co masz w spiżarni",
+        "src": "https://st4.depositphotos.com/14431644/22076/i/450/depositphotos_220767694-stock-photo-handwriting-text-writing-example-concept.jpg"
     }
 ]
