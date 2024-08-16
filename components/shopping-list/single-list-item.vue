@@ -27,7 +27,7 @@ const boughtItems = computed(
         class="flex flex-col py-2 pl-6 pr-2 my-1 bg-white rounded-2xl shadow-2xl"
     >
         <div class="flex items-center">
-            <div class="flex flex-col">
+            <div class="flex flex-col grow">
                 <ion-label
                     class="flex-grow font-bold"
                     @click="() => handleClick(shoppingList)"

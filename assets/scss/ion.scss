@@ -11,6 +11,10 @@ ion-list {
     flex-direction: column;
 }
 
+::slotted([slot="end"]) {
+    margin-inline-start: 0;
+}
+
 ion-item {
     &::part(native) {
         --padding-start: 8px;
