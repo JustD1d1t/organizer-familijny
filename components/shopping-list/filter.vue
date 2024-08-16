@@ -75,11 +75,11 @@ const removeSelectedItems = async () => {
 </script>
 
 <template>
-    <ion-button fill="clear" id="open-menu">
+    <ion-button fill="clear" id="shopping-list-menu">
         <ion-icon slot="icon-only" :icon="ioniconsEllipsisVerticalOutline" />
     </ion-button>
     <ion-popover
-        trigger="open-menu"
+        trigger="shopping-list-menu"
         trigger-action="click"
         :dismiss-on-select="true"
     >

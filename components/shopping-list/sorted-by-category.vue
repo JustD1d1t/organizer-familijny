@@ -12,39 +12,58 @@ const recipes = computed(() =>
     currentShoppingList.value ? currentShoppingList.value.recipes : []
 )
 
-const availableCategories = computed(() => {
-    const categories = currentShoppingList.value.items.map(
-        (item) => item.category
-    )
-    return [...new Set(categories)]
+const availableCategoriesWithProducts = computed(() => {
+    const obj = {}
+    currentShoppingList.value.items.forEach((item) => {
+        if (!obj[item.category]) {
+            obj[item.category] = { checked: [], unchecked: [] }
+        }
+        if (item.checked) {
+            obj[item.category].checked.push(item)
+        } else {
+            obj[item.category].unchecked.push(item)
+        }
+    })
+    return obj
 })
+console.log(availableCategoriesWithProducts.value)
 </script>
 <template>
     <ion-accordion-group>
         <ion-accordion
-            v-for="category in availableCategories"
-            :key="category"
-            :value="category"
+            v-for="(items, key) in availableCategoriesWithProducts"
+            :key="key"
+            :value="items"
         >
             <ion-item slot="header" color="light">
-                <ion-label>{{ category }}</ion-label>
+                <ion-label>{{ key }}</ion-label>
             </ion-item>
             <div class="ion-padding" slot="content">
-                <ion-list lines="none" class="overflow-auto h-full">
+                <ion-list :inset="true" class="overflow-auto">
                     <ShoppingListItem
-                        v-for="item in items.filter(
-                            (item) => item.category === category
-                        )"
+                        v-for="item in items.unchecked"
                         :key="item"
                         :item="item"
                         @remove-item="() => removeItem(item)"
                         @handleItemChange="() => handleItemChange(item)"
                     />
                 </ion-list>
+                <div v-if="items.checked.length">
+                    <UiDividerWithText>Kupione</UiDividerWithText>
+                    <ion-list :inset="true" class="overflow-auto">
+                        <ShoppingListItem
+                            v-for="item in items.checked"
+                            :key="item"
+                            :item="item"
+                            @remove-item="() => removeItem(item)"
+                            @handleItemChange="() => handleItemChange(item)"
+                        />
+                    </ion-list>
+                </div>
             </div>
         </ion-accordion>
     </ion-accordion-group>
-    <ion-list lines="none" class="overflow-auto h-full">
+    <ion-list :inset="true" class="overflow-auto">
         <ShoppingListRecipe
             v-for="recipe in recipes"
             :key="recipe.id"
@@ -53,3 +72,11 @@ const availableCategories = computed(() => {
         />
     </ion-list>
 </template>
+
+<style lang="scss" scoped>
+ion-list {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    background-color: white !important;
+}
+</style>

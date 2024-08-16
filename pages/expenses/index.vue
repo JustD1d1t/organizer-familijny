@@ -36,14 +36,12 @@ const expensesToShow = computed(() => {
     } else if (showSelect.value === "my") {
         return expenses.value.filter(
             (expense) =>
-                expense.userId === uid &&
-                expense.familyMembers.length === 0
+                expense.userId === uid && expense.familyMembers.length === 0
         )
     } else {
         return expenses.value.filter(
             (expense) =>
-                (expense.userId === uid &&
-                    expense.familyMembers.length > 0) ||
+                (expense.userId === uid && expense.familyMembers.length > 0) ||
                 expense.familyMembers.includes(uid)
         )
     }
@@ -82,7 +80,11 @@ const openFilterMenu = async () => {
                             :icon="ioniconsEllipsisVerticalOutline"
                         />
                     </ion-button>
-                    <ion-popover trigger="open-menu" trigger-action="click">
+                    <ion-popover
+                        trigger="open-menu"
+                        trigger-action="click"
+                        :dismiss-on-select="true"
+                    >
                         <ion-content class="ion-padding">
                             <ion-list lines="none">
                                 <ion-item @click="showAll">

@@ -51,10 +51,6 @@ const changeLayout = (lay) => {
     layout.value = lay
 }
 
-const goToEditShoppingList = () => {
-    navigateTo(`/shopping-lists/${route.params.id}/edit`)
-}
-
 const goToAddItemPage = () => {
     navigateTo(`/shopping-lists/${route.params.id}/add-item`)
 }
@@ -66,8 +62,14 @@ const openPantryModal = () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
-                <ion-title>{{ name }}</ion-title>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Listy zakupowe</ion-title>
 
                 <ion-buttons slot="end">
                     <ShoppingListFilter
@@ -85,6 +87,7 @@ const openPantryModal = () => {
         </ion-header>
         <ion-content>
             <div class="h-[90%]">
+                <h2>{{ name }}</h2>
                 <ShoppingListProducts
                     v-if="layout == 'products'"
                     :dir="dir"
@@ -106,23 +109,12 @@ const openPantryModal = () => {
                 </ion-modal>
 
                 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-                    <ion-fab-button>
-                        <ion-icon :icon="ioniconsArrowUpCircle"></ion-icon>
+                    <ion-fab-button @click="goToAddItemPage">
+                        <ion-icon
+                            :icon="ioniconsAddCircle"
+                            size="large"
+                        ></ion-icon>
                     </ion-fab-button>
-                    <ion-fab-list side="top">
-                        <ion-fab-button @click="goToAddItemPage">
-                            <ion-icon
-                                :icon="ioniconsAddCircle"
-                                size="large"
-                            ></ion-icon>
-                        </ion-fab-button>
-                        <ion-fab-button @click="goToEditShoppingList">
-                            <ion-icon
-                                :icon="ioniconsPencil"
-                                size="large"
-                            ></ion-icon>
-                        </ion-fab-button>
-                    </ion-fab-list>
                 </ion-fab>
             </div>
         </ion-content>

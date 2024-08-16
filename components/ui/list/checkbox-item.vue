@@ -18,11 +18,10 @@ const props = defineProps({
 })
 </script>
 <template>
-    <ion-item class="border-0">
+    <ion-item>
         <ion-checkbox
             slot="start"
             class="mr-0"
-            aria-label="Toggle task completion"
             @ionChange="() => props.handleItemChange(props.item)"
             :checked="props.item.checked"
         ></ion-checkbox>
@@ -31,6 +30,7 @@ const props = defineProps({
             slot="end"
             @click="() => props.removeItem(props.item)"
             size="small"
+            fill="clear"
         >
             <ion-icon :icon="ioniconsTrash"></ion-icon>
         </ion-button>

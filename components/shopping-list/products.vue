@@ -1,8 +1,6 @@
 <script setup>
-import { useRoute } from "vue-router"
 const shoppingListsStore = useShoppingListsStore()
 
-const route = useRoute()
 const props = defineProps({
     nameDir: {
         type: String,
@@ -47,20 +45,62 @@ const itemsToDisplay = computed(() => {
     }
     return []
 })
+
+const notBoughtItems = computed(() =>
+    itemsToDisplay.value.filter((item) => !item.checked)
+)
+
+const boughtItems = computed(() =>
+    itemsToDisplay.value.filter((item) => item.checked)
+)
+
+const notBoughtRecipes = computed(() =>
+    recipes.value.filter((recipe) =>
+        recipe.ingredients.every((i) => !i.checked)
+    )
+)
+
+const boughtRecipes = computed(() =>
+    recipes.value.filter((recipe) => recipe.ingredients.every((i) => i.checked))
+)
 </script>
 
 <template>
-    <ion-list lines="none" class="overflow-auto h-full">
+    <ion-list :inset="true" class="overflow-auto py-2">
         <ShoppingListItem
-            v-for="item in itemsToDisplay"
+            v-for="item in notBoughtItems"
             :key="item"
             :item="item"
         />
         <ShoppingListRecipe
-            v-for="recipe in recipes"
+            v-for="recipe in notBoughtRecipes"
             :key="recipe.id"
             :recipe="recipe"
             :recipes="recipes"
         />
     </ion-list>
+    <div v-if="boughtItems.length || boughtRecipes.length">
+        <UiDividerWithText>Kupione</UiDividerWithText>
+        <ion-list :inset="true" class="overflow-auto py-2">
+            <ShoppingListItem
+                v-for="item in boughtItems"
+                :key="item"
+                :item="item"
+            />
+            <ShoppingListRecipe
+                v-for="recipe in boughtRecipes"
+                :key="recipe.id"
+                :recipe="recipe"
+                :recipes="recipes"
+            />
+        </ion-list>
+    </div>
 </template>
+
+<style lang="scss" scoped>
+ion-list {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    background-color: white !important;
+}
+</style>

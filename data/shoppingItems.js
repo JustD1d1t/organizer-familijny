@@ -1,7 +1,24 @@
-[
+import alkohol_24x24 from "assets/img/shopping-categories/alkohol_24x24.svg"
+import artykuly_dla_dzieci_24x24 from "assets/img/shopping-categories/artykuly_dla_dzieci_24x24.svg"
+import artykuly_dla_zwierzat_24x24 from "assets/img/shopping-categories/artykuly_dla_zwierzat_24x24.svg"
+import chemia_24x24 from "assets/img/shopping-categories/chemia_24x24.svg"
+import higiena_osobista_24x24 from "assets/img/shopping-categories/higiena_osobista_24x24.svg"
+import mieso_i_ryby_24x24 from "assets/img/shopping-categories/mieso_i_ryby_24x24.svg"
+import mrozonki_24x24 from "assets/img/shopping-categories/mrozonki_24x24.svg"
+import nabial_24x24 from "assets/img/shopping-categories/nabial_24x24.svg"
+import napoje_24x24 from "assets/img/shopping-categories/napoje_24x24.svg"
+import pieczywo_24x24 from "assets/img/shopping-categories/pieczywo_24x24.svg"
+import produkty_zbozowe_24x24 from "assets/img/shopping-categories/produkty_zbozowe_24x24.svg"
+import przekaski_24x24 from "assets/img/shopping-categories/przekaski_24x24.svg"
+import przetwory_spozywcze_24x24 from "assets/img/shopping-categories/przetwory_spozywcze_24x24.svg"
+import przyprawy_24x24 from "assets/img/shopping-categories/przyprawy_24x24.svg"
+import slodycze_24x24 from "assets/img/shopping-categories/slodycze_24x24.svg"
+import warzywa_i_owoce_24x24 from "assets/img/shopping-categories/warzywa_i_owoce_24x24.svg"
+import wedliny_24x24 from "assets/img/shopping-categories/wedliny_24x24.svg"
+export default [
     {
-        "category": "Warzywa i owoce",
-        "items": [
+        category: "Warzywa i owoce",
+        items: [
             "banan",
             "jabłko",
             "gruszka",
@@ -97,12 +114,13 @@
             "mirabelka",
             "limonka",
             "grapefruit",
-            "persymona"
-        ]
+            "persymona",
+        ],
+        icon: warzywa_i_owoce_24x24,
     },
     {
-        "category": "Napoje",
-        "items": [
+        category: "Napoje",
+        items: [
             "woda mineralna",
             "woda gazowana",
             "woda niegazowana",
@@ -195,12 +213,13 @@
             "sok z papai",
             "napój z kokosa",
             "napój z grejpfruta",
-            "napój z pomelo"
-        ]
+            "napój z pomelo",
+        ],
+        icon: napoje_24x24,
     },
     {
-        "category": "Nabiał",
-        "items": [
+        category: "Nabiał",
+        items: [
             "mleko pełnotłuste",
             "mleko odtłuszczone",
             "mleko półtłuste",
@@ -296,12 +315,13 @@
             "ser kozi ekologiczny",
             "masło ekologiczne",
             "śmietana ekologiczna",
-            "jogurt grecki ekologiczny"
-        ]
+            "jogurt grecki ekologiczny",
+        ],
+        icon: nabial_24x24,
     },
     {
-        "category": "Pieczywo",
-        "items": [
+        category: "Pieczywo",
+        items: [
             "chleb pszenny",
             "chleb razowy",
             "chleb żytni",
@@ -399,12 +419,13 @@
             "naan",
             "chlebek lawasz",
             "chlebek chapati",
-            "chlebek roti"
-        ]
+            "chlebek roti",
+        ],
+        icon: pieczywo_24x24,
     },
     {
-        "category": "Alkohol",
-        "items": [
+        category: "Alkohol",
+        items: [
             "piwo jasne",
             "piwo ciemne",
             "piwo pszeniczne",
@@ -505,12 +526,13 @@
             "pepermint schnapps",
             "applejack",
             "perry",
-            "pomace brandy"
-        ]
+            "pomace brandy",
+        ],
+        icon: alkohol_24x24,
     },
     {
-        "category": "chemia",
-        "items": [
+        category: "chemia",
+        items: [
             "płyn do mycia naczyń",
             "tabletki do zmywarki",
             "proszek do prania",
@@ -605,12 +627,13 @@
             "maseczki ochronne",
             "środek do czyszczenia biżuterii",
             "środek do czyszczenia srebra",
-            "środek do czyszczenia złota"
-        ]
+            "środek do czyszczenia złota",
+        ],
+        icon: chemia_24x24,
     },
     {
-        "category": "Higiena osobista",
-        "items": [
+        category: "Higiena osobista",
+        items: [
             "mydło w kostce",
             "mydło w płynie",
             "żel pod prysznic",
@@ -904,12 +927,13 @@
             "naturalne mydło w płynie",
             "naturalny żel pod prysznic",
             "naturalne mleczko do ciała",
-            "naturalny krem pod oczy"
-        ]
+            "naturalny krem pod oczy",
+        ],
+        icon: higiena_osobista_24x24,
     },
     {
-        "category": "Mięso i ryby",
-        "items": [
+        category: "Mięso i ryby",
+        items: [
             "filet z piersi kurczaka",
             "mięso mielone wieprzowe",
             "stek wołowy",
@@ -1009,12 +1033,13 @@
             "filet z leszcza",
             "filet z karpia",
             "kura młoda",
-            "kurczak zagrodowy"
-        ]
+            "kurczak zagrodowy",
+        ],
+        icon: mieso_i_ryby_24x24,
     },
     {
-        "category": "słodycze",
-        "items": [
+        category: "słodycze",
+        items: [
             "czekolada mleczna",
             "czekolada gorzka",
             "czekolada biała",
@@ -1115,12 +1140,13 @@
             "figi w czekoladzie",
             "morele w czekoladzie",
             "orzechy w czekoladzie",
-            "rodzynki w czekoladzie"
-        ]
+            "rodzynki w czekoladzie",
+        ],
+        icon: slodycze_24x24,
     },
     {
-        "category": "przekąski",
-        "items": [
+        category: "przekąski",
+        items: [
             "chipsy ziemniaczane",
             "chipsy tortilla",
             "chipsy warzywne",
@@ -1217,12 +1243,13 @@
             "krakersy pełnoziarniste",
             "kukurydza prażona",
             "orzechy nerkowca",
-            "orzechy brazylijskie"
-        ]
+            "orzechy brazylijskie",
+        ],
+        icon: przekaski_24x24,
     },
     {
-        "category": "przetwory spożywcze i przyprawy",
-        "items": [
+        category: "przetwory spożywcze i przyprawy",
+        items: [
             "Sos sojowy",
             "Ocet balsamiczny",
             "Ocet jabłkowy",
@@ -1422,12 +1449,13 @@
             "Sos chipotle-lime",
             "Sos jalapeno-mango",
             "Sos papryczki habanero",
-            "Sos scorpion"
-        ]
+            "Sos scorpion",
+        ],
+        icon: przetwory_spozywcze_24x24,
     },
     {
-        "category": "produkty zbożowe",
-        "items": [
+        category: "produkty zbożowe",
+        items: [
             "Ryż biały",
             "Ryż brązowy",
             "Ryż dziki",
@@ -1516,12 +1544,13 @@
             "Krakersy pszenne bezglutenowe",
             "Krakersy żytnie bezglutenowe",
             "Krakersy owsiane bezglutenowe",
-            "Krakersy gryczane bezglutenowe"
-        ]
+            "Krakersy gryczane bezglutenowe",
+        ],
+        icon: produkty_zbozowe_24x24,
     },
     {
-        "category": "wędliny",
-        "items": [
+        category: "wędliny",
+        items: [
             "Szynka",
             "Salami",
             "Boczek",
@@ -1596,12 +1625,13 @@
             "Sopocka wiejska",
             "Kiełbasa gryczana",
             "Kiełbasa polska",
-            "Krakowska kiełbasa"
-        ]
+            "Krakowska kiełbasa",
+        ],
+        icon: wedliny_24x24,
     },
     {
-        "category": "mrożonki",
-        "items": [
+        category: "mrożonki",
+        items: [
             "Mrożone maliny",
             "Mrożone truskawki",
             "Mrożone borówki",
@@ -1682,12 +1712,13 @@
             "Mrożony koper włoski",
             "Mrożone zioła prowansalskie",
             "Mrożone zioła toskańskie",
-            "Mrożone jagody"
-        ]
+            "Mrożone jagody",
+        ],
+        icon: mrozonki_24x24,
     },
     {
-        "category": "artykuły dla dzieci",
-        "items": [
+        category: "artykuły dla dzieci",
+        items: [
             "Pieluszki jednorazowe",
             "Chusteczki nawilżane dla dzieci",
             "Butelki do karmienia",
@@ -1712,7 +1743,8 @@
             "Nocne lampki dla dzieci",
             "Proszki do prania dla dzieci",
             "Środki czyszczące dla dzieci",
-            "Smycze do butelek"
-        ]
-    }
+            "Smycze do butelek",
+        ],
+        icon: artykuly_dla_dzieci_24x24,
+    },
 ]

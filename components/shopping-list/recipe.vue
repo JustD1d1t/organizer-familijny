@@ -46,6 +46,7 @@ const goToRecipe = (id) => {
             slot="end"
             @click="() => removeRecipe(props.recipe.id)"
             size="small"
+            fill="clear"
         >
             <ion-icon :icon="ioniconsTrash"></ion-icon>
         </ion-button>

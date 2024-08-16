@@ -12,7 +12,7 @@ const { components } = useComponents()
         :modules="[Pagination, Autoplay]"
         :slides-per-view="1"
         :pagination="{ clickable: true }"
-        :autoplay="{ delay: 5000 }"
+        :autoplay="{ delay: 500000 }"
         :space-between="30"
     >
         <swiper-slide

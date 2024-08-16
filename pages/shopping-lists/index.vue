@@ -6,8 +6,11 @@ const goToAddNewShoppingList = () => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+        <ion-header :translucent="true">
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button text="" :icon="ioniconsArrowBackOutline"></ion-back-button>
+                </ion-buttons>
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>

@@ -1,4 +1,4 @@
-import shoppingItems from "@/data/shoppingItems.json"
+import shoppingItems from "@/data/shoppingItems"
 
 export const useShoppingItems = () => {
     return {

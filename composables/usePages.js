@@ -1,4 +1,4 @@
-import pages from "@/data/pages.json"
+import pages from "@/data/pages"
 
 export const usePages = () => {
     return {
