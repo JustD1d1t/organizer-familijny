@@ -66,7 +66,11 @@ const boughtRecipes = computed(() =>
 </script>
 
 <template>
-    <ion-list :inset="true" class="overflow-auto py-2">
+    <ion-list
+        :inset="true"
+        class="overflow-auto py-2 rounded-xl"
+        v-if="notBoughtItems.length || notBoughtRecipes.length"
+    >
         <ShoppingListItem
             v-for="item in notBoughtItems"
             :key="item"
@@ -102,5 +106,8 @@ ion-list {
     margin-left: 0 !important;
     margin-right: 0 !important;
     background-color: white !important;
+}
+.list-inset {
+    border-radius: 1rem !important;
 }
 </style>

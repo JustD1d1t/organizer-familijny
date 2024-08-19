@@ -36,7 +36,7 @@ ion-header {
         --background: $background-color;
         --color: var(--ion-color-primary-contrast);
         ion-back-button {
-            color: $primary-color
+            color: $primary-color;
         }
         ion-title {
             font-size: 1.5rem;
@@ -45,7 +45,15 @@ ion-header {
         ion-icon {
             fill: blue;
         }
+
+        &:not(:has(ion-buttons[slot="start"])) {
+            padding-left: 1rem;
+        }
     }
+}
+
+.list-inset {
+    border-radius: 1rem !important;
 }
 
 .header-md {
