@@ -88,13 +88,16 @@ const openPantryModal = () => {
         <ion-content>
             <div class="h-[90%]">
                 <h2>{{ name }}</h2>
-                <ShoppingListProducts
-                    v-if="layout == 'products'"
-                    :dir="dir"
-                    :nameDir="nameDir"
-                    :lastSort="lastSort"
-                />
-                <ShoppingListSortedByCategory v-else />
+                <div v-if="currentShoppingList.items.length">
+                    <ShoppingListProducts
+                        v-if="layout == 'products'"
+                        :dir="dir"
+                        :nameDir="nameDir"
+                        :lastSort="lastSort"
+                    />
+                    <ShoppingListSortedByCategory v-else />
+                </div>
+                <h3 v-else>Brak produktów na liście</h3>
 
                 <ion-modal
                     class="auto-height"

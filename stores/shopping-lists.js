@@ -41,6 +41,12 @@ export const useShoppingListsStore = defineStore({
         },
         updateCurrentList(list) {
             this.currentShoppingList = list
+            const shoppingListIndex = this.shoppingLists.findIndex(
+                (l) => l.id === list.id
+            )
+            if (shoppingListIndex !== -1) {
+                this.shoppingLists[shoppingListIndex] = list
+            }
         },
         setLoading(isLoading) {
             this.isLoading = isLoading

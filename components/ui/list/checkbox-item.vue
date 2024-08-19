@@ -36,3 +36,9 @@ const props = defineProps({
         </ion-button>
     </ion-item>
 </template>
+
+<style lang="scss" scoped>
+ion-button {
+    margin-inline-start: 0 !important;
+}
+</style>
