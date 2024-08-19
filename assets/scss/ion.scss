@@ -16,6 +16,7 @@ ion-list {
 }
 
 ion-item {
+    flex-shrink: 0;
     &::part(native) {
         --padding-start: 8px;
         --padding-end: 8px;

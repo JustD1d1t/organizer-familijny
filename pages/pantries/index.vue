@@ -6,7 +6,13 @@ const goToAddPantryPage = () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar :translucent="true">
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
                 <ion-title>Spiżarnia</ion-title>
             </ion-toolbar>
         </ion-header>

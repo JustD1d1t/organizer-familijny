@@ -72,10 +72,6 @@ const decrease = async (item) => {
     }
 }
 
-const editPantry = () => {
-    navigateTo(`/pantries/${currentPantry.value.id}/edit`)
-}
-
 const goToAddItemPage = () => {
     navigateTo(`/pantries/${currentPantry.value.id}/add-item`)
 }
@@ -83,14 +79,19 @@ const goToAddItemPage = () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
-                <ion-title v-if="currentPantry">{{
-                    currentPantry.name
-                }}</ion-title>
+            <ion-toolbar :translucent="true">
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Spiżarnia</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <div class="h-[80%]">
+            <div class="h-full overflow-auto">
+                <h2>{{ currentPantry.name }}</h2>
                 <ion-item class="mb-4">
                     <ion-input
                         data-test="shop-input"
@@ -102,14 +103,17 @@ const goToAddItemPage = () => {
                         v-model="searchValue"
                     ></ion-input>
                 </ion-item>
-                <ion-list lines="none" class="overflow-auto h-full">
+                <ion-list
+                    :inset="true"
+                    class="overflow-auto max-h-[75%] py-2 rounded-xl"
+                >
                     <UiListItemCounter
                         v-for="item in itemsToDisplay"
                         :key="item.name"
                         @increaseQuantity="() => increaseQuantity(item)"
                         @decreaseQuantity="() => decrease(item)"
                         :quantity="item.quantity"
-                        class="h-9"
+                        :category="item.category"
                     >
                         <template #label>
                             <ion-label class="grow my-0">{{
@@ -121,23 +125,9 @@ const goToAddItemPage = () => {
             </div>
 
             <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-                <ion-fab-button>
-                    <ion-icon :icon="ioniconsArrowUpCircle"></ion-icon>
+                <ion-fab-button @click="goToAddItemPage">
+                    <ion-icon :icon="ioniconsAddCircle" size="large"></ion-icon>
                 </ion-fab-button>
-                <ion-fab-list side="top">
-                    <ion-fab-button @click="goToAddItemPage">
-                        <ion-icon
-                            :icon="ioniconsAddCircle"
-                            size="large"
-                        ></ion-icon>
-                    </ion-fab-button>
-                    <ion-fab-button @click="editPantry">
-                        <ion-icon
-                            :icon="ioniconsPencil"
-                            size="large"
-                        ></ion-icon>
-                    </ion-fab-button>
-                </ion-fab-list>
             </ion-fab>
 
             <ion-modal
@@ -169,3 +159,15 @@ const goToAddItemPage = () => {
         </ion-content>
     </ion-page>
 </template>
+
+<style lang="scss" scoped>
+ion-list {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    background-color: white !important;
+}
+.list-inset {
+    border-radius: 1rem !important;
+    overflow: auto;
+}
+</style>

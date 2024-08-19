@@ -95,8 +95,6 @@ export const usePantriesStore = defineStore({
             this.pantries[index] = pantry
         },
 
-        async handleItem() {},
-
         async addPantry(pantryName, members = []) {
             const newPantry = {
                 name: pantryName,
@@ -120,18 +118,19 @@ export const usePantriesStore = defineStore({
             }
         },
 
-        async handlePantryItem(item) {
+        async handlePantryItem(name, category) {
             const pantryItems = [...this.currentPantry.items]
-            if (pantryItems.some((pantryItem) => pantryItem.name === item)) {
+            if (pantryItems.some((pantryItem) => pantryItem.name === name)) {
                 pantryItems.splice(
                     pantryItems.findIndex(
-                        (pantryItem) => pantryItem.name === item
+                        (pantryItem) => pantryItem.name === name
                     ),
                     1
                 )
             } else {
                 pantryItems.push({
-                    name: item,
+                    name: name,
+                    category: category,
                     checked: false,
                     quantity: 1,
                 })

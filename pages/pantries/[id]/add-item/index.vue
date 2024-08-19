@@ -11,11 +11,19 @@ const activeCategory = ref("")
 const addingItem = ref(false)
 
 const availableShoppingItemsByPhrase = computed(() => {
-    const allItems = shoppingItems.flatMap((item) => item.items)
+    const itemsWithCategory = shoppingItems.map((item) =>
+        item.items.map((i) => ({ name: i, category: item.category }))
+    )
+    const flattendItemsWithCategory = itemsWithCategory.flat()
     return [
-        pantryItemInput.value,
-        ...allItems.filter((item) =>
-            item.toLowerCase().includes(pantryItemInput.value.toLowerCase())
+        {
+            name: pantryItemInput.value.toLowerCase(),
+            category: "bez kateogrii",
+        },
+        ...flattendItemsWithCategory.filter((item) =>
+            item.name
+                .toLowerCase()
+                .includes(pantryItemInput.value.toLowerCase())
         ),
     ]
 })
@@ -24,9 +32,9 @@ const handleCategory = (cat) => {
     activeCategory.value = activeCategory.value === cat ? "" : cat
 }
 
-const handleItem = async (item) => {
+const handleItem = async (name, category) => {
     addingItem.value = true
-    await handlePantryItem(item)
+    await handlePantryItem(name, category)
     addingItem.value = false
 }
 </script>
@@ -52,7 +60,7 @@ const handleItem = async (item) => {
                 </ion-item>
             </ion-list>
             <ion-accordion-group
-                v-show="pantryItemInput.length === 0"
+                v-if="pantryItemInput.length < 3"
                 class="shopping-accordion-group"
             >
                 <ion-accordion
@@ -85,7 +93,7 @@ const handleItem = async (item) => {
                                         (pantryItem) => pantryItem.name === item
                                     )
                                 "
-                                @click="() => handleItem(item)"
+                                @click="() => handleItem(item, items.category)"
                             />
                         </div>
                     </div>
@@ -93,30 +101,18 @@ const handleItem = async (item) => {
             </ion-accordion-group>
             <div
                 class="w-full p-2 grid-cols-2 grid auto-rows-max overflow-auto"
-                v-if="pantryItemInput.length"
+                v-else
             >
                 <shoppingListItemToAdd
                     v-for="item in availableShoppingItemsByPhrase"
                     :key="item"
-                    :shopping-item="item"
-                    v-if="availableShoppingItemsByPhrase.length"
+                    :shopping-item="item.name"
                     :active="
                         currentPantry.items.some(
                             (shoppingItem) => shoppingItem.name === item.name
                         )
                     "
-                    @click="() => handleItem(item)"
-                />
-                <shoppingListItemToAdd
-                    :shopping-item="pantryItemInput"
-                    v-else
-                    :active="
-                        currentPantry.items.some(
-                            (shoppingItem) =>
-                                shoppingItem.name === pantryItemInput
-                        )
-                    "
-                    @click="() => handleItem(pantryItemInput)"
+                    @click="() => handleItem(item.name, item.category)"
                 />
             </div>
             <div class="background" v-if="addingItem">

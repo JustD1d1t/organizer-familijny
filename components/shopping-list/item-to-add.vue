@@ -13,9 +13,9 @@ const props = defineProps({
 })
 </script>
 <template>
-    <uiCard class="m-2 p-8 text-center" :class="[props.active ? 'active' : '']">
+    <ion-card class="m-2 p-8 text-center" :class="[props.active ? 'active' : '']">
         {{ shoppingItem }}
-    </uiCard>
+    </ion-card>
 </template>
 
 <style scoped>
