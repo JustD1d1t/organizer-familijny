@@ -122,7 +122,7 @@ const openFilterMenu = async () => {
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
-        <ion-content :fullscreen="true">
+        <ion-content :fullscreen="true" class="h-dvh overflow-hidden">
             <div
                 v-if="isLoading"
                 class="w-full flex justify-center items-center h-full"
@@ -132,11 +132,11 @@ const openFilterMenu = async () => {
             <div v-else-if="!isLoading && !expenses.length">
                 <h2>Brak wydatków</h2>
             </div>
-            <div v-else>
+            <div v-else class="h-full overflow-auto">
                 <div class="text-center text-4xl my-4">
                     Razem {{ totalSum }} zł
                 </div>
-                <UiList>
+                <UiList class="overflow-auto h-[85%]">
                     <expenses-item
                         v-for="expense in expensesToShow"
                         :key="`${expense.name}-${expense.id}`"

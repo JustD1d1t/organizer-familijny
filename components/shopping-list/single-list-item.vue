@@ -51,7 +51,7 @@ const familyMembers = computed(() => {
             </div>
             <ion-button
                 fill="clear"
-                id="open-shopping-menu"
+                :id="'open-shopping-menu-' + shoppingList.id"
                 class="ml-auto"
                 size="small"
             >
@@ -61,7 +61,7 @@ const familyMembers = computed(() => {
                 />
             </ion-button>
             <ion-popover
-                trigger="open-shopping-menu"
+                :trigger="'open-shopping-menu-' + shoppingList.id"
                 trigger-action="click"
                 side="bottom"
                 alignment="center"

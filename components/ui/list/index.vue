@@ -3,3 +3,8 @@
         <slot></slot>
     </ion-list>
 </template>
+<style lang="scss" scoped>
+ion-list.list-inset {
+    overflow: auto !important;
+}
+</style>

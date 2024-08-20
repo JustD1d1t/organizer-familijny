@@ -214,7 +214,7 @@ export const usePantriesStore = defineStore({
                 const editedPantry = {
                     ...this.currentPantry,
                     members: this.currentPantry.members.filter(
-                        (m) => m !== localStorage.getItem("uid")
+                        (m) => m.id !== localStorage.getItem("uid")
                     ),
                 }
                 await this.updatePantry(editedPantry)
