@@ -45,7 +45,7 @@ const navigate = (url) => {
 <template>
     <ion-menu side="end" menu-id="person" content-id="main-content">
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Użytkownik</ion-title>
             </ion-toolbar>
         </ion-header>

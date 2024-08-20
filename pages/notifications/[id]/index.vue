@@ -61,7 +61,7 @@ const handleFamilyInvitation = async (accepted) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title v-if="notification">{{
                     notification.title
                 }}</ion-title>

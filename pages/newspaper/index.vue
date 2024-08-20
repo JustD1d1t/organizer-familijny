@@ -67,8 +67,14 @@ onMounted(() => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
-                <ion-title>newspaper</ion-title>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Gazetki</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -94,9 +100,9 @@ onMounted(() => {
                     </ion-item>
                     <ion-item v-for="shop in shopsToDisplay" :key="shop.title">
                         <ion-label>{{ shop.title }}</ion-label>
-                        <ion-button @click="goToShop(shop.title)"
-                            >View</ion-button
-                        >
+                        <ion-button @click="goToShop(shop.title)" fill="clear">
+                            Zobacz
+                        </ion-button>
                     </ion-item>
                 </ion-list>
             </div>

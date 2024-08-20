@@ -1,6 +1,6 @@
 <script setup>
 const router = useRouter()
-const uid = useState("uid")
+const uid = localStorage.getItem("uid")
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
@@ -18,35 +18,39 @@ const updatePantry = async () => {
     }
     await editPantry(editedPantry)
     router.back()
-
 }
 
 const handleMember = (member) => {
-    if (newMembers.value.includes(member.id)) {
-        newMembers.value = newMembers.value.filter((m) => m != member.id)
+    const isMemberInMembers = newMembers.value.find((m) => m.id === member.id)
+    if (isMemberInMembers) {
+        newMembers.value = newMembers.value.filter((m) => m.id != member.id)
     } else {
-        newMembers.value.push(member.id)
+        newMembers.value.push(member)
     }
 }
 
-const collaboratedPantry = computed(
-    () => currentPantry.value.ownerId !== uid
-)
+const collaboratedPantry = computed(() => currentPantry.value.ownerId !== uid)
 
 const leave = async () => {
     await leaveList()
     router.back()
-
 }
 </script>
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
-                <ion-title>Listy zakupowe</ion-title>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Spiżarnia</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
+            <h2>{{ newPantryName }}</h2>
             <ion-item>
                 <ion-input
                     label="Nazwa spiżarni"

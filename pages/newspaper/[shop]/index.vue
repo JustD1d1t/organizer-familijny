@@ -66,8 +66,14 @@ onMounted(() => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
-                <ion-title>newspaper</ion-title>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Gazetki</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -85,9 +91,9 @@ onMounted(() => {
                         :key="newspaper.title"
                     >
                         <ion-label>{{ newspaper.title }}</ion-label>
-                        <ion-button @click="goToNewspaper(index)"
-                            >View</ion-button
-                        >
+                        <ion-button @click="goToNewspaper(index)" fill="clear">
+                            Zobacz
+                        </ion-button>
                     </ion-item>
                 </ion-list>
             </div>

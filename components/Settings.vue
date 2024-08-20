@@ -27,7 +27,7 @@ onMounted(() => {
 <template>
     <ion-menu side="start" menu-id="settings" content-id="main-content">
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Użytkownik</ion-title>
             </ion-toolbar>
         </ion-header>

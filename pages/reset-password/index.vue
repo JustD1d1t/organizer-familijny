@@ -18,7 +18,7 @@ const openPersonMenu = async () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Zresetuj hasło</ion-title>
                 <ion-buttons slot="end">
                     <ion-button fill="clear" @click="openPersonMenu">

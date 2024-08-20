@@ -22,7 +22,13 @@ const goToAddRecipePage = (recipe) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
                 <ion-title>Przepisy</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -36,33 +42,14 @@ const goToAddRecipePage = (recipe) => {
             </div>
             <h2 v-else-if="!recipes.length">Nie masz jeszcze przepisów</h2>
             <div
-                class="w-full p-2 grid-cols-2 grid auto-rows-max overflow-auto text-center"
+                class="w-full"
                 v-else
             >
-                <uiCard
+                <RecipesItem
                     v-for="recipe in recipes"
-                    :key="recipe.name"
-                    class="flex flex-col m-2"
-                >
-                    <div
-                        class="py-8 cursor-pointer flex justify-center grow"
-                        @click="() => handleClick(recipe)"
-                    >
-                        <p :size="'2xl'" :classes="'text-center'">
-                            {{ recipe.name }}
-                        </p>
-                    </div>
-                    <div class="flex">
-                        <ion-button
-                            @click="() => removeRecipe(recipe)"
-                            :color="'danger'"
-                            :size="'small'"
-                            class="w-full"
-                        >
-                            Usuń
-                        </ion-button>
-                    </div>
-                </uiCard>
+                    :key="recipe.id"
+                    :recipe="recipe"
+                />
             </div>
 
             <ion-fab slot="fixed" vertical="bottom" horizontal="end">

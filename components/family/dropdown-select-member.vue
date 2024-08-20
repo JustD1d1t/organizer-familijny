@@ -43,7 +43,7 @@ const handleMember = (member) => {
                         slot="start"
                         class="mr-4"
                         aria-label="Toggle task completion"
-                        :checked="props.members.some((m) => m === member.id)"
+                        :checked="props.members.some((m) => m.id === member.id)"
                     ></ion-checkbox>
                     {{ member.nickname }}&nbsp;
                     <small> ({{ member.email }})</small>

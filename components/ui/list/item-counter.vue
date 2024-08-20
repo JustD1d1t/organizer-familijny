@@ -37,9 +37,7 @@ const decreaseQuantity = () => {
             >
                 <ion-icon :icon="ioniconsRemoveOutline"></ion-icon>
             </ion-button>
-            <span class="my-auto quantity w-5 text-center">{{
-                quantity
-            }}</span>
+            <span class="my-auto quantity w-5 text-center">{{ quantity }}</span>
             <ion-button
                 @click="() => increaseQuantity()"
                 size="small"
@@ -48,6 +46,7 @@ const decreaseQuantity = () => {
             >
                 <ion-icon :icon="ioniconsAdd"></ion-icon>
             </ion-button>
+            <slot name="actions" />
         </div>
     </ion-item>
 </template>

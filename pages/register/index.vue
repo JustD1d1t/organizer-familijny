@@ -39,7 +39,7 @@ const register = async () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Rejestracja</ion-title>
             </ion-toolbar>
         </ion-header>

@@ -46,6 +46,11 @@ ion-header {
         ion-icon {
             fill: blue;
         }
+        ion-button {
+            &::part(native) {
+                color: blue !important;
+            }
+        }
 
         &:not(:has(ion-buttons[slot="start"])) {
             padding-left: 1rem;

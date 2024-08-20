@@ -25,17 +25,18 @@ const update = async () => {
 }
 
 const toggleMember = (member) => {
-    if (newMembers.value.includes(member.uid)) {
-        newMembers.value = newMembers.value.filter((m) => m !== member.uid)
+    const isMemberInMembers = newMembers.value.find((m) => m.id === member.id)
+    if (isMemberInMembers) {
+        newMembers.value = newMembers.value.filter((m) => m.id !== member.uid)
     } else {
-        newMembers.value.push(member.uid)
+        newMembers.value.push(member)
     }
 }
 </script>
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -62,14 +63,6 @@ const toggleMember = (member) => {
                     class="w-1/2"
                     size="small"
                     @click="leaveList()"
-                >
-                    Opuść listę
-                </ion-button>
-                <ion-button
-                    expand="block"
-                    class="w-1/2"
-                    size="small"
-                    @click="leave()"
                 >
                     Opuść listę
                 </ion-button>

@@ -121,7 +121,7 @@ const handleMember = (member) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-buttons
                     slot="start"
                     v-if="currentExpense && currentExpense.userId === uid"

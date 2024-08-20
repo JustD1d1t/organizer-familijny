@@ -7,7 +7,7 @@ const { currentRecipe } = storeToRefs(shoppingListsStore)
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>{{ currentRecipe.name }}</ion-title>
             </ion-toolbar>
         </ion-header>

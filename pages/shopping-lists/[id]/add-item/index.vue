@@ -35,7 +35,7 @@ const handleCategory = (cat) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>

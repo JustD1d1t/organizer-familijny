@@ -21,6 +21,12 @@ const goToEditShoppingList = () => {
 const boughtItems = computed(
     () => props.shoppingList.items.filter((item) => item.checked).length
 )
+
+const familyMembers = computed(() => {
+    return props.shoppingList.members
+        .map((member) => member.nickname)
+        .join(", ")
+})
 </script>
 <template>
     <div
@@ -33,12 +39,19 @@ const boughtItems = computed(
                     @click="() => handleClick(shoppingList)"
                     >{{ shoppingList.name }}</ion-label
                 >
-
-                <div>{{ boughtItems }} / {{ shoppingList.items.length }}</div>
+                <div>
+                    <span class="mr-4">
+                        {{ boughtItems }} /
+                        {{ shoppingList.items.length }}
+                    </span>
+                    <span>
+                        {{ familyMembers }}
+                    </span>
+                </div>
             </div>
             <ion-button
                 fill="clear"
-                id="open-menu"
+                id="open-shopping-menu"
                 class="ml-auto"
                 size="small"
             >
@@ -48,7 +61,7 @@ const boughtItems = computed(
                 />
             </ion-button>
             <ion-popover
-                trigger="open-menu"
+                trigger="open-shopping-menu"
                 trigger-action="click"
                 side="bottom"
                 alignment="center"

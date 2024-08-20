@@ -66,14 +66,18 @@ const openFilterMenu = async () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar>
                 <ion-title>Wydatki</ion-title>
                 <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-buttons slot="end">
                     <ion-button fill="clear" @click="openFilterMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsFilter" />
                     </ion-button>
-                </ion-buttons>
-                <ion-buttons slot="end">
                     <ion-button fill="clear" id="open-menu">
                         <ion-icon
                             slot="icon-only"
@@ -128,18 +132,18 @@ const openFilterMenu = async () => {
             <div v-else-if="!isLoading && !expenses.length">
                 <h2>Brak wydatków</h2>
             </div>
-            <div v-else class="ion-padding">
+            <div v-else>
                 <div class="text-center text-4xl my-4">
                     Razem {{ totalSum }} zł
                 </div>
-                <ion-list>
+                <UiList>
                     <expenses-item
                         v-for="expense in expensesToShow"
                         :key="`${expense.name}-${expense.id}`"
                         :expense="expense"
                         @click="() => editExpense(expense)"
                     />
-                </ion-list>
+                </UiList>
             </div>
             <ion-fab slot="fixed" vertical="bottom" horizontal="end">
                 <ion-fab-button @click="goToNewExpense">
@@ -158,5 +162,14 @@ ion-text {
 
 ion-popover {
     --width: 60%;
+}
+
+ion-list {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    background-color: white !important;
+}
+.list-inset {
+    border-radius: 1rem !important;
 }
 </style>

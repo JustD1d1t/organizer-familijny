@@ -31,7 +31,7 @@ const downloadExpenses = async () => {
     <ion-app>
         <ion-page v-if="isLoading">
             <ion-header>
-                <ion-toolbar class="ion-color-primary ion-color">
+                <ion-toolbar >
                     <ion-title>Cześć</ion-title>
                 </ion-toolbar>
             </ion-header>

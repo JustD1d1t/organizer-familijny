@@ -66,11 +66,7 @@ const boughtRecipes = computed(() =>
 </script>
 
 <template>
-    <ion-list
-        :inset="true"
-        class="overflow-auto py-2 rounded-xl"
-        v-if="notBoughtItems.length || notBoughtRecipes.length"
-    >
+    <UiList v-if="notBoughtItems.length || notBoughtRecipes.length">
         <ShoppingListItem
             v-for="item in notBoughtItems"
             :key="item"
@@ -82,7 +78,7 @@ const boughtRecipes = computed(() =>
             :recipe="recipe"
             :recipes="recipes"
         />
-    </ion-list>
+    </UiList>
     <div v-if="boughtItems.length || boughtRecipes.length">
         <UiDividerWithText>Kupione</UiDividerWithText>
         <ion-list :inset="true" class="overflow-auto py-2">

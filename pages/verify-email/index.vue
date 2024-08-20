@@ -14,7 +14,7 @@ const openPersonMenu = async () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Email niezweryfikowany</ion-title>
                 <ion-buttons slot="end">
                     <ion-button fill="clear" @click="openPersonMenu">

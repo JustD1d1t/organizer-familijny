@@ -17,6 +17,10 @@ const goToEditPantry = () => {
     setCurrentPantry(props.pantry)
     navigateTo(`/pantries/${props.pantry.id}/edit`)
 }
+
+const familyMembers = computed(() => {
+    return props.pantry.members.map((member) => member.nickname).join(", ")
+})
 </script>
 <template>
     <div
@@ -29,10 +33,13 @@ const goToEditPantry = () => {
                     @click="() => handleClick(pantry)"
                     >{{ pantry.name }}</ion-label
                 >
+                <div v-if="familyMembers.length">
+                    {{ familyMembers }}
+                </div>
             </div>
             <ion-button
                 fill="clear"
-                id="open-menu"
+                id="open-pantry-menu"
                 class="ml-auto"
                 size="small"
             >
@@ -42,7 +49,7 @@ const goToEditPantry = () => {
                 />
             </ion-button>
             <ion-popover
-                trigger="open-menu"
+                trigger="open-pantry-menu"
                 trigger-action="click"
                 side="bottom"
                 alignment="center"

@@ -297,6 +297,7 @@ export const useShoppingListsStore = defineStore({
                     members,
                 }
                 await this.updateShoppingList(editedShoppingList)
+                this.updateCurrentList(editedShoppingList)
             } catch (error) {
                 console.error(error)
                 this.setError("Failed to edit shopping list")
@@ -312,7 +313,7 @@ export const useShoppingListsStore = defineStore({
                 const editedShoppingList = {
                     ...this.currentShoppingList,
                     members: this.currentShoppingList.members.filter(
-                        (m) => m !== localStorage.getItem("uid")
+                        (m) => m.id !== localStorage.getItem("uid")
                     ),
                 }
                 await this.updateShoppingList(editedShoppingList)

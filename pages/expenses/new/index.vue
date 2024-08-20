@@ -66,7 +66,7 @@ const handleMember = (member) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-buttons slot="end">
                     <ion-button fill="clear" :strong="true" @click="addExpense()"
                         >Dodaj</ion-button

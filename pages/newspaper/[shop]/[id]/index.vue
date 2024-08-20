@@ -122,8 +122,14 @@ onMounted(() => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
-                <ion-title>newspaper</ion-title>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Gazetki</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -144,9 +150,11 @@ onMounted(() => {
                     </ion-item>
                     <ion-item>
                         <div class="w-[100%] flex justify-between items-center">
-                            <ion-button @click="prevPage">Poprzednia</ion-button>
+                            <ion-button @click="prevPage" fill="clear">
+                                Poprzednia
+                            </ion-button>
                             <span>{{ pageIndicator }}</span>
-                            <ion-button @click="nextPage">Następna</ion-button>
+                            <ion-button @click="nextPage" fill="clear">Następna</ion-button>
                         </div>
                     </ion-item>
                 </ion-list>

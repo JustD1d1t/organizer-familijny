@@ -75,6 +75,10 @@ const decrease = async (item) => {
 const goToAddItemPage = () => {
     navigateTo(`/pantries/${currentPantry.value.id}/add-item`)
 }
+
+const goToEditPantryItem = (name) => {
+    navigateTo(`/pantries/${currentPantry.value.id}/${name}`)
+}
 </script>
 <template>
     <ion-page>
@@ -103,12 +107,9 @@ const goToAddItemPage = () => {
                         v-model="searchValue"
                     ></ion-input>
                 </ion-item>
-                <ion-list
-                    :inset="true"
-                    class="overflow-auto max-h-[75%] py-2 rounded-xl"
-                >
+                <UiList class="overflow-auto max-h-[75%]">
                     <UiListItemCounter
-                        v-for="item in itemsToDisplay"
+                        v-for="(item, index) in itemsToDisplay"
                         :key="item.name"
                         @increaseQuantity="() => increaseQuantity(item)"
                         @decreaseQuantity="() => decrease(item)"
@@ -116,12 +117,45 @@ const goToAddItemPage = () => {
                         :category="item.category"
                     >
                         <template #label>
-                            <ion-label class="grow my-0">{{
-                                item.name
-                            }}</ion-label>
+                            <ion-label
+                                class="grow my-0"
+                                @click="() => goToEditPantryItem(item.name)"
+                                >{{ item.name }}</ion-label
+                            >
+                        </template>
+                        <template #actions>
+                            <ion-button
+                                fill="clear"
+                                :id="'open-pantry-menu-' + index"
+                                class="ml-auto"
+                                size="small"
+                            >
+                                <ion-icon
+                                    size="medium"
+                                    :icon="ioniconsEllipsisVerticalOutline"
+                                />
+                            </ion-button>
+                            <ion-popover
+                                :trigger="'open-pantry-menu-' + index"
+                                trigger-action="click"
+                                side="bottom"
+                                alignment="center"
+                                :dismiss-on-select="true"
+                            >
+                                <ion-content class="ion-padding mr-8">
+                                    <ion-list>
+                                        <ion-item>
+                                            <ion-label
+                                                >Dodaj termin
+                                                przydatności</ion-label
+                                            >
+                                        </ion-item>
+                                    </ion-list>
+                                </ion-content>
+                            </ion-popover>
                         </template>
                     </UiListItemCounter>
-                </ion-list>
+                </UiList>
             </div>
 
             <ion-fab slot="fixed" vertical="bottom" horizontal="end">

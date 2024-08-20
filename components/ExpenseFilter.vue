@@ -24,7 +24,7 @@ const {
         @ionWillClose="emit('downloadExpenses')"
     >
         <ion-header>
-            <ion-toolbar class="ion-color-primary ion-color">
+            <ion-toolbar >
                 <ion-title>Filtry wydatków</ion-title>
             </ion-toolbar>
         </ion-header>
