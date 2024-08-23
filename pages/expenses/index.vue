@@ -8,6 +8,20 @@ const { queryExpenses, setCurrentExpense } = expensesStore
 const { expenses, isLoading } = storeToRefs(expensesStore)
 const showSelect = ref("all")
 
+const filters = [
+    {
+        value: "all",
+        label: "Wszystkie",
+    },
+    {
+        value: "my",
+        label: "Moje",
+    },
+    {
+        value: "common",
+        label: "Wspólne",
+    },
+]
 useAsyncData(async () => {
     await queryExpenses()
 })
@@ -47,20 +61,18 @@ const expensesToShow = computed(() => {
     }
 })
 
-const showAll = () => {
-    showSelect.value = "all"
-}
-
-const showMy = () => {
-    showSelect.value = "my"
-}
-
-const showCommon = () => {
-    showSelect.value = "common"
-}
-
 const openFilterMenu = async () => {
     await menuController.open("expense-filter")
+}
+
+const handleExpensesVisibility = (filter) => {
+    if (filter.label === "Wszystkie") {
+        showSelect.value = "all"
+    } else if (filter.label === "Moje") {
+        showSelect.value = "my"
+    } else {
+        showSelect.value = "common"
+    }
 }
 </script>
 <template>
@@ -78,47 +90,6 @@ const openFilterMenu = async () => {
                     <ion-button fill="clear" @click="openFilterMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsFilter" />
                     </ion-button>
-                    <ion-button fill="clear" id="open-menu">
-                        <ion-icon
-                            slot="icon-only"
-                            :icon="ioniconsEllipsisVerticalOutline"
-                        />
-                    </ion-button>
-                    <ion-popover
-                        trigger="open-menu"
-                        trigger-action="click"
-                        :dismiss-on-select="true"
-                    >
-                        <ion-content class="ion-padding">
-                            <ion-list lines="none">
-                                <ion-item @click="showAll">
-                                    <ion-label>Pokaż wszystkie</ion-label>
-
-                                    <ion-icon
-                                        slot="end"
-                                        :icon="ioniconsCheckmarkOutline"
-                                        v-if="showSelect === 'all'"
-                                    ></ion-icon>
-                                </ion-item>
-                                <ion-item @click="showCommon">
-                                    <ion-icon
-                                        slot="end"
-                                        :icon="ioniconsCheckmarkOutline"
-                                        v-if="showSelect === 'common'"
-                                    ></ion-icon>
-                                    <ion-label>Pokaż wspólne</ion-label>
-                                </ion-item>
-                                <ion-item @click="showMy">
-                                    <ion-icon
-                                        slot="end"
-                                        :icon="ioniconsCheckmarkOutline"
-                                        v-if="showSelect === 'my'"
-                                    ></ion-icon>
-                                    <ion-label>Pokaż moje</ion-label>
-                                </ion-item>
-                            </ion-list>
-                        </ion-content>
-                    </ion-popover>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
@@ -130,20 +101,34 @@ const openFilterMenu = async () => {
                 <ion-spinner name="lines-sharp"></ion-spinner>
             </div>
             <div v-else-if="!isLoading && !expenses.length">
+                <UiFilterTabs
+                    :filters="filters"
+                    :active="showSelect"
+                    @click="handleExpensesVisibility"
+                />
+                <ExpensesFilterPills />
                 <h2>Brak wydatków</h2>
             </div>
             <div v-else class="h-full overflow-auto">
-                <div class="text-center text-4xl my-4">
-                    Razem {{ totalSum }} zł
+                <UiFilterTabs
+                    :filters="filters"
+                    :active="showSelect"
+                    @click="handleExpensesVisibility"
+                />
+                <ExpensesFilterPills />
+                <div class="text-2xl my-4 flex justify-between font-bold">
+                    <span>Razem </span>
+                    <span>{{ totalSum }} zł</span>
                 </div>
-                <UiList class="overflow-auto h-[85%]">
+                <UiDivider  class="mb-6"/>
+                <ion-list lines="none" class="overflow-auto h-[70%]">
                     <expenses-item
                         v-for="expense in expensesToShow"
                         :key="`${expense.name}-${expense.id}`"
                         :expense="expense"
                         @click="() => editExpense(expense)"
                     />
-                </UiList>
+                </ion-list>
             </div>
             <ion-fab slot="fixed" vertical="bottom" horizontal="end">
                 <ion-fab-button @click="goToNewExpense">
@@ -162,14 +147,5 @@ ion-text {
 
 ion-popover {
     --width: 60%;
-}
-
-ion-list {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    background-color: white !important;
-}
-.list-inset {
-    border-radius: 1rem !important;
 }
 </style>

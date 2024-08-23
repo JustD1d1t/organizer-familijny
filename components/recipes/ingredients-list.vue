@@ -8,14 +8,22 @@ const props = defineProps({
 })
 </script>
 <template>
-    <ion-list lines="none">
+    <UiList>
         <UiListItem v-for="ingredient in ingredients" :key="ingredient.id">
             <template #start>
                 {{ ingredient.name }}
             </template>
-            <template #end v-if="ingredient.quantity">
-                <span>{{ ingredient.quantity }}</span>
-            </template>
         </UiListItem>
-    </ion-list>
+    </UiList>
 </template>
+
+<style lang="scss" scoped>
+ion-list {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    background-color: white !important;
+}
+.list-inset {
+    border-radius: 1rem !important;
+}
+</style>

@@ -47,7 +47,7 @@ const removeExpense = async (item: Expense) => {
 }
 </script>
 <template>
-    <ion-item class="flex flex-col">
+    <ion-item class="flex flex-col py-2 pl-6 pr-2 bg-white rounded-2xl shadow-lg">
         <div class="flex h-full w-full justify-between items-start">
             <div class="flex flex-col">
                 <p class="text-base expense-shop">

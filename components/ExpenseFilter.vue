@@ -3,7 +3,7 @@ const emit = defineEmits(["downloadExpenses"])
 
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-const { selectedPeriod, startDate, endDate, startPrice, endPrice } =
+const { selectedPeriod, startDate, endDate, startPrice, endPrice, shopName, expenseName } =
     storeToRefs(expensesStore)
 const {
     updatePeriod,
@@ -24,65 +24,120 @@ const {
         @ionWillClose="emit('downloadExpenses')"
     >
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Filtry wydatków</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
             <div>
-                <ion-item>
-                    <ion-select
-                        v-model="selectedPeriod"
-                        ok-text="OK"
-                        cancel-text="Anuluj"
-                        label="Wybierz okres"
-                        @ionChange="updatePeriod"
+                <h4 class="font-bold mb-1">Okres</h4>
+                <span class="text-sm mb-2 block">Pokaż okres:</span>
+                <div class="flex gap-x-4 gap-y-2 flex-wrap">
+                    <UiPill
+                        @click="
+                            updatePeriod({
+                                value: 'week',
+                                label: 'Bieżący tydzień',
+                            })
+                        "
+                        :active="selectedPeriod.value == 'week'"
                     >
-                        <ion-select-option value="week"
-                            >Tydzień</ion-select-option
-                        >
-                        <ion-select-option value="month"
-                            >Miesiąc</ion-select-option
-                        >
-                        <ion-select-option value="quarter"
-                            >Kwartał</ion-select-option
-                        >
-                    </ion-select>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Data początkowa</ion-label>
-                    <ion-datetime-button
-                        datetime="startTime"
-                        :value="startDate"
-                    ></ion-datetime-button>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Data końcowa</ion-label>
-                    <ion-datetime-button
-                        datetime="endTime"
-                        :value="endDate"
-                    ></ion-datetime-button>
-                </ion-item>
-                <ion-item>
-                    <ion-input @ionInput="updateStartPrice" type="number"
-                        >Cena od</ion-input
+                        Bieżący tydzień
+                    </UiPill>
+                    <UiPill
+                        @click="
+                            updatePeriod({
+                                value: 'month',
+                                label: 'Bieżący miesiąc',
+                            })
+                        "
+                        :active="selectedPeriod.value == 'month'"
                     >
-                </ion-item>
-                <ion-item>
-                    <ion-input @ionInput="updateEndPrice" type="number"
-                        >Cena do</ion-input
+                        Bieżący miesiąc
+                    </UiPill>
+                    <UiPill
+                        @click="
+                            updatePeriod({
+                                value: 'quarter',
+                                label: 'Bieżący kwartał',
+                            })
+                        "
+                        :active="selectedPeriod.value == 'quarter'"
                     >
-                </ion-item>
-                <ion-item>
-                    <ion-input @ionInput="updateShopName" type="text"
-                        >Nazwa sklepu</ion-input
-                    >
-                </ion-item>
-                <ion-item>
-                    <ion-input @ionInput="updateExpenseName" type="text"
-                        >Nazwa wydatku</ion-input
-                    >
-                </ion-item>
+                        Bieżący kwartał
+                    </UiPill>
+                </div>
+                <span class="text-sm block my-2"
+                    >Wybierz niestandardowy okres:</span
+                >
+                <div class="flex justify-around">
+                    <div class="flex items-center">
+                        <span>Od:</span>
+                        <ion-datetime-button
+                            datetime="startTime"
+                            :value="startDate"
+                        ></ion-datetime-button>
+                    </div>
+                    <div class="flex items-center">
+                        <span>Do:</span>
+                        <ion-datetime-button
+                            datetime="endTime"
+                            :value="endDate"
+                        ></ion-datetime-button>
+                    </div>
+                </div>
+                <UiDivider class="my-2" />
+
+                <h4 class="font-bold mb-1">Cena</h4>
+                <span class="text-sm mb-2 block">
+                    Pokaż wydatki z zakresu:
+                </span>
+
+                <div class="flex justify-around gap-x-4">
+                    <ion-input
+                        class="custom-input"
+                        label="Od:"
+                        @ionInput="updateStartPrice"
+                        :value="startPrice"
+                        type="number"
+                        placeholder="--,--"
+                    />
+
+                    <ion-input
+                        class="custom-input"
+                        label="Do:"
+                        @ionInput="updateEndPrice"
+                        :value="endPrice"
+                        type="number"
+                        placeholder="--,--"
+                    />
+                </div>
+                <UiDivider class="my-2" />
+
+                <h4 class="font-bold mb-1">Nazwa sklepu</h4>
+                <span class="text-sm mb-2 block">
+                    Pokaż wydatki z sieci sklepów:
+                </span>
+                <ion-input
+                    class="custom-input"
+                    @ionInput="updateShopName"
+                    :value="shopName"
+                    type="text"
+                    placeholder="Nazwa sklepu"
+                />
+                <UiDivider class="my-2" />
+
+                <h4 class="font-bold mb-1">Nazwa wydatku</h4>
+                <span class="text-sm mb-2 block">
+                    Pokaż wydatki o nazwie:
+                </span>
+                <ion-input
+                    class="custom-input"
+                    @ionInput="updateExpenseName"
+                    :value="expenseName"
+                    type="text"
+                    placeholder="Nazwa sklepu"
+                />
             </div>
         </ion-content>
     </ion-menu>
@@ -105,3 +160,12 @@ const {
         ></ion-datetime>
     </ion-modal>
 </template>
+<style scoped lang="scss">
+:deep .custom-input .native-wrapper {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+</style>

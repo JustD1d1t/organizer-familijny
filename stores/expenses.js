@@ -18,7 +18,7 @@ export const useExpensesStore = defineStore({
         return {
             expenses: [],
             currentExpense: null,
-            selectedPeriod: "month",
+            selectedPeriod: { value: "month", label: "Bieżący miesiąc" },
             startDate: getFirstDateOfCurrentMonth.value,
             endDate: getLastDateOfMonth.value,
             startPrice: null,
@@ -101,16 +101,16 @@ export const useExpensesStore = defineStore({
             this.expenses = this.expenses.filter((expense) => expense.id !== id)
         },
         updateStartPrice(e) {
-            this.startPrice = e.detail.value
+            this.startPrice = e.detail ? e.detail.value : e
         },
         updateEndPrice(e) {
-            this.endPrice = e.detail.value
+            this.endPrice = e.detail ? e.detail.value : e
         },
         updateShopName(e) {
-            this.shopName = e.detail.value
+            this.shopName = e.detail ? e.detail.value : e
         },
         updateExpenseName(e) {
-            this.expenseName = e.detail.value
+            this.expenseName = e.detail ? e.detail.value : e
         },
         updateStartDate(e) {
             this.startDate = e.detail.value
@@ -120,15 +120,15 @@ export const useExpensesStore = defineStore({
             this.endDate = e.detail.value
             this.selectedPeriod = "custom"
         },
-        updatePeriod(e) {
-            this.selectedPeriod = e.detail.value
-            if (e.detail.value === "month") {
+        updatePeriod(period) {
+            this.selectedPeriod = period
+            if (period.value === "month") {
                 this.startDate = getFirstDateOfCurrentMonth.value
                 this.endDate = getLastDateOfMonth.value
-            } else if (e.detail.value === "week") {
+            } else if (period.value === "week") {
                 this.startDate = getFirstDayOfWeek.value
                 this.endDate = getLastDayOfWeek.value
-            } else if (e.detail.value === "quarter") {
+            } else if (period.value === "quarter") {
                 this.startDate = getFirstDateOfQuarter.value
                 this.endDate = getLastDateOfQuarter.value
             }
