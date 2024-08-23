@@ -2,12 +2,8 @@
 import { StateEntries } from "@/types"
 
 const notificationsStore = useNotificationsStore()
-const { updateNotification } = notificationsStore
-
-const notificationsState = useState(StateEntries.Notifications, () => [])
-
-const uid = localStorage.getItem("uid")
-
+const { updateNotification, getNotifications } = notificationsStore
+const { notifications } = storeToRefs(notificationsStore)
 const openNotification = async (notification) => {
     if (!notification.read) {
         const editedNotification = { ...notification, read: true }
@@ -15,18 +11,22 @@ const openNotification = async (notification) => {
     }
     navigateTo(`/notifications/${notification.id}`)
 }
+
+useAsyncData(async () => {
+    await getNotifications()
+})
 </script>
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Powiadomienia</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <ion-list lines="none" v-if="notificationsState.length">
+            <ion-list lines="none" v-if="notifications.length">
                 <ion-item
-                    v-for="notification in notificationsState"
+                    v-for="notification in notifications"
                     :key="notification.id"
                     @click="() => openNotification(notification)"
                 >

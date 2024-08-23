@@ -30,15 +30,16 @@ export const useNotificationsStore = defineStore({
             this.setNotifications(data.notifications)
         },
         async updateNotification(notification) {
+            const uid = localStorage.getItem("uid")
             this.setLoading(true)
             await request(
-                `${backendUrl}/notifications/update?userId=${notification.id}`,
+                `${backendUrl}/notifications/update?userId=${uid}`,
                 {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(notification),
+                    body: JSON.stringify({ notification }),
                 }
             )
             this.setLoading(false)

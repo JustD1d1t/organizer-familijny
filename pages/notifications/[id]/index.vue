@@ -4,6 +4,7 @@ import { StateEntries } from "@/types"
 
 const notificationsStore = useNotificationsStore()
 const { updateNotification, sendNotification } = notificationsStore
+const { notifications } = storeToRefs(notificationsStore)
 
 const familyMembersStore = useFamilyMembersStore()
 const { updateFamilyMembers } = familyMembersStore
@@ -13,9 +14,8 @@ const route = useRoute()
 const params = route.params
 
 const uid = localStorage.getItem("uid")
-const notificationsState = useState(StateEntries.Notifications)
 const notification = computed(() =>
-    notificationsState.value.find((n) => n.id === params.id)
+    notifications.value.find((n) => n.id === params.id)
 )
 const userEmail = useState(StateEntries.UserEmail)
 
@@ -61,7 +61,7 @@ const handleFamilyInvitation = async (accepted) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title v-if="notification">{{
                     notification.title
                 }}</ion-title>
