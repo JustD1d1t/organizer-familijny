@@ -27,4 +27,7 @@ const emit = defineEmits(["click"])
 .active {
     border-bottom: 2px solid black;
 }
+ion-button {
+    text-transform: inherit;
+}
 </style>

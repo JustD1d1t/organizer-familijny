@@ -12,7 +12,7 @@ const props = defineProps({
 const emit = defineEmits(["click"])
 </script>
 <template>
-    <div class="flex justify-between w-full px-6 mb-4">
+    <div class="flex justify-between w-full mb-4">
         <UiFilterTab
             v-for="filter in filters"
             :key="filter"
