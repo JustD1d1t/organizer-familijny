@@ -3,8 +3,15 @@ const emit = defineEmits(["downloadExpenses"])
 
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
-const { selectedPeriod, startDate, endDate, startPrice, endPrice, shopName, expenseName } =
-    storeToRefs(expensesStore)
+const {
+    selectedPeriod,
+    startDate,
+    endDate,
+    startPrice,
+    endPrice,
+    shopName,
+    expenseName,
+} = storeToRefs(expensesStore)
 const {
     updatePeriod,
     updateEndDate,
@@ -22,6 +29,7 @@ const {
         menu-id="expense-filter"
         content-id="main-content"
         @ionWillClose="emit('downloadExpenses')"
+        swipeGesture="false"
     >
         <ion-header>
             <ion-toolbar>

@@ -25,9 +25,14 @@ onMounted(() => {
 })
 </script>
 <template>
-    <ion-menu side="start" menu-id="settings" content-id="main-content">
+    <ion-menu
+        side="start"
+        menu-id="settings"
+        content-id="main-content"
+        swipeGesture="false"
+    >
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Użytkownik</ion-title>
             </ion-toolbar>
         </ion-header>

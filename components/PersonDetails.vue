@@ -44,7 +44,12 @@ const navigate = (url) => {
 }
 </script>
 <template>
-    <ion-menu side="end" menu-id="person" content-id="main-content">
+    <ion-menu
+        side="end"
+        menu-id="person"
+        content-id="main-content"
+        swipeGesture="false"
+    >
         <ion-header>
             <ion-toolbar>
                 <ion-title>Użytkownik</ion-title>
