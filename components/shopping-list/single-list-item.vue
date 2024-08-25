@@ -22,6 +22,10 @@ const boughtItems = computed(
     () => props.shoppingList.items.filter((item) => item.checked).length
 )
 
+const collaboratedList = computed(
+    () => props.shoppingList.ownerId !== localStorage.getItem("uid")
+)
+
 const familyMembers = computed(() => {
     return (
         props.shoppingList.members
@@ -56,6 +60,7 @@ const familyMembers = computed(() => {
                 :id="'open-shopping-menu-' + shoppingList.id"
                 class="ml-auto"
                 size="small"
+                v-if="!collaboratedList"
             >
                 <ion-icon
                     size="medium"

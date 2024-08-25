@@ -4,8 +4,9 @@ import { StateEntries } from "@/types"
 // const { logoutUser } = useFirebaseAuth()
 const userStore = useUserStore()
 const { logoutUser } = userStore
-
-const userEmail = localStorage.getItem("email")
+const { email } = storeToRefs(userStore)
+const localStorageMail = localStorage.getItem("email")
+const userEmail = ref(email.value ? email.value : localStorageMail)
 
 const shoppingListsStore = useShoppingListsStore()
 const recipesStore = useRecipesStore()
@@ -45,7 +46,7 @@ const navigate = (url) => {
 <template>
     <ion-menu side="end" menu-id="person" content-id="main-content">
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Użytkownik</ion-title>
             </ion-toolbar>
         </ion-header>

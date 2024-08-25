@@ -48,7 +48,6 @@ const downloadExpenses = async () => {
         <ion-split-pane when="md" content-id="main-content" v-else>
             <person-details />
             <expense-filter @downloadExpenses="downloadExpenses" />
-            <!-- <settings /> -->
             <ion-router-outlet id="main-content" />
         </ion-split-pane>
     </ion-app>

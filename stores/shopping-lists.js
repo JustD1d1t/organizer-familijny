@@ -287,7 +287,7 @@ export const useShoppingListsStore = defineStore({
             }
         },
 
-        async editShoppingList(name, members) {
+        async editShoppingList(name, members, membersIds) {
             this.setLoading(true)
             this.setError(null)
             try {
@@ -295,6 +295,7 @@ export const useShoppingListsStore = defineStore({
                     ...this.currentShoppingList,
                     name,
                     members,
+                    membersIds,
                 }
                 await this.updateShoppingList(editedShoppingList)
                 this.updateCurrentList(editedShoppingList)

@@ -1,7 +1,6 @@
 <script setup>
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
-const { getAllShoppingLists } = shoppingListsStore
 
 const { shoppingLists, isLoading, collaboratedShoppingLists } =
     storeToRefs(shoppingListsStore)
@@ -12,10 +11,6 @@ const shoppingListsWithMembers = computed(() =>
 const shoppingListsWithoutMembers = computed(() =>
     shoppingLists.value.filter((list) => !list.members?.length)
 )
-
-useAsyncData(async () => {
-    await getAllShoppingLists()
-})
 </script>
 <template>
     <div

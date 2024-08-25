@@ -16,27 +16,35 @@ const collaboratedList = computed(() => {
 const newMembers = ref(
     collaboratedList.value ? [] : currentShoppingList.value.members
 )
+
+const newMembersIds = ref(
+    collaboratedList.value ? [] : currentShoppingList.value.membersIds
+)
+
 const newName = ref(currentShoppingList.value.name)
 
 const update = async () => {
-    await editShoppingList(newName.value, newMembers.value)
+    await editShoppingList(newName.value, newMembers.value, newMembersIds.value)
     router.back()
-
 }
 
 const toggleMember = (member) => {
     const isMemberInMembers = newMembers.value.find((m) => m.id === member.id)
     if (isMemberInMembers) {
         newMembers.value = newMembers.value.filter((m) => m.id !== member.uid)
+        newMembersIds.value = newMembersIds.value.filter(
+            (id) => id !== member.uid
+        )
     } else {
         newMembers.value.push(member)
+        newMembersIds.value.push(member.uid)
     }
 }
 </script>
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>
