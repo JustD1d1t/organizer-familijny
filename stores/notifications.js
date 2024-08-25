@@ -32,16 +32,13 @@ export const useNotificationsStore = defineStore({
         async updateNotification(notification) {
             const uid = localStorage.getItem("uid")
             this.setLoading(true)
-            await request(
-                `${backendUrl}/notifications/update?userId=${uid}`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ notification }),
-                }
-            )
+            await request(`${backendUrl}/notifications/update?userId=${uid}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ notification }),
+            })
             this.setLoading(false)
             const notificationIndex = this.notifications.findIndex(
                 (n) => n.id === notification.id

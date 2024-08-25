@@ -26,7 +26,6 @@ const availableCategoriesWithProducts = computed(() => {
     })
     return obj
 })
-console.log(availableCategoriesWithProducts.value)
 </script>
 <template>
     <ion-accordion-group>

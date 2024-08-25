@@ -23,9 +23,11 @@ const boughtItems = computed(
 )
 
 const familyMembers = computed(() => {
-    return props.shoppingList.members
-        .map((member) => member.nickname)
-        .join(", ")
+    return (
+        props.shoppingList.members
+            ?.map((member) => member.nickname)
+            .join(", ") ?? ""
+    )
 })
 </script>
 <template>

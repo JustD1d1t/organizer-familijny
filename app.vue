@@ -8,6 +8,8 @@ const expensesStore = useExpensesStore()
 const { queryExpenses } = expensesStore
 const familyMembersStore = useFamilyMembersStore()
 const { getFamilyDetails } = familyMembersStore
+const nofiticationsStore = useNotificationsStore()
+const { getNotifications } = nofiticationsStore
 const route = useRoute()
 
 CapacitorApp.addListener("backButton", (e) => {
@@ -20,6 +22,7 @@ const isLoading = ref(false)
 onMounted(async () => {
     if (localStorage.getItem("uid")) {
         await getFamilyDetails()
+        await getNotifications()
     }
 })
 

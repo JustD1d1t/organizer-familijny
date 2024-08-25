@@ -30,7 +30,11 @@ export const useFamilyMembersStore = defineStore({
         setLoading(isLoading) {
             this.isLoading = isLoading
         },
-        async updateMembers(membersDetails, members = this.familyMembers) {
+        async updateMembers(
+            membersDetails,
+            members = this.familyMembers,
+            familyId
+        ) {
             this.setLoading(true)
             await request(`${backendUrl}/family/update-members`, {
                 method: "PATCH",
@@ -40,23 +44,25 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     members,
-                    familyId: localStorage.getItem("uid"),
+                    familyId: familyId ?? localStorage.getItem("uid"),
                 }),
             })
             this.setLoading(false)
             this.familyMembers = members
             this.familyMembersDetails = membersDetails
         },
-        async getFamilyDetails() {
+        async getFamilyDetails(id) {
             this.setLoading(true)
             const data = await request(
-                `${backendUrl}/family/get-family-details?familyId=${localStorage.getItem("uid")}`
+                `${backendUrl}/family/get-family-details?familyId=${
+                    id ?? localStorage.getItem("uid")
+                }`
             )
             this.setLoading(false)
-            if (data.members) {
+            if (data && data.members) {
                 this.familyMembers = data.members
                 this.familyMembersDetails = data.membersDetails
-                this.familyId = localStorage.getItem("uid")
+                this.familyId = data.familyId
             }
         },
         async removeFamily() {

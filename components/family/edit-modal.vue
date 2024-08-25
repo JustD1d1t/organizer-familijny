@@ -14,22 +14,22 @@ const email = ref("")
 const emailInput = ref()
 const uid = localStorage.getItem("uid")
 
-const addMember = async (family, user) => {
+const addMember = async (user) => {
     const newMembersDetails = [
-        ...family.membersDetails,
+        ...familyMembersDetails.value,
         { ...user, status: "pending" },
     ]
     await updateMembers(newMembersDetails)
     return newMembersDetails
 }
 
-const create = async (currUser, user) => {
+const create = async (user) => {
     const newMembersDetails = [
         {
-            email: currUser.email,
-            id: currUser.uid,
-            uid: currUser.uid,
-            nickname: currUser.displayName,
+            email: localStorage.getItem("email"),
+            id: localStorage.getItem("uid"),
+            uid: localStorage.getItem("uid"),
+            nickname: localStorage.getItem("nickname"),
             status: "accepted",
         },
         { ...user, status: "pending" },
@@ -48,10 +48,10 @@ const handleFamilyMember = async () => {
     }
     const user = users[0]
     let newMembersDetails
-    if (familyMembersDetails.length) {
-        newMembersDetails = await addMember(family, user)
+    if (familyMembersDetails.value.length) {
+        newMembersDetails = await addMember(user)
     } else {
-        newMembersDetails = await create(currUser, user)
+        newMembersDetails = await create(user)
     }
 
     await sendNotification(
@@ -79,7 +79,7 @@ const cancel = () => {
 <template>
     <div class="ion-padding inner-content">
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-buttons fill="clear" slot="start">
                     <ion-button @click="cancel()">Anuluj</ion-button>
                 </ion-buttons>

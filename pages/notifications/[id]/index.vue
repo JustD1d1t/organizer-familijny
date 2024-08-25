@@ -7,8 +7,8 @@ const { updateNotification, sendNotification } = notificationsStore
 const { notifications } = storeToRefs(notificationsStore)
 
 const familyMembersStore = useFamilyMembersStore()
-const { updateFamilyMembers } = familyMembersStore
-const { membersDetails, members } = familyMembersStore
+const { updateMembers, getFamilyDetails } = familyMembersStore
+const { familyMembersDetails, familyMembers } = storeToRefs(familyMembersStore)
 
 const route = useRoute()
 const params = route.params
@@ -21,9 +21,10 @@ const userEmail = useState(StateEntries.UserEmail)
 
 const handleFamilyInvitation = async (accepted) => {
     const editedNotification = { ...notification.value, accepted }
+    await getFamilyDetails(notification.value.ownerId)
     await updateNotification(editedNotification)
 
-    const copiedMembersDetails = [...membersDetails.value]
+    const copiedMembersDetails = [...familyMembersDetails.value]
     const searchedMember = copiedMembersDetails.find((m) => m.id === uid)
 
     notification.value.accepted = accepted
@@ -33,10 +34,11 @@ const handleFamilyInvitation = async (accepted) => {
             searchedMember.status = "accepted"
         }
 
-        await updateFamilyMembers(membersDetails, [
-            ...copiedMembersDetails,
-            uid,
-        ])
+        await updateMembers(
+            familyMembersDetails.value,
+            [...familyMembers.value, uid],
+            notification.value.ownerId
+        )
         await sendNotification(
             {
                 title: `Użytkownik "${userEmail.value}" nie zaakceptował zaproszenie do rodziny`,
@@ -53,8 +55,8 @@ const handleFamilyInvitation = async (accepted) => {
             notification.value.ownerId
         )
 
-        membersDetails = membersDetails.filter((m) => m.id !== uid)
-        await updateFamilyMembers(membersDetails)
+        familyMembersDetails = familyMembersDetails.filter((m) => m.id !== uid)
+        await updateMembers(familyMembersDetails, _, notification.value.ownerId)
     }
 }
 </script>
