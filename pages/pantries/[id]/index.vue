@@ -13,12 +13,30 @@ const { getAllShoppingLists, updateShoppingList } = shoppingListsStore
 const { shoppingLists, collaboratedShoppingLists } =
     storeToRefs(shoppingListsStore)
 
+const sortType = ref(undefined);
+
 const itemsToDisplay = computed(() => {
-    return (
-        currentPantry?.value.items?.filter((item) =>
+    const items = currentPantry?.value.items?.filter((item) =>
             item.name.toLowerCase().includes(searchValue.value.toLowerCase())
         ) ?? []
-    )
+        if(items.length) {
+            const itemsWithExpiryDate = items.filter(item => item.expiryDate)
+            const itemsWithoutExpiryDate = items.filter(item => !item.expiryDate)
+
+            if(sortType.value === 'young') {
+                itemsWithExpiryDate.sort((a, b) => {
+                    return new Date(a.expiryDate) - new Date(b.expiryDate)
+                })
+                return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
+            } else if(sortType.value === 'old') {
+                itemsWithExpiryDate.sort((a, b) => new Date(b.expiryDate) - new Date(a.expiryDate))
+                return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
+            } else if(sortType.value === 'name') {
+                items.sort((a, b) => a.name.localeCompare(b.name))
+                return items
+            }
+        }
+        return items
 })
 
 const removedItem = ref("")
@@ -87,6 +105,10 @@ const addExpiryDate = (item) => {
 const formattedExpriyDate = (date) => {
     return date ? new Date(date).toLocaleDateString() : ""
 }
+
+const handleSortType = (type) => {
+    sortType.value = type
+}
 </script>
 <template>
     <ion-page>
@@ -97,6 +119,48 @@ const formattedExpriyDate = (date) => {
                         text=""
                         :icon="ioniconsArrowBackOutline"
                     ></ion-back-button>
+                </ion-buttons>
+                    
+                <ion-buttons slot="end">
+                    <ion-button fill="clear" id="shopping-list-menu">
+                        <ion-icon slot="icon-only" :icon="ioniconsEllipsisVerticalOutline" />
+                    </ion-button>
+                    <ion-popover
+                        trigger="shopping-list-menu"
+                        trigger-action="click"
+                        :dismiss-on-select="true"
+                    >
+                        <ion-content class="ion-padding">
+                            <ion-list lines="none">
+                                <ion-item @click="handleSortType('young')">
+                                    <ion-label>Sortuj od najmłodszych</ion-label>
+                                    <ion-icon
+                                        slot="end"
+                                        :icon="ioniconsCheckmarkOutline"
+                                        v-if="sortType === 'young'"
+                                    ></ion-icon>
+                                </ion-item>
+                                <ion-item @click="handleSortType('old')">
+                                    <ion-label>Sortuj od najstarszych</ion-label>
+                                    <ion-icon
+                                        slot="end"
+                                        :icon="ioniconsCheckmarkOutline"
+                                        v-if="sortType === 'old'"
+                                    ></ion-icon>
+                                </ion-item>
+                                <ion-item
+                                    @click="handleSortType('name')"
+                                >
+                                    <ion-label>Sortuj po nazwie</ion-label>
+                                    <ion-icon
+                                        slot="end"
+                                        :icon="ioniconsCheckmarkOutline"
+                                        v-if="sortType === 'name'"
+                                    ></ion-icon>
+                                </ion-item>
+                            </ion-list>
+                        </ion-content>
+                    </ion-popover>
                 </ion-buttons>
                 <ion-title>Spiżarnia</ion-title>
             </ion-toolbar>
