@@ -79,6 +79,14 @@ const goToAddItemPage = () => {
 const goToEditPantryItem = (name) => {
     navigateTo(`/pantries/${currentPantry.value.id}/${name}`)
 }
+
+const addExpiryDate = (item) => {
+    navigateTo(`/pantries/${currentPantry.value.id}/${item.name}`)
+}
+
+const formattedExpriyDate = (date) => {
+    return date ? new Date(date).toLocaleDateString() : ""
+}
 </script>
 <template>
     <ion-page>
@@ -117,11 +125,16 @@ const goToEditPantryItem = (name) => {
                         :category="item.category"
                     >
                         <template #label>
-                            <ion-label
-                                class="grow my-0"
-                                @click="() => goToEditPantryItem(item.name)"
-                                >{{ item.name }}</ion-label
-                            >
+                            <div class="flex flex-col flex-grow">
+                                <ion-label
+                                    class="grow my-0"
+                                    @click="() => goToEditPantryItem(item.name)"
+                                    >{{ item.name }}</ion-label
+                                >
+                                <span v-if="item.expiryDate" class="text-sm">
+                                    {{ formattedExpriyDate(item.expiryDate) }}
+                                </span>
+                            </div>
                         </template>
                         <template #actions>
                             <ion-button
@@ -145,9 +158,9 @@ const goToEditPantryItem = (name) => {
                                 <ion-content class="ion-padding mr-8">
                                     <ion-list>
                                         <ion-item>
-                                            <ion-label
+                                            <ion-label @click="() => addExpiryDate(item)"
                                                 >Dodaj termin
-                                                przydatności</ion-label
+                                                przydatności</ion-label @click=
                                             >
                                         </ion-item>
                                     </ion-list>

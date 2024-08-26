@@ -2,6 +2,8 @@
 const notificationsStore = useNotificationsStore()
 const { getNotifications } = notificationsStore
 
+const { displayToast } = useAlerts()
+
 const userStore = useUserStore()
 const { loginUser } = userStore
 
@@ -23,12 +25,14 @@ const confirmLoginToast = () => {
 
 const login = async () => {
     try {
-        const user = await loginUser(emailValue.value, password.value)
-        if (user) {
+        const response = await loginUser(emailValue.value, password.value)
+        if (!response.error) {
             navigateTo("/")
             await getNotifications()
             await getFamilyDetails()
             confirmLoginToast()
+        } else {
+            displayToast(response.error)
         }
     } catch (error) {
         console.log(error)
@@ -38,7 +42,7 @@ const login = async () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Logowanie</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -72,13 +76,13 @@ const login = async () => {
                         @click="navigateTo('/register')"
                         >Rejestracja</ion-button
                     >
-                    <ion-button
+                    <!-- <ion-button
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
                         @click="navigateTo('/forgot-password')"
                         >Zapomniałem hasła</ion-button
-                    >
+                    > -->
                 </uiCard>
             </div>
 

@@ -53,6 +53,7 @@ export const useTime = () => {
     })
 
     return {
+        formatDate,
         getFirstDateOfCurrentMonth,
         getLastDateOfMonth,
         getFirstDayOfWeek,

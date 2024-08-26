@@ -76,7 +76,7 @@ export const usePantriesStore = defineStore({
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ ...pantry }),
+                    body: JSON.stringify({ pantry }),
                 })
                 return data
             } catch (error) {
@@ -183,8 +183,10 @@ export const usePantriesStore = defineStore({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    ...this.currentPantry,
-                    items,
+                    pantry: {
+                        ...this.currentPantry,
+                        items,
+                    },
                 }),
             })
             this.currentPantry.items = items
@@ -202,8 +204,10 @@ export const usePantriesStore = defineStore({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    items,
-                    pantryId: this.currentPantry.id,
+                    pantry: {
+                        items,
+                        pantryId: this.currentPantry.id,
+                    },
                 }),
             })
             this.currentPantry.items = items
