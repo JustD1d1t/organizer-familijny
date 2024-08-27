@@ -74,17 +74,16 @@ const onWillDismissShoppingModal = () => cancelShoppingModal()
 
 const onWillDismissSelectModal = () => cancelSelectShoppingListModal()
 
-const setRemovedItem = (name) => {
-    removedItem.value = name
+const setRemovedItem = (item) => {
+    removedItem.value = item
     isOpenShoppingModal.value = true
 }
 
 const confirmSelectShoppingListModal = async (list) => {
     isOpenSelectShoppingListModal.value = false
-    const newItem = { name: removedItem.value, checked: false }
     await updateShoppingList({
         ...list,
-        items: [...list.items, newItem],
+        items: [...list.items, removedItem.value],
     })
     list.items.push(newItem)
 }
@@ -99,8 +98,12 @@ const confirmShoppingModal = async () => {
 
 const decrease = async (item) => {
     await decreaseQuantity(item)
-    if (item.quantity === 0) {
-        setRemovedItem(item.name)
+    if (item.quantity === 1) {
+        setRemovedItem({
+            category: item.category,
+            name: item.name,
+            checked: false
+        })
     }
 }
 
@@ -212,7 +215,8 @@ const handleSortType = (type) => {
                         v-model="searchValue"
                     ></ion-input>
                 </ion-item>
-                <UiList class="overflow-auto max-h-[75%]">
+                <UiList class="overflow-auto max-h-[75%]" 
+                    v-if="itemsToDisplay.length">
                     <UiListItemCounter
                         v-for="(item, index) in itemsToDisplay"
                         :key="item.name"
@@ -283,7 +287,7 @@ const handleSortType = (type) => {
                 <PantryAddShoppingListModal
                     @cancelShoppingModal="cancelShoppingModal"
                     @confirmShoppingModal="confirmShoppingModal"
-                    :name="removedItem"
+                    :name="removedItem.name"
                 />
             </ion-modal>
 

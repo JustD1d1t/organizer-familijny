@@ -172,11 +172,16 @@ export const usePantriesStore = defineStore({
         },
 
         async decreaseQuantity(item) {
-            const items = [...this.currentPantry.items]
+            let items = [...this.currentPantry.items]
             const itemIndex = items.findIndex(
                 (pantryItem) => pantryItem.name === item.name
             )
-            items[itemIndex].quantity--
+            if (items[itemIndex].quantity > 1) {
+                items[itemIndex].quantity--
+            } else {
+                items.splice(itemIndex, 1)
+                this.currentPantry.items = items
+            }
             await request(`${backendUrl}/pantries/update`, {
                 method: "PATCH",
                 headers: {
