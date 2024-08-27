@@ -15,7 +15,7 @@ const editedItem = computed(() => {
 
 const expiryDate = computed(() => {
     if (editedItem.value && editedItem.value.expiryDate) {
-        const date = new Date(editedItem.value.expiryDate);
+        const date = new Date(editedItem.value.expiryDate)
         return formatDate(date)
     }
     return formatDate(new Date())
@@ -63,6 +63,8 @@ const updateExpiryDate = (e) => {
                     presentation="date"
                     :value="expiryDate"
                     @ionChange="updateExpiryDate"
+                    min="2024-01-01"
+                    max="2030-12-31"
                 ></ion-datetime>
             </ion-modal>
         </ion-content>
