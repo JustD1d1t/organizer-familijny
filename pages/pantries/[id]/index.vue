@@ -22,18 +22,32 @@ const itemsToDisplay = computed(() => {
         if(items.length) {
             const itemsWithExpiryDate = items.filter(item => item.expiryDate)
             const itemsWithoutExpiryDate = items.filter(item => !item.expiryDate)
-
-            if(sortType.value === 'young') {
-                itemsWithExpiryDate.sort((a, b) => {
-                    return new Date(a.expiryDate) - new Date(b.expiryDate)
-                })
-                return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
-            } else if(sortType.value === 'old') {
-                itemsWithExpiryDate.sort((a, b) => new Date(b.expiryDate) - new Date(a.expiryDate))
-                return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
-            } else if(sortType.value === 'name') {
-                items.sort((a, b) => a.name.localeCompare(b.name))
-                return items
+            if(sortType.value !== undefined) {
+                if(sortType.value.name === 'date') {
+                    if(sortType.value.dir === 'asc') {
+                        itemsWithExpiryDate.sort((a, b) => {
+                            return new Date(a.expiryDate) - new Date(b.expiryDate)
+                        })
+                        return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
+                    } else if (sortType.value.dir === 'desc') {
+                        itemsWithExpiryDate.sort((a, b) => {
+                            return new Date(b.expiryDate) - new Date(a.expiryDate)
+                        })
+                        return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
+                    }
+                } else if (sortType.value.name === 'name') {
+                    if(sortType.value.dir === 'asc') {
+                        return items.sort((a,b) => {
+                            return a.name.localeCompare(b.name)
+                        })
+                    } else if (sortType.value.dir === 'desc') {
+                        return items.sort((a,b) => {
+                            return b.name.localeCompare(a.name)
+                        })
+    
+                    }
+                    
+                }
             }
         }
         return items
@@ -107,7 +121,25 @@ const formattedExpriyDate = (date) => {
 }
 
 const handleSortType = (type) => {
-    sortType.value = type
+    if(sortType.value !== undefined) {
+        if (type !== sortType.value.name) {
+            sortType.value = {
+                name: type,
+                dir: 'asc',
+            }
+        } else {
+            let newDir = sortType.value.dir === 'asc' ? 'desc' : 'asc'
+            sortType.value = {
+                name: type,
+                dir: newDir,
+            }
+        }
+    } else {
+        sortType.value = {
+            name: type,
+            dir: 'asc',
+        }
+    }
 }
 </script>
 <template>
@@ -132,31 +164,32 @@ const handleSortType = (type) => {
                     >
                         <ion-content class="ion-padding">
                             <ion-list lines="none">
-                                <ion-item @click="handleSortType('young')">
-                                    <ion-label>Sortuj od najmłodszych</ion-label>
-                                    <ion-icon
-                                        slot="end"
-                                        :icon="ioniconsCheckmarkOutline"
-                                        v-if="sortType === 'young'"
-                                    ></ion-icon>
+                                <ion-item>
+                                    <ion-label>
+                                        Sortuj po:
+                                    </ion-label>
                                 </ion-item>
-                                <ion-item @click="handleSortType('old')">
-                                    <ion-label>Sortuj od najstarszych</ion-label>
+                                <ion-item @click="handleSortType('date')">
+                                    <ion-label>dacie</ion-label>
                                     <ion-icon
                                         slot="end"
                                         :icon="ioniconsCheckmarkOutline"
-                                        v-if="sortType === 'old'"
+                                        v-if="sortType && sortType.name === 'date'"
                                     ></ion-icon>
+                                    <img class="w-6 mr-2" src="@/assets/svg/ascending.svg" v-if="sortType && sortType.name === 'date' && sortType.dir === 'asc'"/>
+                                    <img class="w-6 mr-2" src="@/assets/svg/descending.svg" v-if="sortType && sortType.name === 'date' && sortType.dir === 'desc'"/>
                                 </ion-item>
                                 <ion-item
                                     @click="handleSortType('name')"
                                 >
-                                    <ion-label>Sortuj po nazwie</ion-label>
+                                    <ion-label>nazwie</ion-label>
                                     <ion-icon
                                         slot="end"
                                         :icon="ioniconsCheckmarkOutline"
-                                        v-if="sortType === 'name'"
+                                        v-if="sortType && sortType.name === 'name'"
                                     ></ion-icon>
+                                    <img class="w-6 mr-2" src="@/assets/svg/ascending-letters.svg" v-if="sortType && sortType.name === 'name' && sortType.dir === 'asc'"/>
+                                    <img class="w-6 mr-2" src="@/assets/svg/descending-letters.svg" v-if="sortType && sortType.name === 'name' && sortType.dir === 'desc'"/>
                                 </ion-item>
                             </ion-list>
                         </ion-content>
