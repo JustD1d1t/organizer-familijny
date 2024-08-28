@@ -13,7 +13,10 @@ const { getAllShoppingLists, updateShoppingList } = shoppingListsStore
 const { shoppingLists, collaboratedShoppingLists } =
     storeToRefs(shoppingListsStore)
 
-const sortType = ref(undefined);
+const sortType = ref({
+    name: 'date',
+    dir: 'asc',
+});
 
 const itemsToDisplay = computed(() => {
     const items = currentPantry?.value.items?.filter((item) =>
@@ -22,32 +25,30 @@ const itemsToDisplay = computed(() => {
         if(items.length) {
             const itemsWithExpiryDate = items.filter(item => item.expiryDate)
             const itemsWithoutExpiryDate = items.filter(item => !item.expiryDate)
-            if(sortType.value !== undefined) {
-                if(sortType.value.name === 'date') {
-                    if(sortType.value.dir === 'asc') {
-                        itemsWithExpiryDate.sort((a, b) => {
-                            return new Date(a.expiryDate) - new Date(b.expiryDate)
-                        })
-                        return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
-                    } else if (sortType.value.dir === 'desc') {
-                        itemsWithExpiryDate.sort((a, b) => {
-                            return new Date(b.expiryDate) - new Date(a.expiryDate)
-                        })
-                        return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
-                    }
-                } else if (sortType.value.name === 'name') {
-                    if(sortType.value.dir === 'asc') {
-                        return items.sort((a,b) => {
-                            return a.name.localeCompare(b.name)
-                        })
-                    } else if (sortType.value.dir === 'desc') {
-                        return items.sort((a,b) => {
-                            return b.name.localeCompare(a.name)
-                        })
-    
-                    }
-                    
+            if(sortType.value.name === 'date') {
+                if(sortType.value.dir === 'asc') {
+                    itemsWithExpiryDate.sort((a, b) => {
+                        return new Date(a.expiryDate) - new Date(b.expiryDate)
+                    })
+                    return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
+                } else if (sortType.value.dir === 'desc') {
+                    itemsWithExpiryDate.sort((a, b) => {
+                        return new Date(b.expiryDate) - new Date(a.expiryDate)
+                    })
+                    return [...itemsWithExpiryDate, ...itemsWithoutExpiryDate]
                 }
+            } else if (sortType.value.name === 'name') {
+                if(sortType.value.dir === 'asc') {
+                    return items.sort((a,b) => {
+                        return a.name.localeCompare(b.name)
+                    })
+                } else if (sortType.value.dir === 'desc') {
+                    return items.sort((a,b) => {
+                        return b.name.localeCompare(a.name)
+                    })
+
+                }
+                
             }
         }
         return items
@@ -157,46 +158,10 @@ const handleSortType = (type) => {
                 </ion-buttons>
                     
                 <ion-buttons slot="end">
-                    <ion-button fill="clear" id="shopping-list-menu">
-                        <ion-icon slot="icon-only" :icon="ioniconsEllipsisVerticalOutline" />
-                    </ion-button>
-                    <ion-popover
-                        trigger="shopping-list-menu"
-                        trigger-action="click"
-                        :dismiss-on-select="true"
-                    >
-                        <ion-content class="ion-padding">
-                            <ion-list lines="none">
-                                <ion-item>
-                                    <ion-label>
-                                        Sortuj po:
-                                    </ion-label>
-                                </ion-item>
-                                <ion-item @click="handleSortType('date')">
-                                    <ion-label>dacie</ion-label>
-                                    <ion-icon
-                                        slot="end"
-                                        :icon="ioniconsCheckmarkOutline"
-                                        v-if="sortType && sortType.name === 'date'"
-                                    ></ion-icon>
-                                    <img class="w-6 mr-2" src="@/assets/svg/ascending.svg" v-if="sortType && sortType.name === 'date' && sortType.dir === 'asc'"/>
-                                    <img class="w-6 mr-2" src="@/assets/svg/descending.svg" v-if="sortType && sortType.name === 'date' && sortType.dir === 'desc'"/>
-                                </ion-item>
-                                <ion-item
-                                    @click="handleSortType('name')"
-                                >
-                                    <ion-label>nazwie</ion-label>
-                                    <ion-icon
-                                        slot="end"
-                                        :icon="ioniconsCheckmarkOutline"
-                                        v-if="sortType && sortType.name === 'name'"
-                                    ></ion-icon>
-                                    <img class="w-6 mr-2" src="@/assets/svg/ascending-letters.svg" v-if="sortType && sortType.name === 'name' && sortType.dir === 'asc'"/>
-                                    <img class="w-6 mr-2" src="@/assets/svg/descending-letters.svg" v-if="sortType && sortType.name === 'name' && sortType.dir === 'desc'"/>
-                                </ion-item>
-                            </ion-list>
-                        </ion-content>
-                    </ion-popover>
+                    <PopoverContainer sortId="pantries-sort" width="250px">
+                        <SortItem label="Sortuj po nazwie" @click="handleSortType('name')" type="name" :dir="sortType.dir" :active="sortType.name === 'name'"/>
+                        <SortItem label="Sortuj po dacie" @click="handleSortType('date')" type="amount" :dir="sortType.dir" :active="sortType.name === 'date'"/>
+                    </PopoverContainer>
                 </ion-buttons>
                 <ion-title>Spiżarnia</ion-title>
             </ion-toolbar>

@@ -10,6 +10,8 @@ const familyMembersStore = useFamilyMembersStore()
 const { getFamilyDetails } = familyMembersStore
 const nofiticationsStore = useNotificationsStore()
 const { getNotifications } = nofiticationsStore
+const newspapersStore = useNewspapersStore()
+const { setShops } = newspapersStore
 const route = useRoute()
 
 CapacitorApp.addListener("backButton", (e) => {
@@ -23,6 +25,7 @@ onMounted(async () => {
     if (localStorage.getItem("uid")) {
         await getFamilyDetails()
         await getNotifications()
+        setShops()
     }
 })
 
@@ -34,7 +37,7 @@ const downloadExpenses = async () => {
     <ion-app>
         <ion-page v-if="isLoading">
             <ion-header>
-                <ion-toolbar >
+                <ion-toolbar>
                     <ion-title>Cześć</ion-title>
                 </ion-toolbar>
             </ion-header>

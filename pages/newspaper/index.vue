@@ -1,53 +1,15 @@
 <script setup>
-import axios from "axios"
-import { StateEntries } from "@/types"
-
 const { backendUrl } = useConfig()
 
-const shops = useState(StateEntries.Shops, () => [])
+const newspapersStore = useNewspapersStore()
+const { setShops } = newspapersStore
+const { shops } = storeToRefs(newspapersStore)
 
 const isLoading = ref(false)
 const searchValue = ref("")
 
-const fetchShops = async () => {
-    try {
-        isLoading.value = true
-        const response = await axios.get(`${backendUrl}/html`, {
-            params: {
-                url: "https://www.gazetkipromocyjne.net/",
-            },
-        })
-        return response.data.data
-    } catch (error) {
-        isLoading.value = false
-        console.error("Error fetching shops:", error)
-    }
-}
-
-const setShops = async () => {
-    const content = await fetchShops()
-    const el = document.createElement("html")
-    el.innerHTML = content
-    const shopItems = el.querySelectorAll(".entry-image")
-    const shopItemsLength = shopItems.length
-    shopItems.forEach((item, index) => {
-        if (shopItemsLength === index + 1) {
-            return
-        }
-        const itemDetails = item.querySelector(".title")
-        if (!itemDetails) return
-        const url = itemDetails.href
-        const title = itemDetails.textContent
-        shops.value.push({
-            url,
-            title,
-        })
-    })
-    isLoading.value = false
-}
-
 const shopsToDisplay = computed(() => {
-    return shops.value.filter((shop) =>
+    return shops?.value.filter((shop) =>
         shop.title.toLowerCase().includes(searchValue.value.toLowerCase())
     )
 })
@@ -58,7 +20,7 @@ const goToShop = (title) => {
 }
 
 onMounted(() => {
-    if (!shops.value.length) {
+    if (!shops?.value.length) {
         setShops()
     }
 })

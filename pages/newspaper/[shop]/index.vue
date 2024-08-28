@@ -7,6 +7,9 @@ import { StateEntries } from "@/types"
 
 const { backendUrl } = useConfig()
 
+const newspapersStore = useNewspapersStore()
+const { shops } = storeToRefs(newspapersStore)
+
 GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.worker.min.mjs"
 
@@ -14,7 +17,6 @@ const route = useRoute()
 const params = route.params
 const shop = params.shop
 
-const shops = useState(StateEntries.Shops, () => [])
 const newspapers = useState(StateEntries.Newspapers, () => [])
 
 const isLoading = ref(false)

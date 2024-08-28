@@ -7,7 +7,13 @@ const pantriesStore = usePantriesStore()
 const { handlePantryItemsFromShoppingList } = pantriesStore
 
 const shoppingListsStore = useShoppingListsStore()
-const { updateShoppingList } = shoppingListsStore
+const {
+    updateShoppingList,
+    removeAllItems,
+    selectAllItems,
+    deselectAllItems,
+    removeSelectedItems,
+} = shoppingListsStore
 const { currentShoppingList } = storeToRefs(shoppingListsStore)
 
 const layout = ref("products")
@@ -72,16 +78,53 @@ const openPantryModal = () => {
                 <ion-title>Listy zakupowe</ion-title>
 
                 <ion-buttons slot="end">
-                    <ShoppingListFilter
-                        @sortByCategory="sortByCategory"
-                        @sortByName="sortByName"
-                        @changeLayout="changeLayout"
-                        :layout="layout"
-                        :nameDir="nameDir"
-                        :dir="dir"
-                        :lastSort="lastSort"
-                        @addToPantry="openPantryModal"
-                    />
+                    <PopoverContainer sortId="shopping-list-sort">
+                        <PopoverItem
+                            @click="changeLayout('category')"
+                            label="Widok kategorii"
+                            :active="layout === 'category'"
+                        />
+                        <PopoverItem
+                            @click="changeLayout('products')"
+                            label="Widok produktów"
+                            :active="layout === 'products'"
+                        />
+                        <SortItem
+                            label="Sortuj po kategorii"
+                            @click="sortByCategory()"
+                            type="amount"
+                            :dir="dir"
+                            :active="lastSort === 'category'"
+                        />
+                        <SortItem
+                            label="Sortuj po nazwie"
+                            @click="sortByName()"
+                            type="amount"
+                            :dir="nameDir"
+                            :active="lastSort === 'name'"
+                        />
+                        <PopoverItem
+                            @click="openPantryModal"
+                            label="Dodaj zaznaczone produkty do spiżarni"
+                        />
+
+                        <PopoverItem
+                            @click="removeAllItems"
+                            label="Usuń wszystkie produkty"
+                        />
+                        <PopoverItem
+                            @click="removeSelectedItems"
+                            label="Usuń zakupione produkty"
+                        />
+                        <PopoverItem
+                            @click="selectAllItems"
+                            label="Zaznacz wszystkie produkty"
+                        />
+                        <PopoverItem
+                            @click="deselectAllItems"
+                            label="Odznacz wszystkie produkty"
+                        />
+                    </PopoverContainer>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>

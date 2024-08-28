@@ -37,6 +37,7 @@ const nickname = localStorage.getItem("nickname")
                     <span>{{ page.name }}</span>
                 </UiImageWithTitle>
             </div>
+            <MainPageNewspapers />
         </ion-content>
     </ion-page>
 </template>

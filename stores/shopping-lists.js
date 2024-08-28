@@ -55,6 +55,50 @@ export const useShoppingListsStore = defineStore({
             this.error = error
         },
 
+        async removeAllItems() {
+            await this.updateShoppingList({
+                ...this.currentShoppingList,
+                items: [],
+            })
+            this.currentShoppingList.items = []
+        },
+        async selectAllItems() {
+            const updatedItems = [...this.currentShoppingList.items].map(
+                (item) => {
+                    item.checked = true
+                    return item
+                }
+            )
+            await this.updateShoppingList({
+                ...this.currentShoppingList,
+                items: updatedItems,
+            })
+            this.currentShoppingList.items = updatedItems
+        },
+        async deselectAllItems() {
+            const updatedItems = [...this.currentShoppingList.items].map(
+                (item) => {
+                    item.checked = false
+                    return item
+                }
+            )
+            await this.updateShoppingList({
+                ...this.currentShoppingList,
+                items: updatedItems,
+            })
+            this.currentShoppingList.items = updatedItems
+        },
+        async removeSelectedItems() {
+            const updatedItems = [...this.currentShoppingList.items].filter(
+                (item) => !item.checked
+            )
+            await this.updateShoppingList({
+                ...this.currentShoppingList,
+                items: updatedItems,
+            })
+            this.currentShoppingList.items = updatedItems
+        },
+
         async updateShoppingList(shoppingList) {
             this.setLoading(true)
             this.setError(null)
