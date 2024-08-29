@@ -10,6 +10,18 @@ const { familyMembers, familyMembersDetails, familyId } =
     storeToRefs(familyMembersStore)
 const modal = ref()
 
+const shoppingListsStore = useShoppingListsStore()
+const { shoppingLists } = storeToRefs(shoppingListsStore)
+const { getAllShoppingLists, updateShoppingList } = shoppingListsStore
+
+const pantriesStore = usePantriesStore()
+const { pantries } = storeToRefs(pantriesStore)
+const { getAllPantries, editPantry } = pantriesStore
+
+const expensesStore = useExpensesStore()
+const { expenses } = storeToRefs(expensesStore)
+const { getAllMyExpenses, editExpense } = expensesStore
+
 const familyOwner = computed(() => {
     return familyId.value === uid
 })
@@ -22,12 +34,98 @@ const addMember = (newMembers) => {
     familyMembersDetails.value = newMembers
     familyOwner.value = true
 }
+const removeMemberFromShoppingLists = async (member) => {
+    if (shoppingLists.value.length) {
+        shoppingLists.value.forEach(async (list) => {
+            if (list.membersIds.includes(member.id)) {
+                list.membersIds = list.membersIds.filter((m) => m !== member.id)
+                list.members = list.members.filter((m) => m.id !== member.id)
+                await updateShoppingList(list)
+            }
+        })
+    } else {
+        await getAllShoppingLists()
+        if (shoppingLists.value.length) {
+            shoppingLists.value.forEach(async (list) => {
+                if (list.membersIds.includes(member.id)) {
+                    list.membersIds = list.membersIds.filter(
+                        (m) => m !== member.id
+                    )
+                    list.members = list.members.filter(
+                        (m) => m.id !== member.id
+                    )
+                    await updateShoppingList(list)
+                }
+            })
+        }
+    }
+}
+
+const removeMemberFromPantries = async (member) => {
+    if (pantries.value.length) {
+        pantries.value.forEach(async (pantry) => {
+            if (pantry.membersIds.includes(member.id)) {
+                pantry.membersIds = pantry.membersIds.filter(
+                    (m) => m !== member.id
+                )
+                pantry.members = pantry.members.filter(
+                    (m) => m.id !== member.id
+                )
+                await editPantry(pantry)
+            }
+        })
+    } else {
+        await getAllPantries()
+        if (pantries.value.length) {
+            pantries.value.forEach(async (pantry) => {
+                if (pantry.membersIds.includes(member.id)) {
+                    pantry.membersIds = pantry.membersIds.filter(
+                        (m) => m !== member.id
+                    )
+                    pantry.members = pantry.members.filter(
+                        (m) => m.id !== member.id
+                    )
+                    await editPantry(pantry)
+                }
+            })
+        }
+    }
+}
+
+const removeMemberFromExpenses = async (member) => {
+    if (expenses.value.length) {
+        expenses.value.forEach(async (expense) => {
+            if (expense.familyMembers.includes(member.id)) {
+                expense.familyMembers = expense.familyMembers.filter(
+                    (m) => m !== member.id
+                )
+                editExpense(expense)
+            }
+        })
+    } else {
+        await getAllMyExpenses()
+        if (expenses.value.length) {
+            expenses.value.forEach(async (expense) => {
+                if (expense.familyMembers.includes(member.id)) {
+                    expense.familyMembers = expense.familyMembers.filter(
+                        (m) => m !== member.id
+                    )
+                    editExpense(expense)
+                }
+            })
+        }
+    }
+}
+
 const remove = async (member) => {
     const newMembersDetails = familyMembersDetails.value.filter(
         (m) => m.id !== member.id
     )
     const newMembers = familyMembers.value.filter((m) => m !== member.id)
     await updateMembers(newMembersDetails, newMembers)
+    await removeMemberFromShoppingLists(member)
+    await removeMemberFromPantries(member)
+    await removeMemberFromExpenses(member)
     await sendNotification(
         {
             title: `Zostałeś usunięty z rodziny "${localStorage.getItem(
@@ -53,7 +151,7 @@ const leave = async () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Rodzina</ion-title>
             </ion-toolbar>
         </ion-header>

@@ -164,6 +164,18 @@ export const useExpensesStore = defineStore({
 
             this.setLoading(false)
         },
+        async getAllMyExpenses() {
+            let url = `${backendUrl}/expenses/get-all?userId=${localStorage.getItem(
+                "uid"
+            )}`
+            const data = await request(url)
+            this.setLoading(false)
+            const allExpenses = [...data.expenses]
+            const sortedByDateExpenses = allExpenses.sort((a, b) => {
+                return b.timestamp - a.timestamp
+            })
+            return [...sortedByDateExpenses]
+        },
     },
     getters: {
         getExpenesesFromStore() {

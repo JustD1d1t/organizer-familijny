@@ -145,13 +145,14 @@ export const useShoppingListsStore = defineStore({
             }
         },
 
-        async addList(name, members) {
+        async addList(name, members, membersIds) {
             this.setLoading(true)
             this.setError(null)
             try {
                 const newShoppingList = {
                     name: name,
                     members: members,
+                    membersIds: membersIds,
                     ownerId: localStorage.getItem("uid"),
                     items: [],
                     recipes: [],

@@ -10,6 +10,9 @@ const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, getFamilyDetails } = familyMembersStore
 const { familyMembersDetails, familyMembers } = storeToRefs(familyMembersStore)
 
+const userStore = useUserStore()
+const { email } = storeToRefs(userStore)
+
 const route = useRoute()
 const params = route.params
 
@@ -17,7 +20,7 @@ const uid = localStorage.getItem("uid")
 const notification = computed(() =>
     notifications.value.find((n) => n.id === params.id)
 )
-const userEmail = useState(StateEntries.UserEmail)
+const userEmail = computed(() => email ?? localStorage.getItem("email"))
 
 const handleFamilyInvitation = async (accepted) => {
     const editedNotification = { ...notification.value, accepted }
@@ -41,7 +44,7 @@ const handleFamilyInvitation = async (accepted) => {
         )
         await sendNotification(
             {
-                title: `Użytkownik "${userEmail.value}" nie zaakceptował zaproszenie do rodziny`,
+                title: `Użytkownik "${userEmail.value}" zaakceptował zaproszenie do rodziny`,
                 content: `Zaproszenie do listy nie zostało zaakceptowane`,
             },
             notification.value.ownerId
@@ -49,8 +52,8 @@ const handleFamilyInvitation = async (accepted) => {
     } else {
         await sendNotification(
             {
-                title: `Użytkownik "${userEmail.value}" zaakceptował zaproszenie do rodziny`,
-                content: `Zaproszenie do listy zostało zaakceptowane`,
+                title: `Użytkownik "${userEmail.value}" nie zaakceptował zaproszenie do rodziny`,
+                content: `Zaproszenie do listy zostało nie zaakceptowane`,
             },
             notification.value.ownerId
         )

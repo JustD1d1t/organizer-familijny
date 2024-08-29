@@ -2,28 +2,38 @@
 const router = useRouter()
 const pantryName = ref("")
 const familyMembers = ref([])
+const familyMembersIds = ref([])
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
 const { addPantry } = pantriesStore
 
 const add = async () => {
-    await addPantry(pantryName.value, familyMembers.value)
+    await addPantry(
+        pantryName.value,
+        familyMembers.value,
+        familyMembersIds.value
+    )
     router.back()
-
 }
 const handleMember = (member) => {
     if (familyMembers.value.includes(member.id)) {
-        familyMembers.value = familyMembers.value.filter((m) => m != member.id)
+        familyMembersIds.value = familyMembersIds.value.filter(
+            (m) => m != member.id
+        )
+        familyMembers.value = familyMembers.value.filter(
+            (m) => m.id != member.id
+        )
     } else {
-        familyMembers.value.push(member.id)
+        familyMembersIds.value.push(member.id)
+        familyMembers.value.push(member)
     }
 }
 </script>
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Nowa lista zakupowa</ion-title>
             </ion-toolbar>
         </ion-header>

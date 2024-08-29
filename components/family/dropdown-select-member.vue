@@ -1,6 +1,7 @@
 <script setup>
 import { StateEntries } from "@/types"
 
+
 const props = defineProps({
     members: {
         type: Array,
@@ -28,7 +29,7 @@ const handleMember = (member) => {
 }
 </script>
 <template>
-    <ion-accordion-group>
+    <ion-accordion-group v-if="familyMembers.length && familyMembersDetails.length > 1">
         <ion-accordion value="first" class="custom-accordion">
             <ion-item slot="header" color="light" @click="() => {}">
                 <p>Wybierz osoby które mają dostęp</p>

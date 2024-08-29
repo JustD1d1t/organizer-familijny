@@ -40,7 +40,7 @@ const create = async (user) => {
 
 const handleFamilyMember = async () => {
     const data = await request(
-        `${backendUrl}/users/get-users?email=${email.value}`
+        `${backendUrl}/users/get-users?email=${email.value.toLowerCase()}`
     )
     const users = data.users
     if (!users.length) {

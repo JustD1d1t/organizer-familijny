@@ -95,11 +95,12 @@ export const usePantriesStore = defineStore({
             this.pantries[index] = pantry
         },
 
-        async addPantry(pantryName, members = []) {
+        async addPantry(pantryName, members = [], membersIds = []) {
             const newPantry = {
                 name: pantryName,
                 items: [],
                 members,
+                membersIds,
                 ownerId: localStorage.getItem("uid"),
             }
             const data = await request(`${backendUrl}/pantries/add`, {
@@ -241,15 +242,15 @@ export const usePantriesStore = defineStore({
             }
         },
 
-        async removePantry(pan) {
+        async removePantry(id) {
             await request(`${backendUrl}/pantries/delete`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ pantryId: pan.id }),
+                body: JSON.stringify({ pantryId: id }),
             })
-            this.pantries = this.pantries.filter((list) => list.id !== pan.id)
+            this.pantries = this.pantries.filter((list) => list.id !== id)
         },
     },
     getters: {

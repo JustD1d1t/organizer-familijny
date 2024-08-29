@@ -10,19 +10,25 @@ const newShoppingListName = ref("")
 const input = ref()
 
 const add = async () => {
-    await addList(newShoppingListName.value, familyMembers.value)
+    await addList(newShoppingListName.value, familyMembers.value, familyMembersIds.value)
     router.back()
-
 }
 
+const familyMembersIds = ref([])
 const familyMembers = ref([])
 
 const handleMember = (member) => {
-    if (familyMembers.value.includes(member.id)) {
-        familyMembers.value = familyMembers.value.filter((m) => m != member.id)
+    if (familyMembersIds.value.includes(member.id)) {
+        familyMembersIds.value = familyMembersIds.value.filter(
+            (m) => m != member.id
+        )
+        familyMembers.value = familyMembers.value.filter(
+            (m) => m.id != member.id
+        )
         displayToast(`Usunięto ${member.nickname} z listy zakupowej`)
     } else {
-        familyMembers.value.push(member.id)
+        familyMembersIds.value.push(member.id)
+        familyMembers.value.push(member)
         displayToast(`Dodano ${member.nickname} do listy zakupowej`)
     }
 }
@@ -30,7 +36,7 @@ const handleMember = (member) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Nowa lista zakupowa</ion-title>
             </ion-toolbar>
         </ion-header>
