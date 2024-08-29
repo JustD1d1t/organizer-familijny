@@ -31,6 +31,7 @@ onMounted(async () => {
 
 const downloadExpenses = async () => {
     await queryExpenses()
+    await menuController.close("expense-filter")
 }
 </script>
 <template>

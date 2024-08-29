@@ -28,7 +28,6 @@ const {
         side="start"
         menu-id="expense-filter"
         content-id="main-content"
-        @ionWillClose="emit('downloadExpenses')"
         swipeGesture="false"
     >
         <ion-header>
@@ -147,6 +146,9 @@ const {
                     placeholder="Nazwa sklepu"
                 />
             </div>
+            <ion-button @click="emit('downloadExpenses')" class="mt-5 w-full">
+                Zastosuj filtry
+            </ion-button>
         </ion-content>
     </ion-menu>
     <ion-modal :keep-contents-mounted="true">
