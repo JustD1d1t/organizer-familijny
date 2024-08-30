@@ -65,7 +65,7 @@ const leave = async () => {
                 @toggleMember="handleMember"
                 v-if="!collaboratedPantry"
             />
-            <ion-button expand="block" class="my-6" @click="leave">
+            <ion-button expand="block" class="my-6" @click="leave" v-if="collaboratedPantry">
                 Opuść spiżarnię
             </ion-button>
             <ion-button expand="block" @click="updatePantry" class="my-6"

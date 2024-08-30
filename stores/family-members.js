@@ -44,7 +44,7 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     members,
-                    familyId: familyId ?? localStorage.getItem("uid"),
+                    familyId: this.familyId ?? localStorage.getItem("uid"),
                 }),
             })
             this.setLoading(false)
@@ -89,7 +89,7 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     members,
-                    familyId: localStorage.getItem("uid"),
+                    familyId: this.familyId ?? localStorage.getItem("uid"),
                 }),
             })
             this.setLoading(false)

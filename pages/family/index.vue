@@ -208,7 +208,7 @@ const leave = async () => {
                         <ion-icon :icon="ioniconsAdd"></ion-icon>
                     </ion-fab-button>
                     <ion-fab-button v-if="!familyOwner" @click="leave">
-                        <ion-icon :icon="ioniconsTrash"></ion-icon>
+                        <ion-icon :icon="ioniconsPlayForwardCircleOutline"></ion-icon>
                     </ion-fab-button>
                     <ion-fab-button v-if="familyOwner" @click="removeFamily">
                         <ion-icon :icon="ioniconsTrash"></ion-icon>
