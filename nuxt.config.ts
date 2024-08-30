@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     styleResources: {
         scss: ["@/assets/scss/variables.scss"], // Tutaj importuj tylko plik z zmiennymi, nie cały styles.scss
     },
+    plugins: [{ src: "~/plugins/file-jsevent-ex.js", mode: "client" }],
     // typescript: {
     //   typeCheck: true,
     // },
