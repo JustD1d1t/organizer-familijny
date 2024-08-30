@@ -20,7 +20,9 @@ const uid = localStorage.getItem("uid")
 const notification = computed(() =>
     notifications.value.find((n) => n.id === params.id)
 )
-const userEmail = computed(() => email ?? localStorage.getItem("email"))
+const userEmail = computed(() => {
+    return email.value !== "" ? email.value : localStorage.getItem("email")
+})
 
 const handleFamilyInvitation = async (accepted) => {
     const editedNotification = { ...notification.value, accepted }

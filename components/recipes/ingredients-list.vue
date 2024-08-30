@@ -8,13 +8,13 @@ const props = defineProps({
 })
 </script>
 <template>
-    <UiList>
+    <div class="flex flex-col">
         <UiListItem v-for="ingredient in ingredients" :key="ingredient.id">
             <template #start>
                 {{ ingredient.name }}
             </template>
         </UiListItem>
-    </UiList>
+    </div>
 </template>
 
 <style lang="scss" scoped>

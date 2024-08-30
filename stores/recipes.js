@@ -57,7 +57,6 @@ export const useRecipesStore = defineStore({
                 },
                 body: JSON.stringify({
                     recipe,
-                    userId: uid,
                 }),
             })
             this.setLoading(false)

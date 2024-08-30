@@ -8,13 +8,6 @@ const recipesStore = useRecipesStore()
 const { currentRecipe } = storeToRefs(recipesStore)
 const modal = ref()
 
-const ingredients = computed(() =>
-    currentRecipe.value ? currentRecipe.value.ingredients : []
-)
-const name = computed(() =>
-    currentRecipe.value ? currentRecipe.value.name : ""
-)
-
 const cancel = () => modal.value.$el.dismiss(null, "cancel")
 const confirmModal = () => modal.value.$el.dismiss(null, "confirm")
 
@@ -36,8 +29,11 @@ watch(route, async (newRoute, oldRoute) => {
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <h2>{{ name }}</h2>
-            <RecipesIngredientsList :ingredients="ingredients" />
+            <h2>{{ currentRecipe.name }}</h2>
+            <h3>Składniki</h3>
+            <RecipesIngredientsList :ingredients="currentRecipe.ingredients" />
+            <h3 v-if="currentRecipe.steps">Przepis</h3>
+            <p v-if="currentRecipe.steps">{{ currentRecipe.steps }}</p>
             <ion-button
                 expand="block"
                 class="mt-8"

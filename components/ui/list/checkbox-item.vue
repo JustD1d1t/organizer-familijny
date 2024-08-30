@@ -22,6 +22,7 @@ const props = defineProps({
         <ion-checkbox
             slot="start"
             class="mr-0"
+            :aria-label="props.item.name"
             @ionChange="() => props.handleItemChange(props.item)"
             :checked="props.item.checked"
         ></ion-checkbox>

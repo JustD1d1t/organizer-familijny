@@ -79,13 +79,15 @@ const add = async () => {
     }
     await addRecipe(recipe)
     router.back()
-
+}
+const addOwnRecipe = () => {
+    navigateTo("/recipes/new/own")
 }
 </script>
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Nowa lista zakupowa</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -107,7 +109,11 @@ const add = async () => {
             </ion-item>
 
             <ion-button expand="block" @click="add" class="my-6"
-                >Dodaj listę</ion-button
+                >Dodaj przepis</ion-button
+            >
+            <span class="text-center block">lub</span>
+            <ion-button expand="block" @click="addOwnRecipe" class="my-6"
+                >Dodaj swój przepis</ion-button
             >
         </ion-content>
     </ion-page>

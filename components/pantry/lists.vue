@@ -22,12 +22,11 @@ onMounted(async () => {
             Nie posiadasz swoich spiżarni
         </h3>
         <PantrySingleListItem
-            v-else
             v-for="pantry in pantries"
             :key="pantry.id"
             :pantry="pantry"
         />
-        <div
+        <!-- <div
             class="col-span-2 w-full p-2 grid-cols-2 grid auto-rows-max overflow-auto"
             v-if="collaboratedPantries.length"
         >
@@ -38,6 +37,6 @@ onMounted(async () => {
                 :key="pantry.id"
                 :pantry="pantry"
             />
-        </div>
+        </div> -->
     </div>
 </template>

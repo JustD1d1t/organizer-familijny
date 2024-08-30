@@ -78,60 +78,32 @@ const openPantryModal = () => {
                 <ion-title>Listy zakupowe</ion-title>
 
                 <ion-buttons slot="end">
-                    <PopoverContainer sortId="shopping-list-sort">
-                        <PopoverItem
-                            @click="changeLayout('category')"
-                            label="Widok kategorii"
-                            :active="layout === 'category'"
-                        />
-                        <PopoverItem
-                            @click="changeLayout('products')"
-                            label="Widok produktów"
-                            :active="layout === 'products'"
-                        />
-                        <SortItem
-                            label="Sortuj po kategorii"
-                            @click="sortByCategory()"
-                            type="amount"
-                            :dir="dir"
-                            :active="lastSort === 'category'"
-                        />
-                        <SortItem
-                            label="Sortuj po nazwie"
-                            @click="sortByName()"
-                            type="amount"
-                            :dir="nameDir"
-                            :active="lastSort === 'name'"
-                        />
-                        <PopoverItem
-                            @click="openPantryModal"
-                            label="Dodaj zaznaczone produkty do spiżarni"
-                        />
-
-                        <PopoverItem
-                            @click="removeAllItems"
-                            label="Usuń wszystkie produkty"
-                        />
-                        <PopoverItem
-                            @click="removeSelectedItems"
-                            label="Usuń zakupione produkty"
-                        />
-                        <PopoverItem
-                            @click="selectAllItems"
-                            label="Zaznacz wszystkie produkty"
-                        />
-                        <PopoverItem
-                            @click="deselectAllItems"
-                            label="Odznacz wszystkie produkty"
-                        />
-                    </PopoverContainer>
+                    <ShoppingListSortAndFilter
+                        :layout="layout"
+                        :dir="dir"
+                        :nameDir="nameDir"
+                        :lastSort="lastSort"
+                        @changeLayout="changeLayout"
+                        @sortByCategory="sortByCategory"
+                        @sortByName="sortByName"
+                        @openPantryModal="openPantryModal"
+                        @removeAllItems="removeAllItems"
+                        @removeSelectedItems="removeSelectedItems"
+                        @selectAllItems="selectAllItems"
+                        @deselectAllItems="deselectAllItems"
+                    />
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
         <ion-content>
             <div class="h-[90%]">
                 <h2>{{ name }}</h2>
-                <div v-if="currentShoppingList.items.length">
+                <div
+                    v-if="
+                        currentShoppingList.items.length ||
+                        currentShoppingList.recipes.length
+                    "
+                >
                     <ShoppingListProducts
                         v-if="layout == 'products'"
                         :dir="dir"
