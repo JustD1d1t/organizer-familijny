@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
         
                 <!-- Especifique o esquema do seu link -->
-                <data android:scheme="foapp" android:host="family" />
+                <data android:scheme="family-organizer.com" android:host="https" />
             </intent-filter>
 
         </activity>
