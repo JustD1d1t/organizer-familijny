@@ -16,5 +16,6 @@ export default [
     "Opłaty",
     "Motoryzacja",
     "Zachcianki",
+    "Alkohol",
     "Inne",
 ]

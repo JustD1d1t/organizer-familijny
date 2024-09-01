@@ -11,7 +11,8 @@
         "postinstall": "nuxt prepare",
         "sync": "npx cap sync",
         "test": "vitest",
-        "test-coverage": "vitest --coverage"
+        "test-coverage": "vitest --coverage",
+        "deploy": "gh-pages -d dist"
     },
     "dependencies": {
         "@capacitor/camera": "6.0.1",
@@ -41,6 +42,7 @@
         "@nuxtjs/ionic": "^0.13.1",
         "@nuxtjs/tailwindcss": "^6.8.0",
         "@vue/test-utils": "^2.4.6",
+        "gh-pages": "^6.1.1",
         "h3": "^1.11.1",
         "happy-dom": "^14.12.0",
         "ionicons": "^7.3.1",

@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
     ssr: false,
+    target: "static",
     devtools: { enabled: true },
     buildModules: ["@nuxtjs/style-resources"],
     modules: [
@@ -8,7 +9,7 @@ export default defineNuxtConfig({
         "@nuxt/test-utils/module",
         "@pinia/nuxt",
         "@nuxt/fonts",
-        "nuxt-echarts"
+        "nuxt-echarts",
     ],
     css: ["@/assets/scss/styles.scss", "@/theme/variables.css"],
     nitro: {
