@@ -25,6 +25,7 @@ export const useExpensesStore = defineStore({
             endPrice: null,
             shopName: null,
             expenseName: null,
+            category: null,
             isLoading: false,
             error: null,
         }
@@ -45,6 +46,9 @@ export const useExpensesStore = defineStore({
         },
         clearExpenses() {
             this.expenses = []
+        },
+        clearCategory() {
+            this.category = null
         },
 
         async getExpensePhoto(id) {
@@ -154,6 +158,9 @@ export const useExpensesStore = defineStore({
             }
             if (this.expenseName) {
                 url += `&name=${this.expenseName}`
+            }
+            if (this.category) {
+                url += `&category=${this.category}`
             }
             const data = await request(url)
             this.setLoading(false)

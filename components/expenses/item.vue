@@ -47,12 +47,17 @@ const removeExpense = async (item: Expense) => {
 }
 </script>
 <template>
-    <ion-item class="flex flex-col py-2 pl-6 pr-2 bg-white rounded-2xl shadow-lg">
+    <ion-item
+        class="flex flex-col py-2 pl-6 pr-2 bg-white rounded-2xl shadow-lg"
+    >
         <div class="flex h-full w-full justify-between items-start">
             <div class="flex flex-col">
-                <p class="text-base expense-shop">
-                    {{ expense.shop }} - {{ expense.name }}
-                </p>
+                <div class="flex-flex-col">
+                    <p class="text-base expense-shop">
+                        {{ expense.shop }} - {{ expense.name }} -
+                        {{ expense.category.toLowerCase() }}
+                    </p>
+                </div>
                 <p class="text-lg font-bold expense-date">
                     {{ convertedDate }}
                 </p>

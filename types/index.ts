@@ -10,6 +10,7 @@ declare global {
         shop: string
         userId: string
         id?: string
+        category: string
     }
 
     interface PantryItem {

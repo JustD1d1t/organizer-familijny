@@ -2,6 +2,7 @@
 const emit = defineEmits(["downloadExpenses"])
 
 import { useExpensesStore } from "~/stores/expenses"
+const { billCategories } = useBillCategories()
 const expensesStore = useExpensesStore()
 const {
     selectedPeriod,
@@ -11,6 +12,7 @@ const {
     endPrice,
     shopName,
     expenseName,
+    category,
 } = storeToRefs(expensesStore)
 const {
     updatePeriod,
@@ -20,6 +22,7 @@ const {
     updateEndPrice,
     updateShopName,
     updateExpenseName,
+    clearCategory,
 } = expensesStore
 </script>
 
@@ -145,6 +148,25 @@ const {
                     type="text"
                     placeholder="Nazwa sklepu"
                 />
+                <UiDivider class="my-2" />
+
+                <h4 class="font-bold mb-1">Kategoria wydatku</h4>
+                <span class="text-sm mb-2 block">
+                    Pokaż wydatki o kategorii:
+                </span>
+                <div class="flex items-center">
+                    <ion-select label="Kategoria" v-model="category">
+                        <ion-select-option
+                            v-for="(category, index) in billCategories"
+                            :key="index"
+                            :value="category"
+                            >{{ category }}</ion-select-option
+                        >
+                    </ion-select>
+                    <ion-button fill="clear" @click="clearCategory"
+                        >Wyczyść</ion-button
+                    >
+                </div>
             </div>
             <ion-button @click="emit('downloadExpenses')" class="mt-5 w-full">
                 Zastosuj filtry
