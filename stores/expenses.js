@@ -52,6 +52,7 @@ export const useExpensesStore = defineStore({
             const data = await request(
                 `${backendUrl}/expenses/get-image?photoId=${id}`
             )
+            console.log(data)
             this.setLoading(false)
             return data.url
         },

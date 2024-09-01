@@ -8,6 +8,7 @@ export default defineNuxtConfig({
         "@nuxt/test-utils/module",
         "@pinia/nuxt",
         "@nuxt/fonts",
+        "nuxt-echarts"
     ],
     css: ["@/assets/scss/styles.scss", "@/theme/variables.css"],
     nitro: {

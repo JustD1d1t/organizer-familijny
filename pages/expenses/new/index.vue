@@ -7,7 +7,10 @@ const expensesStore = useExpensesStore()
 const { addExpenseToStore } = expensesStore
 const uid = localStorage.getItem("uid")
 
+const { billCategories } = useBillCategories()
+
 const router = useRouter()
+const selectedCategory = ref("")
 
 const newExpenseName = ref("")
 const newExpenseValue = ref("")
@@ -46,10 +49,10 @@ const addExpense = async () => {
         shop: newShopName.value.toLowerCase(),
         userId: uid,
         familyMembers: expenseMembers.value,
+        category: selectedCategory.value,
     }
     await addExpenseToStore(newExpense, document.value, photoBase64.value)
     router.back()
-
 }
 
 const handleMember = (member) => {
@@ -66,9 +69,12 @@ const handleMember = (member) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-buttons slot="end">
-                    <ion-button fill="clear" :strong="true" @click="addExpense()"
+                    <ion-button
+                        fill="clear"
+                        :strong="true"
+                        @click="addExpense()"
                         >Dodaj</ion-button
                     >
                 </ion-buttons>
@@ -116,6 +122,19 @@ const handleMember = (member) => {
                             type="date"
                             v-model="newExpenseDate"
                         ></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-select
+                            label="Kategoria"
+                            v-model="selectedCategory"
+                        >
+                            <ion-select-option
+                                v-for="(category, index) in billCategories"
+                                :key="index"
+                                :value="category"
+                                >{{ category }}</ion-select-option
+                            >
+                        </ion-select>
                     </ion-item>
                     <FamilyDropdownSelectMember @toggleMember="handleMember" />
                     <ion-item>

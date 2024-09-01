@@ -74,6 +74,10 @@ const handleExpensesVisibility = (filter) => {
         showSelect.value = "common"
     }
 }
+
+const openExpensesCharts = () => {
+    navigateTo("/expenses/charts")
+}
 </script>
 <template>
     <ion-page>
@@ -87,6 +91,12 @@ const handleExpensesVisibility = (filter) => {
                     ></ion-back-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
+                    <ion-button fill="clear" @click="openExpensesCharts">
+                        <ion-icon
+                            slot="icon-only"
+                            :icon="ioniconsBarChartOutline"
+                        />
+                    </ion-button>
                     <ion-button fill="clear" @click="openFilterMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsFilter" />
                     </ion-button>
@@ -120,7 +130,7 @@ const handleExpensesVisibility = (filter) => {
                     <span>Razem </span>
                     <span>{{ totalSum }} zł</span>
                 </div>
-                <UiDivider  class="mb-6"/>
+                <UiDivider class="mb-6" />
                 <ion-list lines="none" class="overflow-auto h-[70%]">
                     <expenses-item
                         v-for="expense in expensesToShow"

@@ -8,10 +8,13 @@ import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
 const { removeExpenseFromStore, editExpense, getExpensePhoto } = expensesStore
 const { currentExpense } = storeToRefs(expensesStore)
+const { billCategories } = useBillCategories()
 
 const router = useRouter()
 
 const uid = localStorage.getItem("uid")
+
+const selectedCategory = ref("")
 
 const openModal = ref(false)
 const document = ref(null)
@@ -72,19 +75,16 @@ const edit = async () => {
         familyMembers: newMembers.value,
         userId: currentExpense.value.userId,
         id: currentExpense.value.id,
+        category: currentExpense.value.category,
     }
     await editExpense(editedExpense, document.value, photoBase64.value)
 
     router.back()
-
-
 }
 
 const removeExpense = async () => {
     await removeExpenseFromStore(currentExpense.value.id)
     router.back()
-
-
 }
 
 const fetchBillUrl = async () => {
@@ -121,7 +121,7 @@ const handleMember = (member) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-buttons
                     slot="start"
                     v-if="currentExpense && currentExpense.userId === uid"
@@ -184,6 +184,20 @@ const handleMember = (member) => {
                         v-model="newTimestamp"
                         :disabled="currentExpense.userId !== uid"
                     ></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-select
+                        label="Kategoria"
+                        v-model="currentExpense.category"
+                    >
+                        <ion-select-option
+                            v-for="(category, index) in billCategories"
+                            :key="index"
+                            :value="category"
+                            >{{ category }}</ion-select-option
+                        >
+                    </ion-select>
                 </ion-item>
                 <FamilyDropdownSelectMember
                     :members="currentExpense.familyMembers"
