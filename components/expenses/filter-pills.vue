@@ -15,6 +15,7 @@ const {
     expenseName,
     startPrice,
     endPrice,
+    category,
 } = storeToRefs(expensesStore)
 
 const {
@@ -26,6 +27,7 @@ const {
     updateEndPrice,
     updateShopName,
     updateExpenseName,
+    updateCategory,
 } = expensesStore
 
 const selectedDate = computed(() => {
@@ -58,6 +60,9 @@ const removeFilter = async (type) => {
         case "expenseName":
             updateExpenseName("")
             break
+        case "category":
+            updateCategory("")
+            break
         case "priceRange":
             updateStartPrice("")
             updateEndPrice("")
@@ -88,6 +93,16 @@ const removeFilter = async (type) => {
                 fill="clear"
                 size="small"
                 @click="removeFilter('shopName')"
+            >
+                <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
+            </ion-button>
+        </UiPill>
+        <UiPill v-if="category">
+            {{ category }}
+            <ion-button
+                fill="clear"
+                size="small"
+                @click="removeFilter('category')"
             >
                 <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
             </ion-button>

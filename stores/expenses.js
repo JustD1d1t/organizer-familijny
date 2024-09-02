@@ -114,6 +114,9 @@ export const useExpensesStore = defineStore({
         updateShopName(e) {
             this.shopName = e.detail ? e.detail.value : e
         },
+        updateCategory(e) {
+            this.category = e.detail ? e.detail.value : e
+        },
         updateExpenseName(e) {
             this.expenseName = e.detail ? e.detail.value : e
         },

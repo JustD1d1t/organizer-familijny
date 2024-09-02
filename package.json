@@ -12,7 +12,8 @@
         "sync": "npx cap sync",
         "test": "vitest",
         "test-coverage": "vitest --coverage",
-        "deploy": "gh-pages -d dist"
+        "predeploy": "npm run build",
+        "deploy": "nuxt generate && gh-pages -d dist"
     },
     "dependencies": {
         "@capacitor/camera": "6.0.1",

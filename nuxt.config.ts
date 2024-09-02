@@ -1,7 +1,10 @@
 export default defineNuxtConfig({
     ssr: false,
-    target: "static",
     devtools: { enabled: true },
+    app: {
+        baseURL: "/organizer-familijny/",
+        buildAssetsDir: "assets",
+    },
     buildModules: ["@nuxtjs/style-resources"],
     modules: [
         "@nuxtjs/ionic",
@@ -12,14 +15,6 @@ export default defineNuxtConfig({
         "nuxt-echarts",
     ],
     css: ["@/assets/scss/styles.scss", "@/theme/variables.css"],
-    nitro: {
-        serverHandlers: [
-            {
-                route: "/api/proxy",
-                handler: "~/server/api/proxy.ts",
-            },
-        ],
-    },
     styleResources: {
         scss: ["@/assets/scss/variables.scss"], // Tutaj importuj tylko plik z zmiennymi, nie cały styles.scss
     },
