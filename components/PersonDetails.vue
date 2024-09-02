@@ -7,6 +7,7 @@ const { logoutUser } = userStore
 const { email } = storeToRefs(userStore)
 const localStorageMail = localStorage.getItem("email")
 const userEmail = ref(email.value ? email.value : localStorageMail)
+const emailVerified = localStorage.getItem("emailVerified")
 
 const shoppingListsStore = useShoppingListsStore()
 const recipesStore = useRecipesStore()
@@ -64,6 +65,7 @@ const navigate = (url) => {
             <ion-list lines="none" :inset="true">
                 <ion-menu-toggle auto-hide="false">
                     <ion-item
+                        v-if="emailVerified !== 'false'"
                         router-direction="root"
                         @click="navigate('/notifications')"
                     >
@@ -73,6 +75,7 @@ const navigate = (url) => {
                         Powiadomienia
                     </ion-item>
                     <ion-item
+                        v-if="emailVerified !== 'false'"
                         router-direction="root"
                         @click="navigate('/family')"
                     >

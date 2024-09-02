@@ -1,20 +1,25 @@
 <script setup>
-// const { sendVeritifactionEmail } = useFirebaseAuth()
-
 const toastMessage = ref("")
 const isOpen = ref(false)
+
+const userStore = useUserStore()
+const { resendVerificationEmail, checkEmailVerification } = userStore
 
 const openPersonMenu = async () => {
     await menuController.open("person")
 }
-// const sendEmail = () => {
-//     sendVeritifactionEmail()
-// }
+const checkVerification = async () => {
+    const { emailVerified } = await checkEmailVerification()
+    if (emailVerified) {
+        localStorage.setItem("emailVerified", true)
+        navigateTo("/")
+    }
+}
 </script>
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Email niezweryfikowany</ion-title>
                 <ion-buttons slot="end">
                     <ion-button fill="clear" @click="openPersonMenu">
@@ -27,9 +32,18 @@ const openPersonMenu = async () => {
             <div class="flex justify-center items-center h-full w-full">
                 <uiCard class="parent flex justify-center items-center">
                     <div>Zweryfikuj emaila</div>
-                    <div>Nie otrzymałeś/aś maila?</div>
+                    <div class="text-center">Nie otrzymałeś/aś maila?</div>
                     <div class="flex">
-                        <ion-button class="w-full">Wyslij ponownie</ion-button>
+                        <ion-button
+                            @click="resendVerificationEmail"
+                            class="w-full"
+                            >Wyślij ponownie</ion-button
+                        >
+                    </div>
+                    <div class="flex">
+                        <ion-button @click="checkVerification" class="w-full"
+                            >Sprawdź weryfikację</ion-button
+                        >
                     </div>
                 </uiCard>
             </div>

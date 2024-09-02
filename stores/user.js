@@ -35,9 +35,12 @@ export const useUserStore = defineStore({
                 }),
                 credentials: "include",
             })
+
             localStorage.setItem("uid", data.localId)
             localStorage.setItem("email", email)
             localStorage.setItem("nickname", data.displayName)
+            localStorage.setItem("emailVerified", data.emailVerified)
+            localStorage.setItem("idToken", data.idToken)
             this.setEmail(email)
             this.setNickname(data.displayName)
             this.setLoading(false)
@@ -55,7 +58,40 @@ export const useUserStore = defineStore({
             localStorage.removeItem("uid")
             localStorage.removeItem("email")
             localStorage.removeItem("nickname")
+            localStorage.removeItem("emailVerified")
             this.setLoading(false)
+        },
+        async resendVerificationEmail() {
+            this.setLoading(true)
+            await request(`${backendUrl}/user/resend-verification-email`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    idToken: localStorage.getItem("idToken"),
+                }),
+                credentials: "include",
+            })
+            this.setLoading(false)
+        },
+        async checkEmailVerification() {
+            this.setLoading(true)
+            const data = await request(
+                `${backendUrl}/user/check-email-verification`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idToken: localStorage.getItem("idToken"),
+                    }),
+                    credentials: "include",
+                }
+            )
+            this.setLoading(false)
+            return data
         },
         async registerUser(email, password, nickname) {
             this.setLoading(true)
