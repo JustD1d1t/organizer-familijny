@@ -59,6 +59,7 @@ export const useUserStore = defineStore({
             localStorage.removeItem("email")
             localStorage.removeItem("nickname")
             localStorage.removeItem("emailVerified")
+            localStorage.removeItem("idToken")
             this.setLoading(false)
         },
         async resendVerificationEmail() {
