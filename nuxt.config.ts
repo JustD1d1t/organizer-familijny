@@ -1,10 +1,10 @@
 export default defineNuxtConfig({
     ssr: false,
     devtools: { enabled: true },
-    app: {
-        baseURL: "/organizer-familijny/",
-        buildAssetsDir: "assets",
-    },
+    // app: {
+    //     baseURL: "/organizer-familijny/",
+    //     buildAssetsDir: "assets",
+    // },
     buildModules: ["@nuxtjs/style-resources"],
     modules: [
         "@nuxtjs/ionic",
