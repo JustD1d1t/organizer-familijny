@@ -76,13 +76,13 @@ const login = async () => {
                         @click="navigateTo('/register')"
                         >Rejestracja</ion-button
                     >
-                    <!-- <ion-button
+                    <ion-button
                         class="w-full mt-4"
                         expand="block"
-                        fill="outline"
-                        @click="navigateTo('/forgot-password')"
+                        fill="clear"
+                        @click="navigateTo('/reset-password')"
                         >Zapomniałem hasła</ion-button
-                    > -->
+                    >
                 </uiCard>
             </div>
 

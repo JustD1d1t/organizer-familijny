@@ -9,6 +9,8 @@ export const useUserStore = defineStore({
             email: "",
             nickname: "",
             uid: "",
+            emailVerified: false,
+            idToken: "",
             isLoading: false,
         }
     },
@@ -21,6 +23,12 @@ export const useUserStore = defineStore({
         },
         setLoading(isLoading) {
             this.isLoading = isLoading
+        },
+        setEmailVerified(emailVerified) {
+            this.emailVerified = emailVerified
+        },
+        setIdToken(idToken) {
+            this.idToken = idToken
         },
         async loginUser(email, password) {
             this.setLoading(true)
@@ -43,6 +51,8 @@ export const useUserStore = defineStore({
             localStorage.setItem("idToken", data.idToken)
             this.setEmail(email)
             this.setNickname(data.displayName)
+            this.setEmailVerified(data.emailVerified)
+            this.setIdToken(data.idToken)
             this.setLoading(false)
             return data
         },
@@ -60,6 +70,10 @@ export const useUserStore = defineStore({
             localStorage.removeItem("nickname")
             localStorage.removeItem("emailVerified")
             localStorage.removeItem("idToken")
+            this.setEmail("")
+            this.setNickname("")
+            this.setEmailVerified(false)
+            this.setIdToken("")
             this.setLoading(false)
         },
         async resendVerificationEmail() {
@@ -105,6 +119,21 @@ export const useUserStore = defineStore({
                     email,
                     password,
                     nickname,
+                }),
+                credentials: "include",
+            })
+            this.setLoading(false)
+            return data
+        },
+        async resetPassword(email) {
+            this.setLoading(true)
+            const data = await request(`${backendUrl}/user/send-reset-password`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
                 }),
                 credentials: "include",
             })

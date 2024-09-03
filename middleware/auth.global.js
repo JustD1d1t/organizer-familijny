@@ -9,6 +9,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
             return // Brak potrzeby przekierowania
         }
 
+        if (to.path === "/reset-password") {
+            return // Brak potrzeby przekierowania
+        }
+
         // Przekieruj do /login, jeśli użytkownik próbuje przejść gdzie indziej
         if (to.path !== "/login") {
             return navigateTo("/login")
