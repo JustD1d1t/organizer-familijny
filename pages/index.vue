@@ -7,7 +7,9 @@ const { nickname } = storeToRefs(userStore)
 const openPersonMenu = async () => {
     await menuController.open("person")
 }
-const nick = nickname ?? localStorage.getItem("nickname")
+const nick = nickname.value.length
+    ? nickname.value
+    : localStorage.getItem("nickname")
 </script>
 
 <template>

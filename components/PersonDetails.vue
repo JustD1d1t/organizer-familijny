@@ -6,7 +6,7 @@ const userStore = useUserStore()
 const { logoutUser } = userStore
 const { email } = storeToRefs(userStore)
 const localStorageMail = localStorage.getItem("email")
-const userEmail = email ?? localStorageMail
+const userEmail = email.value.length ? email.value : localStorageMail
 const emailVerified = localStorage.getItem("emailVerified")
 
 const shoppingListsStore = useShoppingListsStore()

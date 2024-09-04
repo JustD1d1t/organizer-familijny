@@ -30,6 +30,9 @@ export const useUserStore = defineStore({
         setIdToken(idToken) {
             this.idToken = idToken
         },
+        setUid(uid) {
+            this.uid = uid
+        },
         async loginUser(email, password) {
             this.setLoading(true)
             const data = await request(`${backendUrl}/user/login`, {
@@ -127,16 +130,38 @@ export const useUserStore = defineStore({
         },
         async resetPassword(email) {
             this.setLoading(true)
-            const data = await request(`${backendUrl}/user/send-reset-password`, {
+            const data = await request(
+                `${backendUrl}/user/send-reset-password`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email,
+                    }),
+                    credentials: "include",
+                }
+            )
+            this.setLoading(false)
+            return data
+        },
+        async getUserData() {
+            this.setLoading(true)
+            const data = await request(`${backendUrl}/user/get-user-data`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    email,
+                    idToken: localStorage.getItem("idToken"),
                 }),
                 credentials: "include",
             })
+            this.setUid(data.localId)
+            this.setEmail(data.email)
+            this.setNickname(data.displayName)
+            this.setEmailVerified(data.emailVerified)
             this.setLoading(false)
             return data
         },
