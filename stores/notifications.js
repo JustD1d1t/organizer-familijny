@@ -55,7 +55,13 @@ export const useNotificationsStore = defineStore({
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ notification, userId }),
+                body: JSON.stringify({
+                    notification: {
+                        ...notification,
+                        timestamp: new Date().getTime(),
+                    },
+                    userId,
+                }),
             })
             this.setLoading(false)
             return data.id
