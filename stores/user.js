@@ -147,23 +147,25 @@ export const useUserStore = defineStore({
             return data
         },
         async getUserData() {
-            this.setLoading(true)
-            const data = await request(`${backendUrl}/user/get-user-data`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    idToken: localStorage.getItem("idToken"),
-                }),
-                credentials: "include",
-            })
-            this.setUid(data.localId)
-            this.setEmail(data.email)
-            this.setNickname(data.displayName)
-            this.setEmailVerified(data.emailVerified)
-            this.setLoading(false)
-            return data
+            if (localStorage.getItem("idToken")) {
+                this.setLoading(true)
+                const data = await request(`${backendUrl}/user/get-user-data`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idToken: localStorage.getItem("idToken"),
+                    }),
+                    credentials: "include",
+                })
+                this.setUid(data.localId)
+                this.setEmail(data.email)
+                this.setNickname(data.displayName)
+                this.setEmailVerified(data.emailVerified)
+                this.setLoading(false)
+                return data
+            }
         },
     },
 })

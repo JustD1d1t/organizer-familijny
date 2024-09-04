@@ -14,7 +14,7 @@ const newspapersStore = useNewspapersStore()
 const { setShops } = newspapersStore
 const userStore = useUserStore()
 const { logoutUser, getUserData } = userStore
-const { uid, email, emailVerified, nickname } = userStore
+const { uid, email, emailVerified, nickname } = storeToRefs(userStore)
 const route = useRoute()
 
 CapacitorApp.addListener("backButton", (e) => {
@@ -31,24 +31,25 @@ onMounted(async () => {
     const localNickname = localStorage.getItem("nickname")
     const localIdToken = localStorage.getItem("idToken")
     await getUserData()
-    if (
-        !localUid ||
-        localUid !== uid ||
-        !localEmail ||
-        email !== localEmail ||
-        !localEmailVerified ||
-        emailVerified !== localEmailVerified ||
-        !localNickname ||
-        nickname !== localNickname ||
-        !localIdToken
-    ) {
-        await logoutUser()
-        return
-    }
     if (localStorage.getItem("uid")) {
         await getFamilyDetails()
         await getNotifications()
         setShops()
+    }
+    const localEmailVerifiedBool = localEmailVerified === "true"
+    if (
+        !localUid ||
+        uid.value !== localUid ||
+        !localEmail ||
+        email.value !== localEmail ||
+        !localEmailVerified ||
+        emailVerified.value !== localEmailVerifiedBool ||
+        !localNickname ||
+        nickname.value !== localNickname ||
+        !localIdToken
+    ) {
+        await logoutUser()
+        return
     }
 })
 
