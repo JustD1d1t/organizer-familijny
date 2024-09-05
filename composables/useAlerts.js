@@ -15,13 +15,15 @@ export const useAlerts = () => {
         })
     }
 
-    const showConfirm = async () => {
+    const showConfirm = async (title, message) => {
         const { value } = await Dialog.confirm({
             title,
             message,
         })
-
-        console.log("Confirmed:", value)
+        if (value) {
+            return true
+        }
+        return false
     }
 
     const showPrompt = async (title, message) => {
@@ -29,9 +31,6 @@ export const useAlerts = () => {
             title,
             message,
         })
-
-        console.log("Name:", value)
-        console.log("Cancelled:", cancelled)
     }
 
     return {

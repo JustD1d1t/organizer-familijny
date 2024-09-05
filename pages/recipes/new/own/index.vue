@@ -51,7 +51,7 @@ const saveRecipe = async () => {
             <ion-textarea
                 label="Przepis"
                 placeholder="Podaj przepis"
-                v-model="recipe"
+                v-model="steps"
             ></ion-textarea>
 
             <ion-button expand="block" @click="addIngredient" class="my-6"

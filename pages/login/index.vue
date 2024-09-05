@@ -2,7 +2,7 @@
 const notificationsStore = useNotificationsStore()
 const { getNotifications } = notificationsStore
 
-const { displayToast } = useAlerts()
+const { displayToast, showAlert } = useAlerts()
 
 const userStore = useUserStore()
 const { loginUser } = userStore
@@ -32,10 +32,10 @@ const login = async () => {
             await getFamilyDetails()
             confirmLoginToast()
         } else {
-            displayToast(response.error)
+            showAlert(response.error, response.error)
         }
     } catch (error) {
-        console.log(error)
+        showAlert(error);
     }
 }
 </script>

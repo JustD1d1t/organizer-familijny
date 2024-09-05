@@ -104,7 +104,6 @@ const prepareChart = () => {
     for (const [key, value] of groupedExpenses.entries()) {
         option.xAxis.data.push(key); // Dodajemy kategorię do osi X
         option.series[0].data.push(value); // Dodajemy wartość do serii
-        option.legend.data.push(key); // Dodajemy kategorię do legendy
     }
 
     // Ustawienie opcji na wykresie

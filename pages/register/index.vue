@@ -3,6 +3,7 @@ const { backendUrl } = useConfig()
 
 const userStore = useUserStore()
 const { registerUser } = userStore
+const { showAlert } = useAlerts()
 
 const email = ref("")
 const password = ref("")
@@ -17,6 +18,10 @@ const register = async () => {
             password.value,
             nickname.value
         )
+        if (user.error) {
+            showAlert(user.error, user.error)
+            return
+        }
         const uid = user.localId
         await fetch(`${backendUrl}/users/add-user`, {
             method: "POST",
@@ -39,7 +44,7 @@ const register = async () => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Rejestracja</ion-title>
             </ion-toolbar>
         </ion-header>
