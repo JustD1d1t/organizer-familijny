@@ -8,7 +8,7 @@ const expensesStore = useExpensesStore()
 const { removeExpenseFromStore, editExpense, getExpensePhoto } = expensesStore
 const { currentExpense } = storeToRefs(expensesStore)
 const { billCategories } = useBillCategories()
-const { showConfirm } = useAlerts()
+const { openAlert } = useAlerts()
 
 const router = useRouter()
 
@@ -87,16 +87,6 @@ const removeExpense = async () => {
     router.back()
 }
 
-const showConfirmModal = () => {
-    const confirmed = showConfirm({
-        title: "Usuń wydatek",
-        message: "Czy na pewno chcesz usunąć ten wydatek?",
-    })
-    if (confirmed) {
-        removeExpense()
-    }
-}
-
 const fetchBillUrl = async () => {
     const url = await getExpensePhoto(currentExpense.value.id)
     if (url) {
@@ -139,7 +129,15 @@ const handleMember = (member) => {
                     <ion-button
                         fill="clear"
                         :strong="true"
-                        @click="showConfirmModal()"
+                        @click="
+                            () =>
+                                openAlert(
+                                    'Usuwanie wydatku',
+                                    'Czy na pewno chcesz usunąć wydatek?',
+                                    'alert-button-confirm',
+                                    removeExpense
+                                )
+                        "
                         >Usuń</ion-button
                     >
                 </ion-buttons>

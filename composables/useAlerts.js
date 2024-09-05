@@ -1,42 +1,47 @@
-import { Toast } from "@capacitor/toast"
-import { Dialog } from "@capacitor/dialog"
+import { alertController, toastController } from "@ionic/vue"
 
 export const useAlerts = () => {
-    const displayToast = async (message) => {
-        await Toast.show({
-            text: message,
+    const openToast = async (message, type = "success", duration = 2000) => {
+        const toast = await toastController.create({
+            message,
+            duration,
+            cssClass: type === "danger" ? "danger-toast" : "success-toast",
         })
+
+        await toast.present()
     }
 
-    const showAlert = async (title, message) => {
-        await Dialog.alert({
-            title,
+    const openAlert = async (
+        message,
+        header = "Alert",
+        confirmClass,
+        onConfirm
+    ) => {
+        const alert = await alertController.create({
+            header,
             message,
+            buttons: [
+                {
+                    text: "Anuluj",
+                    role: "cancel",
+                },
+                {
+                    text: "Potwierdź",
+                    cssClass: confirmClass,
+                    handler: () => {
+                        if (onConfirm && typeof onConfirm === "function") {
+                            onConfirm()
+                        }
+                    },
+                },
+            ],
         })
-    }
 
-    const showConfirm = async (title, message) => {
-        const { value } = await Dialog.confirm({
-            title,
-            message,
-        })
-        if (value) {
-            return true
-        }
-        return false
-    }
-
-    const showPrompt = async (title, message) => {
-        const { value, cancelled } = await Dialog.prompt({
-            title,
-            message,
-        })
+        await alert.present()
     }
 
     return {
-        displayToast,
-        showAlert,
-        showConfirm,
-        showPrompt,
+        openAlert,
+        openToast,
     }
 }

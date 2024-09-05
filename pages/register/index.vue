@@ -3,13 +3,11 @@ const { backendUrl } = useConfig()
 
 const userStore = useUserStore()
 const { registerUser } = userStore
-const { showAlert } = useAlerts()
+const { openToast } = useAlerts()
 
 const email = ref("")
 const password = ref("")
 const nickname = ref("")
-const toastMessage = ref("")
-const isOpen = ref(false)
 
 const register = async () => {
     try {
@@ -19,7 +17,7 @@ const register = async () => {
             nickname.value
         )
         if (user.error) {
-            showAlert(user.error, user.error)
+            openToast(user.error, "danger")
             return
         }
         const uid = user.localId
@@ -35,6 +33,7 @@ const register = async () => {
                 },
             }),
         })
+        openToast("Zarejestrowano pomyślnie")
         navigateTo("/login")
     } catch (error) {
         console.log(error)
@@ -88,11 +87,6 @@ const register = async () => {
                     >
                 </uiCard>
             </div>
-            <ion-toast
-                :is-open="isOpen"
-                :message="toastMessage"
-                :duration="2000"
-            ></ion-toast>
         </ion-content>
     </ion-page>
 </template>

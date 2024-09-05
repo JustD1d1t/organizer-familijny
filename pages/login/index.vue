@@ -2,7 +2,7 @@
 const notificationsStore = useNotificationsStore()
 const { getNotifications } = notificationsStore
 
-const { displayToast, showAlert } = useAlerts()
+const { openToast } = useAlerts()
 
 const userStore = useUserStore()
 const { loginUser } = userStore
@@ -12,15 +12,15 @@ const { getFamilyDetails } = familyMembersStore
 
 const emailValue = ref("")
 const password = ref("")
-const toastMessage = ref("")
-const isOpen = ref(false)
+
+const toastType = ref("")
 
 const confirmLoginToast = () => {
-    toastMessage.value = "Zalogowano pomyślnie"
-    isOpen.value = true
-    setTimeout(() => {
-        isOpen.value = false
-    }, 2000)
+    openToast("Zalogowano pomyślnie")
+}
+
+const errorLoginToast = (message) => {
+    openToast(message, "danger")
 }
 
 const login = async () => {
@@ -32,10 +32,10 @@ const login = async () => {
             await getFamilyDetails()
             confirmLoginToast()
         } else {
-            showAlert(response.error, response.error)
+            errorLoginToast(response.error)
         }
     } catch (error) {
-        showAlert(error);
+        errorLoginToast(error)
     }
 }
 </script>
