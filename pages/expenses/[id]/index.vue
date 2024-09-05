@@ -69,7 +69,7 @@ const selectPhoto = async () => {
 const edit = async () => {
     const editedExpense = {
         name: newName.value,
-        value: newValue.value,
+        value: Number(newValue.value),
         timestamp: new Date(newTimestamp.value).getTime(),
         shop: newShopName.value,
         familyMembers: newMembers.value,
