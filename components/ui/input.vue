@@ -13,10 +13,6 @@ const props = defineProps({
         type: String,
         default: "",
     },
-    label: {
-        type: String,
-        default: "",
-    },
     labelPlacement: {
         type: String,
         default: "floating",
@@ -25,8 +21,11 @@ const props = defineProps({
         type: String,
         default: "text",
     },
+    error: {
+        type: String,
+        default: "",
+    },
 })
-
 const inputValue = ref(props.modelValue)
 
 watch(inputValue, (newValue) => {
@@ -34,13 +33,25 @@ watch(inputValue, (newValue) => {
 })
 </script>
 <template>
-    <ion-item class="mb-4">
+    <ion-item class="flex flex-col relative" :class="{ 'mb-3': error }">
         <ion-input
+            class="w-full pb-16"
             :class="classes"
             :label="label"
             :label-placement="labelPlacement"
             :type="type"
             v-model="inputValue"
         ></ion-input>
+        <span class="absolute top-[100%] text-sm font-bold" v-if="error">
+            {{ error }}
+        </span>
     </ion-item>
 </template>
+<style lang="scss" scoped>
+ion-item {
+    overflow: visible;
+}
+span {
+    color: var(--ion-color-danger);
+}
+</style>

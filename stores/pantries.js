@@ -103,19 +103,23 @@ export const usePantriesStore = defineStore({
                 membersIds,
                 ownerId: localStorage.getItem("uid"),
             }
-            const data = await request(`${backendUrl}/pantries/add`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ pantry: newPantry }),
-            })
-            if (data.id) {
-                const id = data.id
-                this.pantries.push({
-                    ...newPantry,
-                    id,
+            try {
+                const data = await request(`${backendUrl}/pantries/add`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ pantry: newPantry }),
                 })
+                if (data.id) {
+                    const id = data.id
+                    this.pantries.push({
+                        ...newPantry,
+                        id,
+                    })
+                }
+            } catch (error) {
+                console.log(error)
             }
         },
 

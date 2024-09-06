@@ -298,6 +298,7 @@ export const useShoppingListsStore = defineStore({
             this.setError(null)
             try {
                 const shoppingListItems = [...this.currentShoppingList.items]
+                let message
                 if (
                     shoppingListItems.some(
                         (shoppingItem) => shoppingItem.name === name
@@ -309,12 +310,14 @@ export const useShoppingListsStore = defineStore({
                         ),
                         1
                     )
+                    message = "removed"
                 } else {
                     shoppingListItems.push({
                         name,
                         category: category ?? "",
                         checked: false,
                     })
+                    message = "added"
                 }
                 await this.updateShoppingList({
                     ...this.currentShoppingList,
@@ -324,6 +327,7 @@ export const useShoppingListsStore = defineStore({
                     ...this.currentShoppingList,
                     items: shoppingListItems,
                 })
+                return message
             } catch (error) {
                 console.error(error)
                 this.setError("Failed to handle item")

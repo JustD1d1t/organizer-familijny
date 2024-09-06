@@ -10,7 +10,7 @@ const { loginUser } = userStore
 const familyMembersStore = useFamilyMembersStore()
 const { getFamilyDetails } = familyMembersStore
 
-const emailValue = ref("")
+const email = ref("")
 const password = ref("")
 
 const toastType = ref("")
@@ -23,9 +23,40 @@ const errorLoginToast = (message) => {
     openToast(message, "danger")
 }
 
+const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(String(email).toLowerCase())
+}
+
+const emailInputError = ref("")
+const passwordInputError = ref("")
+
 const login = async () => {
+    // Reset error messages
+    emailInputError.value = ""
+    passwordInputError.value = ""
+
+    // Validate email
+    if (!email.value) {
+        emailInputError.value = "Email jest wymagany."
+    }
+    if (!validateEmail(email.value)) {
+        emailInputError.value = "Nieprawidłowy format email."
+    }
+
+    // Validate password
+    if (!password.value) {
+        passwordInputError.value = "Hasło jest wymagane."
+    }
+    if (password.value.length < 6) {
+        passwordInputError.value = "Hasło musi mieć co najmniej 6 znaków."
+    }
+
+    if (emailInputError.value || passwordInputError.value) {
+        return
+    }
     try {
-        const response = await loginUser(emailValue.value, password.value)
+        const response = await loginUser(email.value, password.value)
         if (!response.error) {
             navigateTo("/")
             await getNotifications()
@@ -51,16 +82,18 @@ const login = async () => {
             <div class="flex items-center h-full w-full">
                 <uiCard class="p-8 w-full">
                     <template v-slot:title> Logowanie </template>
-                    <ion-list>
+                    <ion-list class="pb-4">
                         <uiInput
                             label="Email"
                             type="email"
-                            v-model="emailValue"
+                            v-model="email"
+                            :error="emailInputError"
                         />
                         <uiInput
                             label="Hasło"
                             type="password"
                             v-model="password"
+                            :error="passwordInputError"
                         />
                     </ion-list>
                     <ion-button

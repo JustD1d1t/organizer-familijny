@@ -7,13 +7,22 @@ const familyMembersIds = ref([])
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
 const { addPantry } = pantriesStore
+const { openToast } = useAlerts()
+
+const pantryInputError = ref("")
 
 const add = async () => {
+    if (!pantryName.value) {
+        pantryInputError.value = "Nazwa spiżarni jest wymagana"
+        return
+    }
+    pantryInputError.value = ""
     await addPantry(
         pantryName.value,
         familyMembers.value,
         familyMembersIds.value
     )
+    openToast("Dodano spiżarnię")
     router.back()
 }
 const handleMember = (member) => {
@@ -38,15 +47,11 @@ const handleMember = (member) => {
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <ion-item>
-                <ion-input
-                    data-test="pantry-name-input"
-                    label="Nazwa spiżarni"
-                    label-placement="floating"
-                    type="text"
-                    v-model="pantryName"
-                ></ion-input>
-            </ion-item>
+            <UiInput
+                v-model="pantryName"
+                label="Nazwa spiżarni"
+                :error="pantryInputError"
+            />
             <FamilyDropdownSelectMember @toggleMember="handleMember" />
             <ion-button expand="block" @click="add" class="my-6"
                 >Dodaj listę</ion-button

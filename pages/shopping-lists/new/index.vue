@@ -1,16 +1,26 @@
 <script setup>
 const router = useRouter()
-const { displayToast } = useAlerts()
+const { openToast } = useAlerts()
 
 import { useShoppingListsStore } from "~/stores/shopping-lists"
 const shoppingListsStore = useShoppingListsStore()
 const { addList } = shoppingListsStore
 
 const newShoppingListName = ref("")
-const input = ref()
+const shoppingListInputError = ref("")
 
 const add = async () => {
-    await addList(newShoppingListName.value, familyMembers.value, familyMembersIds.value)
+    if (!newShoppingListName.value) {
+        shoppingListInputError.value = "Nazwa listy zakupowej jest wymagana"
+        return
+    }
+    shoppingListInputError.value = ""
+    await addList(
+        newShoppingListName.value,
+        familyMembers.value,
+        familyMembersIds.value
+    )
+    openToast("Dodano nową listę zakupową")
     router.back()
 }
 
@@ -25,11 +35,11 @@ const handleMember = (member) => {
         familyMembers.value = familyMembers.value.filter(
             (m) => m.id != member.id
         )
-        displayToast(`Usunięto ${member.nickname} z listy zakupowej`)
+        openToast(`Usunięto ${member.nickname} z listy zakupowej`, "danger")
     } else {
         familyMembersIds.value.push(member.id)
         familyMembers.value.push(member)
-        displayToast(`Dodano ${member.nickname} do listy zakupowej`)
+        openToast(`Dodano ${member.nickname} do listy zakupowej`)
     }
 }
 </script>
@@ -41,23 +51,17 @@ const handleMember = (member) => {
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <div class="inner-content">
-                <ion-item class="mb-6">
-                    <ion-input
-                        label="Nazwa listy zakupowej"
-                        label-placement="floating"
-                        ref="input"
-                        type="text"
-                        v-model="newShoppingListName"
-                    ></ion-input>
-                </ion-item>
+            <UiInput
+                v-model="newShoppingListName"
+                label="Nazwa listy zakupowej"
+                :error="shoppingListInputError"
+            />
 
-                <FamilyDropdownSelectMember @toggleMember="handleMember" />
+            <FamilyDropdownSelectMember @toggleMember="handleMember" />
 
-                <ion-button expand="block" @click="add" class="my-6"
-                    >Dodaj listę</ion-button
-                >
-            </div>
+            <ion-button expand="block" @click="add" class="my-6"
+                >Dodaj listę</ion-button
+            >
         </ion-content>
     </ion-page>
 </template>

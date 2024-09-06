@@ -9,6 +9,7 @@ const { currentShoppingList, isLoading } = storeToRefs(shoppingListsStore)
 const activeCategory = ref("")
 const addingItem = ref(false)
 const shoppingItemInput = ref("")
+const { openToast } = useAlerts()
 
 const availableShoppingItemsByPhrase = computed(() => {
     const itemsWithCategory = shoppingItems.map((item) =>
@@ -28,6 +29,15 @@ const availableShoppingItemsByPhrase = computed(() => {
     ]
 })
 
+const localHandleItem = async (name, category) => {
+    const message = await handleItem(name, category)
+    if (message === "added") {
+        openToast("Dodano produkt do listy")
+    } else {
+        openToast("Usunięto produkt z listy", 'danger')
+    }
+}
+
 const handleCategory = (cat) => {
     activeCategory.value = activeCategory.value === cat ? "" : cat
 }
@@ -35,7 +45,7 @@ const handleCategory = (cat) => {
 <template>
     <ion-page>
         <ion-header>
-            <ion-toolbar >
+            <ion-toolbar>
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -89,7 +99,11 @@ const handleCategory = (cat) => {
                                         )
                                     "
                                     @click="
-                                        () => handleItem(item, items.category)
+                                        () =>
+                                            localHandleItem(
+                                                item,
+                                                items.category
+                                            )
                                     "
                                 />
                             </div>
@@ -111,7 +125,7 @@ const handleCategory = (cat) => {
                                     shoppingItem.name === item.name
                             )
                         "
-                        @click="() => handleItem(item.name, item.category)"
+                        @click="() => localHandleItem(item.name, item.category)"
                     />
                 </div>
                 <div class="background" v-if="isLoading">

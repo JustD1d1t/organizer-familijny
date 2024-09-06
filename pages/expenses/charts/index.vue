@@ -1,39 +1,39 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { init } from 'echarts'; // Importuj tylko funkcję init z ECharts
+import { ref, onMounted } from "vue"
+import { init } from "echarts" // Importuj tylko funkcję init z ECharts
 
-const expensesStore = useExpensesStore();
-const { expenses } = storeToRefs(expensesStore);
+const expensesStore = useExpensesStore()
+const { expenses } = storeToRefs(expensesStore)
 
 function groupExpensesByCategory() {
-    const groupedExpenses = new Map();
+    const groupedExpenses = new Map()
 
     expenses.value.forEach((expense) => {
-        const { category, value } = expense;
+        const { category, value } = expense
 
         if (groupedExpenses.has(category)) {
-            groupedExpenses.set(category, groupedExpenses.get(category) + value);
+            groupedExpenses.set(category, groupedExpenses.get(category) + value)
         } else {
-            groupedExpenses.set(category, value);
+            groupedExpenses.set(category, value)
         }
-    });
+    })
 
     // Sortowanie według wartości
     const sortedExpenses = new Map(
         [...groupedExpenses.entries()].sort((a, b) => b[1] - a[1])
-    );
+    )
 
-    return sortedExpenses;
+    return sortedExpenses
 }
 
 // Referencja do div, w którym będzie rysowany wykres
-const chart = ref(null);
+const chart = ref(null)
 
 const prepareChart = () => {
-    const groupedExpenses = groupExpensesByCategory();
+    const groupedExpenses = groupExpensesByCategory()
 
     // Inicjalizacja ECharts na referencji do elementu
-    const myChart = init(chart.value);
+    const myChart = init(chart.value)
 
     // Przykładowa tablica z kolorami (możesz dodać więcej kolorów)
     const colors = [
@@ -46,7 +46,7 @@ const prepareChart = () => {
         "#FC8452",
         "#9A60B4",
         "#EA7CCC",
-    ];
+    ]
 
     // Opcje wykresu
     const option = {
@@ -80,7 +80,7 @@ const prepareChart = () => {
                 itemStyle: {
                     color: function (params) {
                         // Funkcja zwraca kolor na podstawie indeksu słupka
-                        return colors[params.dataIndex % colors.length];
+                        return colors[params.dataIndex % colors.length]
                     },
                 },
                 label: {
@@ -88,7 +88,7 @@ const prepareChart = () => {
                     position: "bottom", // Umieszcza etykiety nad słupkami
                     formatter: function (params) {
                         // Zwraca kategorię (klucz) z danych
-                        return option.xAxis.data[params.dataIndex];
+                        return option.xAxis.data[params.dataIndex]
                     },
                     color: "#000", // Kolor etykiety
                     rotate: 90, // Obraca etykiety o 90 stopni
@@ -98,21 +98,21 @@ const prepareChart = () => {
                 },
             },
         ],
-    };
+    }
 
     // Dodajemy dane do wykresu
     for (const [key, value] of groupedExpenses.entries()) {
-        option.xAxis.data.push(key); // Dodajemy kategorię do osi X
-        option.series[0].data.push(value); // Dodajemy wartość do serii
+        option.xAxis.data.push(key) // Dodajemy kategorię do osi X
+        option.series[0].data.push(value) // Dodajemy wartość do serii
     }
 
     // Ustawienie opcji na wykresie
-    myChart.setOption(option);
-};
+    myChart.setOption(option)
+}
 
 onMounted(() => {
-    prepareChart();
-});
+    prepareChart()
+})
 </script>
 <template>
     <ion-page>

@@ -9,17 +9,36 @@ const { resetPassword } = userStore
 const toastMessage = ref("")
 const isOpen = ref(false)
 const email = ref("")
+const emailInputError = ref("")
 
 const openPersonMenu = async () => {
     await menuController.open("person")
 }
 
+const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(String(email).toLowerCase())
+}
+
 const sendPasswordResetRequest = async () => {
+    emailInputError.value = ""
+
+    // Validate email
+    if (!email.value) {
+        emailInputError.value = "Email jest wymagany."
+    }
+    if (!validateEmail(email.value)) {
+        emailInputError.value = "Nieprawidłowy format email."
+    }
+
+    if (emailInputError.value) {
+        return
+    }
     try {
         const data = await resetPassword(email.value)
         if (data.error) {
             displayToast(data.error.message)
-            return;
+            return
         }
         displayToast(data.message)
     } catch (error) {
@@ -31,6 +50,12 @@ const sendPasswordResetRequest = async () => {
     <ion-page>
         <ion-header>
             <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
                 <ion-title>Zresetuj hasło</ion-title>
                 <ion-buttons slot="end">
                     <ion-button fill="clear" @click="openPersonMenu">
@@ -43,16 +68,13 @@ const sendPasswordResetRequest = async () => {
             <div class="flex justify-center items-center h-full w-full">
                 <uiCard class="p-8 w-full">
                     <template v-slot:title>Zresetuj hasło</template>
-                    <ion-list lines="none">
-                        <ion-item class="mb-4">
-                            <ion-input
-                                class="w-full"
-                                label="Email"
-                                label-placement="floating"
-                                type="email"
-                                v-model="email"
-                            ></ion-input>
-                        </ion-item>
+                    <ion-list lines="none" class="pb-4">
+                        <UiInput
+                            label="Email"
+                            type="email"
+                            v-model="email"
+                            :error="emailInputError"
+                        />
                     </ion-list>
                     <ion-button
                         class="w-full mt-4"
