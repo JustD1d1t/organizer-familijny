@@ -24,7 +24,19 @@ CapacitorApp.addListener("backButton", (e) => {
 })
 const isLoading = ref(false)
 
+const isMobile = ref(true)
+
+const onWidthChange = () => {
+    if (window.innerWidth < 750) {
+        isMobile.value = true
+    } else {
+        isMobile.value = false
+    }
+}
+
 onMounted(async () => {
+    window.addEventListener("resize", onWidthChange)
+    isMobile.value = window.innerWidth < 750
     const localUid = localStorage.getItem("uid")
     const localEmail = localStorage.getItem("email")
     const localEmailVerified = localStorage.getItem("emailVerified")
@@ -70,6 +82,19 @@ const downloadExpenses = async () => {
             <ion-content :fullscreen="true">
                 <div class="w-full flex justify-center items-center h-full">
                     <ion-spinner name="lines-sharp"></ion-spinner>
+                </div>
+            </ion-content>
+        </ion-page>
+        <ion-page v-else-if="!isMobile">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>Cześć</ion-title>
+                </ion-toolbar>
+            </ion-header>
+
+            <ion-content :fullscreen="true">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <h2>Masz za dużą szerokość. Maksymalna to 750px</h2>
                 </div>
             </ion-content>
         </ion-page>
