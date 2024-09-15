@@ -38,7 +38,7 @@ const handleMember = (e) => {
             label-placement="floating"
             :multiple="true"
             @ionChange="handleMember($event)"
-            v-model="membersToShow"
+            :value="members"
         >
             <ion-select-option
                 v-for="member in membersToShow"
