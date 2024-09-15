@@ -33,7 +33,8 @@ const handleMember = (e) => {
 
 const selectedMembers = computed(() => {
     return props.members.map((member) => {
-        return member.id
+        // w expense mamy tylko id
+        return member.id ?? member
     })
 })
 </script>
