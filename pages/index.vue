@@ -14,7 +14,7 @@ const nick = nickname.value.length
 
 <template>
     <ion-page id="main-content">
-        <ion-header :translucent="true">
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-title>Cześć, {{ nick }}!</ion-title>
                 <ion-buttons slot="end">

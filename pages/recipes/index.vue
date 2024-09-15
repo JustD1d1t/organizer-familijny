@@ -21,7 +21,7 @@ const goToAddRecipePage = (recipe) => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button
@@ -40,11 +40,27 @@ const goToAddRecipePage = (recipe) => {
             >
                 <ion-spinner name="lines-sharp"></ion-spinner>
             </div>
-            <h2 v-else-if="!recipes.length">Nie masz jeszcze przepisów</h2>
-            <div
-                class="w-full"
-                v-else
-            >
+            <div v-else-if="!recipes.length">
+                <h4>Nie masz jeszcze zapisanych przepisów.</h4>
+                <uiInfoCard
+                    title="Czy wiesz, że..."
+                    subtitle="Możesz dodawać przepisy ze stron:"
+                    icon="ioniconsBulb"
+                    class="mt-8"
+                >
+                    <ul class="my-2">
+                        <li>www.przepisy.pl</li>
+                        <li>www.aniagotuje.pl</li>
+                        <li>www.kwestiasmaku.com</li>
+                        <li>www.kucnialidla.pl</li>
+                        <li>www.poprostupycha.com.pl</li>
+                        <li>www.aniastarmach.pl</li>
+                        <li>www.doradcasmaku.pl</li>
+                    </ul>
+                    <p>Zawsze możesz zapisać również swój własny przepis</p>
+                </uiInfoCard>
+            </div>
+            <div class="w-full" v-else>
                 <RecipesItem
                     v-for="recipe in recipes"
                     :key="recipe.id"

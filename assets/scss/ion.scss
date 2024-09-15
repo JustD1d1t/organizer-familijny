@@ -45,12 +45,47 @@ ion-checkbox {
     --checkbox-background: #fff;
 }
 
+ion-datetime-button {
+    &::part(native) {
+        background: $background-color;
+    }
+}
+
+ion-item {
+    &::part(native) {
+        --padding-start: 0 !important;
+        --padding-end: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+ion-input,
+ion-select {
+    background: $white;
+    --padding-top: 0 !important;
+    --padding-bottom: 0.25rem !important;
+    --padding-start: 0.5rem !important;
+    --padding-end: 0.5rem !important;
+    border: 1px solid $light-gray;
+    border-radius: $border-radius-big;
+}
+
+ion-fab-button {
+    &::part(native) {
+        border: unset;
+        border-radius: $border-radius-big;
+        background: $white;
+        box-shadow: $box-shadow;
+    }
+}
+
 ion-header {
     ion-toolbar {
         --background: $background-color;
         --color: var(--ion-color-primary-contrast);
         ion-back-button {
-            color: $primary-color;
+            color: $primary-text-color;
         }
         ion-title {
             font-size: 1.5rem;

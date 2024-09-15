@@ -73,7 +73,7 @@ const downloadExpenses = async () => {
 <template>
     <ion-app>
         <ion-page v-if="isLoading">
-            <ion-header>
+            <ion-header style="background: var(--ion-color-light);">
                 <ion-toolbar>
                     <ion-title>Cześć</ion-title>
                 </ion-toolbar>
@@ -86,7 +86,7 @@ const downloadExpenses = async () => {
             </ion-content>
         </ion-page>
         <ion-page v-else-if="!isMobile">
-            <ion-header>
+            <ion-header style="background: var(--ion-color-light);">
                 <ion-toolbar>
                     <ion-title>Cześć</ion-title>
                 </ion-toolbar>

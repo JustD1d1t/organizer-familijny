@@ -13,6 +13,12 @@ const handleClick = (recipe) => {
     navigateTo(`/recipes/${recipe.id}`)
     setCurrentRecipe(recipe)
 }
+
+const recipeLink = computed(() => {
+    const domainPattern = /(https?:\/\/)?(www\.)?[\w\-]+\.(com|com\.pl|pl)/
+    const match = props.recipe.url.match(domainPattern)
+    return match ? match[0] : null
+})
 </script>
 <template>
     <div
@@ -25,12 +31,19 @@ const handleClick = (recipe) => {
                     @click="() => handleClick(recipe)"
                     >{{ recipe.name }}</ion-label
                 >
+                <a :href="recipe.url" class="flex items-center">
+                    <ion-icon
+                        size="small"
+                        :icon="ioniconsGlobeOutline"
+                        class="mr-1"
+                    />
+                    {{ recipeLink }}
+                </a>
             </div>
             <ion-button
                 fill="clear"
                 id="open-shopping-menu"
                 class="ml-auto"
-                size="small"
                 @click="() => deleteRecipe(recipe.id)"
             >
                 <ion-icon size="medium" :icon="ioniconsTrashOutline" />

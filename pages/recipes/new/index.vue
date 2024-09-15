@@ -76,6 +76,7 @@ const add = async () => {
         name: name,
         ingredients: ingredientsArray,
         userId: uid,
+        url: recipeLink.value,
     }
     await addRecipe(recipe)
     router.back()
@@ -86,19 +87,13 @@ const addOwnRecipe = () => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Nowa lista zakupowa</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <ion-item>
-                Możesz dodawać przepisy ze stron: www.przepisy.pl,
-                www.aniagotuje.pl, www.kwestiasmaku.com, www.kuchnialidla.pl,
-                www.poprostupycha.com.pl, www.aniastarmach.pl,
-                www.doradcasmaku.pl
-            </ion-item>
-            <ion-item>
+            <ion-item lines="none">
                 <ion-input
                     label="Adres strony"
                     label-placement="floating"
@@ -107,14 +102,26 @@ const addOwnRecipe = () => {
                     v-model="recipeLink"
                 ></ion-input>
             </ion-item>
+            <uiInfoCard class="mt-8">
+                <p>Możesz dodawać przepisy ze stron:</p>
+                <ul class="my-2">
+                    <li>www.przepisy.pl</li>
+                    <li>www.aniagotuje.pl</li>
+                    <li>www.kwestiasmaku.com</li>
+                    <li>www.kucnialidla.pl</li>
+                    <li>www.poprostupycha.com.pl</li>
+                    <li>www.aniastarmach.pl</li>
+                    <li>www.doradcasmaku.pl</li>
+                </ul>
+            </uiInfoCard>
 
-            <ion-button expand="block" @click="add" class="my-6"
-                >Dodaj przepis</ion-button
-            >
+            <ion-button expand="block" @click="add" class="my-6">
+                Dodaj przepis ze strony
+            </ion-button>
             <span class="text-center block">lub</span>
-            <ion-button expand="block" @click="addOwnRecipe" class="my-6"
-                >Dodaj swój przepis</ion-button
-            >
+            <ion-button expand="block" @click="addOwnRecipe" class="my-6">
+                Zapisz swój własny przepis
+            </ion-button>
         </ion-content>
     </ion-page>
 </template>

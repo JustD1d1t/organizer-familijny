@@ -1,5 +1,5 @@
 <template>
-    <ion-header>
+    <ion-header style="background: var(--ion-color-light);">
         <ion-toolbar>
             <ion-title>Cześć, {{ nickname }}</ion-title>
             <ion-buttons slot="end">

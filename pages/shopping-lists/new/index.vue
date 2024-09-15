@@ -45,23 +45,22 @@ const handleMember = (member) => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Nowa lista zakupowa</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <UiInput
-                v-model="newShoppingListName"
-                label="Nazwa listy zakupowej"
-                :error="shoppingListInputError"
-            />
+            <ion-list lines="none" class="mt-4">
+                <UiInput
+                    v-model="newShoppingListName"
+                    label="Nazwa listy zakupowej"
+                    :error="shoppingListInputError"
+                />
 
-            <FamilyDropdownSelectMember @toggleMember="handleMember" />
-
-            <ion-button expand="block" @click="add" class="my-6"
-                >Dodaj listę</ion-button
-            >
+                <FamilyDropdownSelectMember @toggleMember="handleMember" />
+            </ion-list>
+            <uiButton @click="add" class="my-6 w-full"> Dodaj listę </uiButton>
         </ion-content>
     </ion-page>
 </template>

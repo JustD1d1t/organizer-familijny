@@ -120,7 +120,7 @@ const handleMember = (member) => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-buttons
                     slot="start"

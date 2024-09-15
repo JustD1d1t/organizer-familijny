@@ -38,7 +38,7 @@ const leave = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button
@@ -50,26 +50,31 @@ const leave = async () => {
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <h2>{{ newPantryName }}</h2>
-            <ion-item>
-                <ion-input
-                    label="Nazwa spiżarni"
-                    label-placement="floating"
-                    ref="input"
-                    type="text"
-                    v-model="newPantryName"
-                ></ion-input>
-            </ion-item>
-            <FamilyDropdownSelectMember
-                :members="currentPantry.members"
-                @toggleMember="handleMember"
-                v-if="!collaboratedPantry"
-            />
-            <ion-button expand="block" class="my-6" @click="leave" v-if="collaboratedPantry">
+            <ion-list lines="none" class="mt-4">
+                <ion-item>
+                    <ion-input
+                        label="Nazwa spiżarni"
+                        label-placement="floating"
+                        ref="input"
+                        type="text"
+                        v-model="newPantryName"
+                    ></ion-input>
+                </ion-item>
+                <FamilyDropdownSelectMember
+                    :members="currentPantry.members"
+                    @toggleMember="handleMember"
+                    v-if="!collaboratedPantry"
+                />
+            </ion-list>
+            <uiButton
+                class="my-6 w-full"
+                @click="leave"
+                v-if="collaboratedPantry"
+            >
                 Opuść spiżarnię
-            </ion-button>
-            <ion-button expand="block" @click="updatePantry" class="my-6"
-                >Aktualizuj spiżarnię</ion-button
+            </uiButton>
+            <uiButton @click="updatePantry" class="my-6 w-full"
+                >Aktualizuj spiżarnię</uiButton
             >
         </ion-content>
     </ion-page>

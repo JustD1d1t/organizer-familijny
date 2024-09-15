@@ -8,13 +8,13 @@ const props = defineProps({
 })
 </script>
 <template>
-    <div class="flex flex-col">
+    <ion-list :inset="true" class="p-2">
         <UiListItem v-for="ingredient in ingredients" :key="ingredient.id">
             <template #start>
                 {{ ingredient.name }}
             </template>
         </UiListItem>
-    </div>
+    </ion-list>
 </template>
 
 <style lang="scss" scoped>

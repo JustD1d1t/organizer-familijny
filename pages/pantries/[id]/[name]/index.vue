@@ -36,8 +36,8 @@ const updateExpiryDate = (e) => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
-            <ion-toolbar :translucent="true">
+        <ion-header style="background: var(--ion-color-light);">
+            <ion-toolbar >
                 <ion-buttons slot="start">
                     <ion-back-button
                         text=""

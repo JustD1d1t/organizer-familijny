@@ -50,6 +50,13 @@ export const useExpensesStore = defineStore({
         clearCategory() {
             this.category = null
         },
+        resetFilters() {
+            this.clearCategory()
+            this.startPrice = null
+            this.endPrice = null
+            this.shopName = null
+            this.expenseName = null
+        },
 
         async getExpensePhoto(id) {
             this.setLoading(true)

@@ -51,7 +51,7 @@ const navigate = (url) => {
         content-id="main-content"
         swipeGesture="false"
     >
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-title>Użytkownik</ion-title>
             </ion-toolbar>

@@ -21,7 +21,7 @@ const { components } = useComponents()
             :key="cmp.id"
         >
             <div
-                class="swiper-slide-content flex flex justify-center h-[160px] items-center py-6 px-8 my-4 gap-4"
+                class="swiper-slide-content flex flex justify-center h-[160px] items-center py-3 px-4 my-4 gap-4"
             >
                 <div class="flex flex-col w-8/12">
                     <span class="text-xl font-bold mb-4">{{ cmp.name }}</span>

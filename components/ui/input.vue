@@ -25,6 +25,10 @@ const props = defineProps({
         type: String,
         default: "",
     },
+    placeholder: {
+        type: String,
+        default: "",
+    },
 })
 const inputValue = ref(props.modelValue)
 
@@ -41,6 +45,7 @@ watch(inputValue, (newValue) => {
             :label-placement="labelPlacement"
             :type="type"
             v-model="inputValue"
+            :placeholder="placeholder"
         ></ion-input>
         <span class="absolute top-[100%] text-sm font-bold" v-if="error">
             {{ error }}

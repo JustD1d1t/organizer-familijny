@@ -43,41 +43,42 @@ const toggleMember = (member) => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
-                <ion-title>Listy zakupowe</ion-title>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Edytuj listę zakupową</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <ion-item v-if="currentShoppingList" class="mb-4">
-                <ion-input
+            <ion-list lines="none" class="mt-4">
+                <uiInput
                     label="Nazwa listy zakupowej"
-                    label-placement="floating"
-                    ref="input"
                     type="text"
                     v-model="newName"
-                ></ion-input>
-            </ion-item>
+                />
 
-            <FamilyDropdownSelectMember
-                :members="newMembers"
-                @toggleMember="(member) => toggleMember(member)"
-                v-if="!collaboratedList"
-            />
-
-            <div class="flex justify-center" v-else>
-                <ion-button
-                    expand="block"
-                    class="w-1/2"
-                    size="small"
-                    @click="leaveList()"
-                >
-                    Opuść listę
-                </ion-button>
-            </div>
-            <ion-button expand="block" @click="update" class="my-6"
-                >Aktualizuj listę</ion-button
+                <FamilyDropdownSelectMember
+                    :members="newMembers"
+                    @toggleMember="(member) => toggleMember(member)"
+                    v-if="!collaboratedList"
+                />
+            </ion-list>
+            <uiButton
+                v-if="collaboratedList"
+                @click="leaveList()"
+                class="my-6 w-full"
             >
+                Opuść listę
+            </uiButton>
+
+            <uiButton @click="update" class="my-6 w-full">
+                Zapisz zmiany
+            </uiButton>
         </ion-content>
     </ion-page>
 </template>

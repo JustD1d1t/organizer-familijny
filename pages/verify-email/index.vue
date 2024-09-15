@@ -18,7 +18,7 @@ const checkVerification = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-title>Email niezweryfikowany</ion-title>
                 <ion-buttons slot="end">

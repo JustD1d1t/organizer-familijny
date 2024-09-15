@@ -81,7 +81,7 @@ const openExpensesCharts = () => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-title>Wydatki</ion-title>
                 <ion-buttons slot="start">

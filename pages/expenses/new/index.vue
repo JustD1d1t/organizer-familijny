@@ -68,7 +68,7 @@ const handleMember = (member) => {
 
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="end">
                     <ion-button
@@ -82,47 +82,19 @@ const handleMember = (member) => {
         </ion-header>
         <ion-content>
             <div class="inner-content">
-                <ion-list>
-                    <ion-item>
-                        <ion-input
-                            data-test="shop-input"
-                            label="Nazwa sklepu"
-                            label-placement="floating"
-                            class="shopInput"
-                            type="text"
-                            v-model="newShopName"
-                        ></ion-input>
-                    </ion-item>
-                    <ion-item>
-                        <ion-input
-                            data-test="name-input"
-                            label="Nazwa wydatku"
-                            label-placement="floating"
-                            class="nameInput"
-                            type="text"
-                            v-model="newExpenseName"
-                        ></ion-input>
-                    </ion-item>
-                    <ion-item>
-                        <ion-input
-                            data-test="value-input"
-                            label="Całkowita kwota"
-                            label-placement="floating"
-                            class="valueInput"
-                            type="number"
-                            v-model="newExpenseValue"
-                        ></ion-input>
-                    </ion-item>
-                    <ion-item>
-                        <ion-input
-                            data-test="date-input"
-                            label="Data"
-                            label-placement="floating"
-                            class="dateInput"
-                            type="date"
-                            v-model="newExpenseDate"
-                        ></ion-input>
-                    </ion-item>
+                <ion-list lines="none">
+                    <uiInput label="Nazwa sklepu" v-model="newShopName" />
+                    <uiInput label="Nawa wydatku" v-model="newExpenseName" />
+                    <uiInput
+                        label="Całkowita kwota"
+                        type="number"
+                        v-model="newExpenseValue"
+                    />
+                    <uiInput
+                        label="Data"
+                        type="date"
+                        v-model="newExpenseDate"
+                    />
                     <ion-item>
                         <ion-select
                             label="Kategoria"
@@ -137,12 +109,14 @@ const handleMember = (member) => {
                         </ion-select>
                     </ion-item>
                     <FamilyDropdownSelectMember @toggleMember="handleMember" />
-                    <ion-item>
-                        <ion-button @click="addPhoto">Zrób zdjęcie</ion-button>
-                        <ion-button @click="selectPhoto" class="ml-auto"
-                            >Wybierz zdjęcie</ion-button
-                        >
-                    </ion-item>
+                    <div class="flex justify-between">
+                        <uiButton @click="addPhoto" type="secondary">
+                            <span> Zrób zdjęcie</span>
+                        </uiButton>
+                        <uiButton @click="selectPhoto" class="ml-auto">
+                            <span> Wybierz zdjęcie</span>
+                        </uiButton>
+                    </div>
                 </ion-list>
                 <div v-if="photos.length">
                     <ion-img

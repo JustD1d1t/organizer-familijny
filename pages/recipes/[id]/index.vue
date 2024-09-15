@@ -14,10 +14,16 @@ const confirmModal = () => modal.value.$el.dismiss(null, "confirm")
 watch(route, async (newRoute, oldRoute) => {
     cancel()
 })
+
+const recipeLink = computed(() => {
+    const domainPattern = /(https?:\/\/)?(www\.)?[\w\-]+\.(com|com\.pl|pl)/
+    const match = currentRecipe.value.url.match(domainPattern)
+    return match ? match[0] : null
+})
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button
@@ -30,6 +36,14 @@ watch(route, async (newRoute, oldRoute) => {
         </ion-header>
         <ion-content>
             <h2>{{ currentRecipe.name }}</h2>
+            <a :href="currentRecipe.url" class="flex items-center">
+                <ion-icon
+                    size="small"
+                    :icon="ioniconsGlobeOutline"
+                    class="mr-1"
+                />
+                {{ recipeLink }}
+            </a>
             <h3>Składniki</h3>
             <RecipesIngredientsList :ingredients="currentRecipe.ingredients" />
             <h3 v-if="currentRecipe.steps">Przepis</h3>

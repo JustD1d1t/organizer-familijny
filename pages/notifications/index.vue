@@ -18,7 +18,7 @@ useAsyncData(async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-title>Powiadomienia</ion-title>
             </ion-toolbar>

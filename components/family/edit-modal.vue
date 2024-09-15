@@ -78,7 +78,7 @@ const cancel = () => {
 
 <template>
     <div class="ion-padding inner-content">
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-buttons fill="clear" slot="start">
                     <ion-button @click="cancel()">Anuluj</ion-button>

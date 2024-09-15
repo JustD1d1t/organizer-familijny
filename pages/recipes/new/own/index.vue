@@ -27,7 +27,7 @@ const saveRecipe = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header>
+        <ion-header style="background: var(--ion-color-light);">
             <ion-toolbar>
                 <ion-title>Nowa lista zakupowa</ion-title>
             </ion-toolbar>

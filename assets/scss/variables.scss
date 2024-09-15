@@ -1,9 +1,44 @@
 // backgrounds
-$background-color: #f4f5f8;
+$background-color: #f4faff;
+$light-gray: #d9d9d9;
+$primary-color: #1562c0;
+$white: #ffffff;
+$orange: #e9a31b;
+$green: #1d7737;
+$red: #e73a3a;
 
 // font-colors
-$primary-color: #000;
-$white: #faf5f5;
+$primary-text-color: #1f2422;
+$secondary-text-color: #68746f;
+
+// spacings
+$padding: 1.25rem;
+$margin: 1rem;
+$section-space: 1.5rem;
 
 // effects
 $border-radius: 5px;
+$border-radius-big: 10px;
+$box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+
+// fonts
+h1,
+.h1 {
+    font-size: 1.5rem;
+}
+h2,
+.h2 {
+    font-size: 1.25rem;
+}
+h3,
+.h3 {
+    font-size: 1.125rem;
+}
+p,
+span {
+    font-size: 1rem;
+}
+small,
+.small {
+    font-size: 0.75rem;
+}

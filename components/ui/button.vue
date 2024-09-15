@@ -17,10 +17,11 @@ const props = defineProps({
 })
 
 const buttonClass = computed(() => {
-    return {
-        "button-primary": props.type === "primary",
-        "button-secondary": props.type === "secondary",
-    }
+    return props.type === "primary"
+        ? "button-primary"
+        : props.type === "secondary"
+        ? "button-secondary"
+        : ""
 })
 </script>
 <template>
@@ -28,3 +29,20 @@ const buttonClass = computed(() => {
         <slot />
     </ion-button>
 </template>
+<style scoped lang="scss">
+@import "@/assets/scss/variables.scss";
+.button-primary {
+    &::part(native) {
+        background-color: $primary-color;
+        color: $white;
+    }
+}
+
+.button-secondary {
+    &::part(native) {
+        background-color: $white;
+        color: $primary-color;
+        border: 2px solid $primary-color;
+    }
+}
+</style>
