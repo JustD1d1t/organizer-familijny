@@ -72,7 +72,7 @@ const login = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Logowanie</ion-title>
             </ion-toolbar>
@@ -82,7 +82,7 @@ const login = async () => {
             <div class="flex items-center h-full w-full">
                 <uiCard class="p-8 w-full">
                     <template v-slot:title> Logowanie </template>
-                    <ion-list class="pb-4">
+                    <ion-list lines="none" class="pb-4">
                         <uiInput
                             label="Email"
                             type="email"
@@ -96,25 +96,24 @@ const login = async () => {
                             :error="passwordInputError"
                         />
                     </ion-list>
-                    <ion-button
-                        class="w-full mt-4"
-                        expand="block"
-                        @click="login"
-                        >Zaloguj</ion-button
+                    <uiButton class="w-full mt-4" expand="block" @click="login"
+                        >Zaloguj</uiButton
                     >
-                    <ion-button
+                    <uiButton
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
                         @click="navigateTo('/register')"
-                        >Rejestracja</ion-button
+                        type="secondary"
+                        >Rejestracja</uiButton
                     >
-                    <ion-button
+                    <uiButton
                         class="w-full mt-4"
                         expand="block"
                         fill="clear"
                         @click="navigateTo('/reset-password')"
-                        >Zapomniałem hasła</ion-button
+                        type="tertiary"
+                        >Zapomniałem hasła</uiButton
                     >
                 </uiCard>
             </div>

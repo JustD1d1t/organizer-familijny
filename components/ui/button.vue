@@ -3,7 +3,8 @@ const props = defineProps({
     type: {
         type: String,
         default: "primary",
-        validator: (value) => ["primary", "secondary"].includes(value),
+        validator: (value) =>
+            ["primary", "secondary", "outline"].includes(value),
     },
     fill: {
         type: String,
@@ -21,6 +22,8 @@ const buttonClass = computed(() => {
         ? "button-primary"
         : props.type === "secondary"
         ? "button-secondary"
+        : props.type === "tertiary"
+        ? "button-tertiary"
         : ""
 })
 </script>
@@ -43,6 +46,12 @@ const buttonClass = computed(() => {
         background-color: $white;
         color: $primary-color;
         border: 2px solid $primary-color;
+    }
+}
+.button-tertiary {
+    &::part(native) {
+        background-color: $white;
+        color: $primary-color;
     }
 }
 </style>

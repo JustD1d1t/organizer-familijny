@@ -37,7 +37,6 @@ const convertTimestampToDate = () => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, "0") // Miesiące są od 0 do 11, więc dodaj 1
     const day = String(date.getDate()).padStart(2, "0") // Pad start dla jednocyfrowych dni
-
     newTimestamp.value = `${year}-${month}-${day}`
 }
 
@@ -120,7 +119,7 @@ const handleMember = (member) => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons
                     slot="start"
@@ -153,65 +152,51 @@ const handleMember = (member) => {
         </ion-header>
         <ion-content :fullscreen="true">
             <div class="inner-content" v-if="currentExpense">
-                <ion-item>
-                    <ion-input
-                        data-test="shop-input"
+                <ion-list lines="none">
+                    <uiInput
                         label="Nazwa sklepu"
-                        label-placement="floating"
                         type="text"
                         v-model="newShopName"
                         :disabled="currentExpense.userId !== uid"
-                    ></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-input
-                        data-test="name-input"
+                    />
+                    <uiInput
                         label="Nazwa wydatku"
-                        label-placement="floating"
                         type="text"
                         v-model="newName"
                         :disabled="currentExpense.userId !== uid"
-                    ></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-input
-                        data-test="value-input"
+                    />
+                    <uiInput
                         label="Całkowita kwota"
-                        label-placement="floating"
                         type="number"
                         v-model="newValue"
                         :disabled="currentExpense.userId !== uid"
-                    ></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-input
-                        data-test="date-input"
+                    />
+                    <uiInput
                         label="Data"
-                        label-placement="floating"
                         type="date"
                         v-model="newTimestamp"
                         :disabled="currentExpense.userId !== uid"
-                    ></ion-input>
-                </ion-item>
-
-                <ion-item>
-                    <ion-select
-                        label="Kategoria"
-                        v-model="currentExpense.category"
-                    >
-                        <ion-select-option
-                            v-for="(category, index) in billCategories"
-                            :key="index"
-                            :value="category"
-                            >{{ category }}</ion-select-option
+                    />
+                    <ion-item>
+                        <ion-select
+                            label="Kategoria"
+                            v-model="currentExpense.category"
                         >
-                    </ion-select>
-                </ion-item>
-                <FamilyDropdownSelectMember
-                    :members="currentExpense.familyMembers"
-                    @toggleMember="handleMember"
-                    v-if="currentExpense.userId === uid"
-                />
+                            <ion-select-option
+                                v-for="(category, index) in billCategories"
+                                :key="index"
+                                :value="category"
+                                >{{ category }}</ion-select-option
+                            >
+                        </ion-select>
+                    </ion-item>
+                    <FamilyDropdownSelectMember
+                        :members="currentExpense.familyMembers"
+                        @toggleMember="handleMember"
+                        v-if="currentExpense.userId === uid"
+                    />
+                </ion-list>
+
                 <ion-item v-if="currentExpense.userId === uid">
                     <ion-button @click="editPhoto">Zrób zdjęcie</ion-button>
                     <ion-button @click="selectPhoto" class="ml-auto"
