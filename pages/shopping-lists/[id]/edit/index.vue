@@ -61,9 +61,8 @@ const toggleMember = (member) => {
                     type="text"
                     v-model="newName"
                 />
-
                 <FamilyDropdownSelectMember
-                    :members="newMembers"
+                    :members="currentShoppingList.members"
                     @toggleMember="(member) => toggleMember(member)"
                     v-if="!collaboratedList"
                 />

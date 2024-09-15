@@ -24,11 +24,18 @@ const membersToShow = computed(() => {
 })
 
 const handleMember = (e) => {
-    const members = e.target.value
-    members.forEach((member) => {
+    const membersIds = e.target.value
+    membersIds.forEach((id) => {
+        const member = familyMembersDetails.value.find((m) => m.id === id)
         emit("toggleMember", member)
     })
 }
+
+const selectedMembers = computed(() => {
+    return props.members.map((member) => {
+        return member.id
+    })
+})
 </script>
 <template>
     <ion-item>
@@ -38,12 +45,12 @@ const handleMember = (e) => {
             label-placement="floating"
             :multiple="true"
             @ionChange="handleMember($event)"
-            :value="members"
+            :value="selectedMembers"
         >
             <ion-select-option
                 v-for="member in membersToShow"
                 :key="member.id"
-                :value="member"
+                :value="member.id"
             >
                 {{ member.nickname }}&nbsp;
                 <small> ({{ member.email }})</small>
