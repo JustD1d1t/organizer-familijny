@@ -122,15 +122,11 @@ const register = async () => {
                             :error="nicknameInputError"
                         ></uiInput>
                     </ion-list>
-                    <uiButton
-                        class="w-full mt-4"
-                        expand="block"
-                        @click="register"
+                    <uiButton class="w-full mt-4" @click="register"
                         >Zarejestruj</uiButton
                     >
                     <uiButton
                         class="w-full mt-4"
-                        expand="block"
                         fill="outline"
                         router-link="/login"
                         type="secondary"

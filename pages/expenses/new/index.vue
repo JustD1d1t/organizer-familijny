@@ -72,7 +72,7 @@ const handleMember = (member) => {
             <ion-toolbar>
                 <ion-buttons slot="end">
                     <ion-button
-                        fill="clear"
+                        
                         :strong="true"
                         @click="addExpense()"
                         >Dodaj</ion-button

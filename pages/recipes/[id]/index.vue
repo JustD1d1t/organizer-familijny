@@ -49,7 +49,7 @@ const recipeLink = computed(() => {
             <h3 v-if="currentRecipe.steps">Przepis</h3>
             <p v-if="currentRecipe.steps">{{ currentRecipe.steps }}</p>
             <uiButton
-                expand="block"
+                
                 class="mt-8"
                 id="open-recipe-to-shopping-list-modal"
             >

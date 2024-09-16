@@ -159,7 +159,7 @@ const resetFiltersFunction = () => {
                                 >{{ category }}</ion-select-option
                             >
                         </ion-select>
-                        <ion-button fill="clear" @click="clearCategory"
+                        <ion-button  @click="clearCategory"
                             >Wyczyść</ion-button
                         >
                     </div>

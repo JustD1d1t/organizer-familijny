@@ -98,10 +98,5 @@ onMounted(async () => {
                 </ion-text>
             </ion-item>
         </ion-list>
-        <ion-toast
-            :is-open="isOpen"
-            :message="toastMessage"
-            :duration="2000"
-        ></ion-toast>
     </div>
 </template>

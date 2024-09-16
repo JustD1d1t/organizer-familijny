@@ -61,7 +61,7 @@ onMounted(() => {
                     <uiButton
                         type="tertiary"
                         @click="goToShop(shop.title)"
-                        fill="clear"
+                        
                     >
                         Zobacz
                     </uiButton>

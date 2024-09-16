@@ -96,12 +96,11 @@ const login = async () => {
                             :error="passwordInputError"
                         />
                     </ion-list>
-                    <uiButton class="w-full mt-4" expand="block" @click="login"
+                    <uiButton class="w-full mt-4" @click="login"
                         >Zaloguj</uiButton
                     >
                     <uiButton
                         class="w-full mt-4"
-                        expand="block"
                         fill="outline"
                         @click="navigateTo('/register')"
                         type="secondary"
@@ -109,20 +108,12 @@ const login = async () => {
                     >
                     <uiButton
                         class="w-full mt-4"
-                        expand="block"
-                        fill="clear"
                         @click="navigateTo('/reset-password')"
                         type="tertiary"
                         >Zapomniałem hasła</uiButton
                     >
                 </uiCard>
             </div>
-
-            <ion-toast
-                :is-open="isOpen"
-                :message="toastMessage"
-                :duration="2000"
-            ></ion-toast>
         </ion-content>
     </ion-page>
 </template>

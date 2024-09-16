@@ -4,7 +4,7 @@ const props = defineProps({
         type: String,
         default: "primary",
         validator: (value) =>
-            ["primary", "secondary", "outline"].includes(value),
+            ["primary", "secondary", "tertiary"].includes(value),
     },
     fill: {
         type: String,
@@ -17,7 +17,7 @@ const props = defineProps({
     },
     color: {
         type: String,
-        default: "primary",
+        default: undefined,
         validator: (value) => ["danger", "alert", "success"].includes(value),
     },
 })

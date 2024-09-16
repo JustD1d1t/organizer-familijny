@@ -54,10 +54,10 @@ const saveRecipe = async () => {
                 v-model="steps"
             ></ion-textarea>
 
-            <uiButton type="secondary" expand="block" @click="addIngredient" class="my-6"
+            <uiButton type="secondary"  @click="addIngredient" class="my-6"
                 >Dodaj składnik</uiButton
             >
-            <uiButton expand="block" @click="saveRecipe" class="my-6">
+            <uiButton  @click="saveRecipe" class="my-6">
                 Zapisz
             </uiButton>
         </ion-content>

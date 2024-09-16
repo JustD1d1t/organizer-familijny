@@ -79,7 +79,7 @@ const removeFilter = async (type) => {
         <UiPill>
             {{ selectedDate }}
             <ion-button
-                fill="clear"
+                
                 size="small"
                 v-if="selectedPeriod.value !== 'month'"
                 @click="removeFilter('selectedPeriod')"
@@ -90,7 +90,7 @@ const removeFilter = async (type) => {
         <UiPill v-if="shopName">
             {{ shopName }}
             <ion-button
-                fill="clear"
+                
                 size="small"
                 @click="removeFilter('shopName')"
             >
@@ -100,7 +100,7 @@ const removeFilter = async (type) => {
         <UiPill v-if="category">
             {{ category }}
             <ion-button
-                fill="clear"
+                
                 size="small"
                 @click="removeFilter('category')"
             >
@@ -110,7 +110,7 @@ const removeFilter = async (type) => {
         <UiPill v-if="expenseName">
             {{ expenseName }}
             <ion-button
-                fill="clear"
+                
                 size="small"
                 @click="removeFilter('expenseName')"
             >
@@ -120,7 +120,7 @@ const removeFilter = async (type) => {
         <UiPill v-if="priceRange">
             {{ priceRange }}
             <ion-button
-                fill="clear"
+                
                 size="small"
                 @click="removeFilter('priceRange')"
             >

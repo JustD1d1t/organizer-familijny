@@ -113,11 +113,11 @@ const addOwnRecipe = () => {
                 </ul>
             </uiInfoCard>
 
-            <uiButton expand="block" @click="add" class="my-6">
+            <uiButton  @click="add" class="my-6">
                 Dodaj przepis ze strony
             </uiButton>
             <span class="text-center block">lub</span>
-            <uiButton type="secondary" expand="block" @click="addOwnRecipe" class="my-6">
+            <uiButton type="secondary"  @click="addOwnRecipe" class="my-6">
                 Zapisz swój własny przepis
             </uiButton>
         </ion-content>

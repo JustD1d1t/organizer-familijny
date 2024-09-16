@@ -4,10 +4,6 @@ const isOpen = ref(false)
 
 const userStore = useUserStore()
 const { resendVerificationEmail, checkEmailVerification } = userStore
-
-const openPersonMenu = async () => {
-    await menuController.open("person")
-}
 const checkVerification = async () => {
     const { emailVerified } = await checkEmailVerification()
     if (emailVerified) {
@@ -43,11 +39,6 @@ const checkVerification = async () => {
                     </div>
                 </uiCard>
             </div>
-            <ion-toast
-                :is-open="isOpen"
-                :message="toastMessage"
-                :duration="2000"
-            ></ion-toast>
         </ion-content>
     </ion-page>
 </template>

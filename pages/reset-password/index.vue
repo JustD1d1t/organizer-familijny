@@ -48,7 +48,7 @@ const sendPasswordResetRequest = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button
@@ -73,18 +73,12 @@ const sendPasswordResetRequest = async () => {
                     </ion-list>
                     <uiButton
                         class="w-full mt-4"
-                        expand="block"
                         @click="sendPasswordResetRequest"
                     >
                         Resetuj hasło
                     </uiButton>
                 </uiCard>
             </div>
-            <ion-toast
-                :is-open="isOpen"
-                :message="toastMessage"
-                :duration="2000"
-            ></ion-toast>
         </ion-content>
     </ion-page>
 </template>
