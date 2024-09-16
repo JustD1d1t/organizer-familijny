@@ -112,10 +112,10 @@ export const useExpensesStore = defineStore({
             this.expenses = this.expenses.filter((expense) => expense.id !== id)
         },
         updateStartPrice(e) {
-            this.startPrice = e.detail ? e.detail.value : e
+            this.startPrice = e
         },
         updateEndPrice(e) {
-            this.endPrice = e.detail ? e.detail.value : e
+            this.endPrice = e
         },
         updateShopName(e) {
             this.shopName = e.detail ? e.detail.value : e

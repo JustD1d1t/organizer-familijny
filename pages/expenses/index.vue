@@ -104,28 +104,22 @@ const openExpensesCharts = () => {
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true" class="h-dvh overflow-hidden">
+            <div>
+                <UiFilterTabs
+                    :filters="filters"
+                    :active="showSelect"
+                    @click="handleExpensesVisibility"
+                />
+                <ExpensesFilterPills />
+            </div>
             <div
                 v-if="isLoading"
                 class="w-full flex justify-center items-center h-full"
             >
                 <ion-spinner name="lines-sharp"></ion-spinner>
             </div>
-            <div v-else-if="!isLoading && !expenses.length">
-                <UiFilterTabs
-                    :filters="filters"
-                    :active="showSelect"
-                    @click="handleExpensesVisibility"
-                />
-                <ExpensesFilterPills />
-                <h2>Brak wydatków</h2>
-            </div>
+            <h2 v-else-if="!isLoading && !expensesToShow.length">Brak wydatków</h2>
             <div v-else class="h-full overflow-auto">
-                <UiFilterTabs
-                    :filters="filters"
-                    :active="showSelect"
-                    @click="handleExpensesVisibility"
-                />
-                <ExpensesFilterPills />
                 <div class="text-2xl my-4 flex justify-between font-bold">
                     <span>Razem </span>
                     <span>{{ totalSum }} zł</span>

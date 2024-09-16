@@ -64,8 +64,8 @@ const removeFilter = async (type) => {
             updateCategory("")
             break
         case "priceRange":
-            updateStartPrice("")
-            updateEndPrice("")
+            updateStartPrice(null)
+            updateEndPrice(null)
             break
         case "selectedPeriod":
             updatePeriod({ value: "month", label: "Bieżący miesiąc" })
@@ -78,54 +78,54 @@ const removeFilter = async (type) => {
     <div class="flex overflow-auto gap-2 w-full">
         <UiPill>
             {{ selectedDate }}
-            <ion-button
-                
+            <uiButton
+                type="tertiary"
                 size="small"
                 v-if="selectedPeriod.value !== 'month'"
                 @click="removeFilter('selectedPeriod')"
             >
                 <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
-            </ion-button>
+            </uiButton>
         </UiPill>
         <UiPill v-if="shopName">
             {{ shopName }}
-            <ion-button
-                
+            <uiButton
+                type="tertiary"
                 size="small"
                 @click="removeFilter('shopName')"
             >
                 <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
-            </ion-button>
+            </uiButton>
         </UiPill>
         <UiPill v-if="category">
             {{ category }}
-            <ion-button
-                
+            <uiButton
+                type="tertiary"
                 size="small"
                 @click="removeFilter('category')"
             >
                 <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
-            </ion-button>
+            </uiButton>
         </UiPill>
         <UiPill v-if="expenseName">
             {{ expenseName }}
-            <ion-button
-                
+            <uiButton
+                type="tertiary"
                 size="small"
                 @click="removeFilter('expenseName')"
             >
                 <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
-            </ion-button>
+            </uiButton>
         </UiPill>
         <UiPill v-if="priceRange">
             {{ priceRange }}
-            <ion-button
-                
+            <uiButton
+                type="tertiary"
                 size="small"
                 @click="removeFilter('priceRange')"
             >
                 <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
-            </ion-button>
+            </uiButton>
         </UiPill>
     </div>
 </template>

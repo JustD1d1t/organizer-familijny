@@ -66,14 +66,14 @@ onMounted(async () => {
 })
 
 const downloadExpenses = async () => {
-    await queryExpenses()
     await menuController.close("expense-filter")
+    await queryExpenses()
 }
 </script>
 <template>
     <ion-app>
         <ion-page v-if="isLoading">
-            <ion-header style="background: var(--ion-color-light);">
+            <ion-header style="background: var(--ion-color-light)">
                 <ion-toolbar>
                     <ion-title>Cześć</ion-title>
                 </ion-toolbar>
@@ -86,7 +86,7 @@ const downloadExpenses = async () => {
             </ion-content>
         </ion-page>
         <ion-page v-else-if="!isMobile">
-            <ion-header style="background: var(--ion-color-light);">
+            <ion-header style="background: var(--ion-color-light)">
                 <ion-toolbar>
                     <ion-title>Cześć</ion-title>
                 </ion-toolbar>

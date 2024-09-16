@@ -178,7 +178,8 @@ const handleSortType = (type) => {
                         v-model="searchValue"
                     />
                 </UiList>   
-                <UiList class="overflow-auto max-h-[75%]" :lines=true>
+                <h2 v-else>Brak produktów w spiżarni</h2>
+                <UiList class="overflow-auto max-h-[75%]">
                     <UiListItemCounter
                         v-for="(item, index) in itemsToDisplay"
                         :key="item.name"
@@ -219,14 +220,14 @@ const handleSortType = (type) => {
                                 :dismiss-on-select="true"
                             >
                                 <ion-content class="ion-padding mr-8">
-                                    <ion-list>
+                                    <uiList>
                                         <ion-item>
                                             <ion-label @click="() => addExpiryDate(item)"
                                                 >Dodaj termin
                                                 przydatności</ion-label @click=
                                             >
                                         </ion-item>
-                                    </ion-list>
+                                    </uiList>
                                 </ion-content>
                             </ion-popover>
                         </template>
