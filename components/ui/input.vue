@@ -15,7 +15,7 @@ const props = defineProps({
     },
     labelPlacement: {
         type: String,
-        default: "floating",
+        default: "stacked",
     },
     type: {
         type: String,

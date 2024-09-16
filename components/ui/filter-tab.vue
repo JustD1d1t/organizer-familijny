@@ -12,20 +12,21 @@ const props = defineProps({
 const emit = defineEmits(["click"])
 </script>
 <template>
-    <ion-button
+    <uiButton
         @click="emit('click', filter)"
         class="text-xl"
         size="small"
-        fill="clear"
+        type="tertiary"
         :class="{ active: active === filter.value }"
     >
         {{ filter.label }}
-    </ion-button>
+    </uiButton>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
 .active {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid $primary-color;
 }
 ion-button {
     text-transform: inherit;

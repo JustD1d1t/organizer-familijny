@@ -37,17 +37,16 @@ const familyMembers = computed(() => {
                     {{ familyMembers }}
                 </div>
             </div>
-            <ion-button
-                fill="clear"
+            <uiButton
                 :id="'open-pantry-menu-' + pantry.id"
                 class="ml-auto"
-                size="small"
+                type="tertiary"
             >
                 <ion-icon
                     size="medium"
                     :icon="ioniconsEllipsisVerticalOutline"
                 />
-            </ion-button>
+            </uiButton>
             <ion-popover
                 :trigger="'open-pantry-menu-' + pantry.id"
                 trigger-action="click"

@@ -67,7 +67,7 @@ const handleFamilyInvitation = async (accepted) => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title v-if="notification">{{
                     notification.title
@@ -83,16 +83,18 @@ const handleFamilyInvitation = async (accepted) => {
                     notification.accepted === undefined
                 "
             >
-                <ion-button
+                <uiButton
                     @click="() => handleFamilyInvitation(false)"
                     color="danger"
-                    >Odrzuć</ion-button
                 >
-                <ion-button
+                    Odrzuć
+                </uiButton>
+                <uiButton
                     @click="() => handleFamilyInvitation(true)"
                     color="success"
-                    >Akceptuj</ion-button
                 >
+                    Akceptuj
+                </uiButton>
             </div>
         </ion-content>
     </ion-page>

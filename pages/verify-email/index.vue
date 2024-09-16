@@ -18,14 +18,9 @@ const checkVerification = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Email niezweryfikowany</ion-title>
-                <ion-buttons slot="end">
-                    <ion-button fill="clear" @click="openPersonMenu">
-                        <ion-icon slot="icon-only" :icon="ioniconsPerson" />
-                    </ion-button>
-                </ion-buttons>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
@@ -34,15 +29,16 @@ const checkVerification = async () => {
                     <div>Zweryfikuj emaila</div>
                     <div class="text-center">Nie otrzymałeś/aś maila?</div>
                     <div class="flex">
-                        <ion-button
+                        <uiButton
                             @click="resendVerificationEmail"
                             class="w-full"
-                            >Wyślij ponownie</ion-button
+                            type="secondary"
+                            >Wyślij ponownie</uiButton
                         >
                     </div>
                     <div class="flex">
-                        <ion-button @click="checkVerification" class="w-full"
-                            >Sprawdź weryfikację</ion-button
+                        <uiButton @click="checkVerification" class="w-full"
+                            >Sprawdź weryfikację</uiButton
                         >
                     </div>
                 </uiCard>

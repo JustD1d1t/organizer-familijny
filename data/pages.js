@@ -24,9 +24,9 @@ export default [
         path: "/pantries",
         src: spizarnia_90x90,
     },
-    {
-        name: "Gazetki",
-        path: "/newspaper",
-        src: spizarnia_90x90,
-    },
+    // {
+    //     name: "Gazetki",
+    //     path: "/newspaper",
+    //     src: spizarnia_90x90,
+    // },
 ]

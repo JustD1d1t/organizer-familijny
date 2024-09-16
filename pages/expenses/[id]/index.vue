@@ -125,9 +125,10 @@ const handleMember = (member) => {
                     slot="start"
                     v-if="currentExpense && currentExpense.userId === uid"
                 >
-                    <ion-button
-                        fill="clear"
+                    <uiButton
+                        type="tertiary"
                         :strong="true"
+                        color="danger"
                         @click="
                             () =>
                                 openAlert(
@@ -137,15 +138,19 @@ const handleMember = (member) => {
                                     removeExpense
                                 )
                         "
-                        >Usuń</ion-button
+                        >Usuń</uiButton
                     >
                 </ion-buttons>
                 <ion-buttons
                     slot="end"
                     v-if="currentExpense && currentExpense.userId === uid"
                 >
-                    <ion-button fill="clear" :strong="true" @click="edit()"
-                        >Zapisz</ion-button
+                    <uiButton
+                        type="tertiary"
+                        :strong="true"
+                        color="success"
+                        @click="edit()"
+                        >Zapisz</uiButton
                     >
                 </ion-buttons>
             </ion-toolbar>
@@ -180,6 +185,7 @@ const handleMember = (member) => {
                     <ion-item>
                         <ion-select
                             label="Kategoria"
+                            label-placement="stacked"
                             v-model="currentExpense.category"
                         >
                             <ion-select-option
@@ -197,12 +203,13 @@ const handleMember = (member) => {
                     />
                 </ion-list>
 
-                <ion-item v-if="currentExpense.userId === uid">
-                    <ion-button @click="editPhoto">Zrób zdjęcie</ion-button>
-                    <ion-button @click="selectPhoto" class="ml-auto"
-                        >Wybierz zdjęcie</ion-button
-                    >
-                </ion-item>
+                <div
+                    class="flex justify-between mt-4"
+                    v-if="currentExpense.userId === uid"
+                >
+                    <uiButton @click="editPhoto" type="secondary">Zrób zdjęcie</uiButton>
+                    <uiButton @click="selectPhoto">Wybierz zdjęcie</uiButton>
+                </div>
                 <div v-if="photos.length" @click="openImageInPreview">
                     <ion-img
                         v-for="photo in photos"

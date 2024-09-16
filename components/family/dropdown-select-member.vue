@@ -43,7 +43,8 @@ const selectedMembers = computed(() => {
         <ion-select
             label="Wybierz osoby które mają dostęp"
             placholder="Wybierz osoby"
-            label-placement="floating"
+            label-placement="stacked"
+            placeholder="--- Wybierz osoby ---"
             :multiple="true"
             @ionChange="handleMember($event)"
             :value="selectedMembers"

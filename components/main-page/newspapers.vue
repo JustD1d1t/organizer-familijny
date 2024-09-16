@@ -14,7 +14,12 @@ const openShop = (shopName) => {
 }
 </script>
 <template>
-    <h2>Gazetki</h2>
+    <div class="flex justify-between w-full items-center">
+        <h2>Gazetki</h2>
+        <uiButton class="text-primary" @click="() => navigateTo('/newspaper')" type="tertiary">
+            Więcej
+        </uiButton>
+    </div>
     <swiper :modules="[Autoplay]" :slides-per-view="4.5" :space-between="30">
         <swiper-slide
             v-for="shop in shopList"

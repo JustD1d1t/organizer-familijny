@@ -81,7 +81,7 @@ const openExpensesCharts = () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Wydatki</ion-title>
                 <ion-buttons slot="start">
@@ -91,15 +91,15 @@ const openExpensesCharts = () => {
                     ></ion-back-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
-                    <ion-button fill="clear" @click="openExpensesCharts">
+                    <uiButton type="tertiary" @click="openExpensesCharts">
                         <ion-icon
                             slot="icon-only"
                             :icon="ioniconsBarChartOutline"
                         />
-                    </ion-button>
-                    <ion-button fill="clear" @click="openFilterMenu">
+                    </uiButton>
+                    <uiButton type="tertiary" @click="openFilterMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsFilter" />
-                    </ion-button>
+                    </uiButton>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>

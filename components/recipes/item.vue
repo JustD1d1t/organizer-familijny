@@ -40,14 +40,14 @@ const recipeLink = computed(() => {
                     {{ recipeLink }}
                 </a>
             </div>
-            <ion-button
-                fill="clear"
+            <uiButton
                 id="open-shopping-menu"
                 class="ml-auto"
                 @click="() => deleteRecipe(recipe.id)"
+                type="tertiary"
             >
                 <ion-icon size="medium" :icon="ioniconsTrashOutline" />
-            </ion-button>
+            </uiButton>
         </div>
     </div>
 </template>

@@ -28,7 +28,7 @@ onMounted(() => {
 
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button
@@ -47,27 +47,26 @@ onMounted(() => {
                 <ion-spinner name="lines-sharp"></ion-spinner>
                 <span>ładowanie sklepów</span>
             </div>
-            <div v-show="!isLoading">
-                <ion-list>
-                    <ion-item class="mb-4">
-                        <ion-input
-                            data-test="shop-input"
-                            label="Szukaj..."
-                            label-placement="floating"
-                            ref="shopInput"
-                            class="shopInput"
-                            type="text"
-                            v-model="searchValue"
-                        ></ion-input>
-                    </ion-item>
-                    <ion-item v-for="shop in shopsToDisplay" :key="shop.title">
-                        <ion-label>{{ shop.title }}</ion-label>
-                        <ion-button @click="goToShop(shop.title)" fill="clear">
-                            Zobacz
-                        </ion-button>
-                    </ion-item>
-                </ion-list>
-            </div>
+            <UiList v-show="!isLoading">
+                <uiInput
+                    label="Wyszukaj gazetki"
+                    type="text"
+                    placeholder="Szukaj..."
+                    v-model="searchValue"
+                />
+            </UiList>
+            <UiList v-show="!isLoading">
+                <ion-item v-for="shop in shopsToDisplay" :key="shop.title">
+                    <ion-label>{{ shop.title }}</ion-label>
+                    <uiButton
+                        type="tertiary"
+                        @click="goToShop(shop.title)"
+                        fill="clear"
+                    >
+                        Zobacz
+                    </uiButton>
+                </ion-item>
+            </UiList>
         </ion-content>
     </ion-page>
 </template>

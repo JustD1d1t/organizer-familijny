@@ -93,15 +93,13 @@ const addOwnRecipe = () => {
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <ion-item lines="none">
-                <ion-input
+            <uiList>
+                <uiInput
                     label="Adres strony"
-                    label-placement="floating"
-                    ref="input"
                     type="text"
                     v-model="recipeLink"
-                ></ion-input>
-            </ion-item>
+                ></uiInput>
+            </uiList>
             <uiInfoCard class="mt-8">
                 <p>Możesz dodawać przepisy ze stron:</p>
                 <ul class="my-2">
@@ -115,13 +113,13 @@ const addOwnRecipe = () => {
                 </ul>
             </uiInfoCard>
 
-            <ion-button expand="block" @click="add" class="my-6">
+            <uiButton expand="block" @click="add" class="my-6">
                 Dodaj przepis ze strony
-            </ion-button>
+            </uiButton>
             <span class="text-center block">lub</span>
-            <ion-button expand="block" @click="addOwnRecipe" class="my-6">
+            <uiButton type="secondary" expand="block" @click="addOwnRecipe" class="my-6">
                 Zapisz swój własny przepis
-            </ion-button>
+            </uiButton>
         </ion-content>
     </ion-page>
 </template>

@@ -98,6 +98,8 @@ const handleMember = (member) => {
                     <ion-item>
                         <ion-select
                             label="Kategoria"
+                            label-placement="stacked"
+                            placeholder= "--- Wybierz kategorię ---"
                             v-model="selectedCategory"
                         >
                             <ion-select-option

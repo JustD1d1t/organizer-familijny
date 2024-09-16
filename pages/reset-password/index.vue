@@ -57,11 +57,6 @@ const sendPasswordResetRequest = async () => {
                     ></ion-back-button>
                 </ion-buttons>
                 <ion-title>Zresetuj hasło</ion-title>
-                <ion-buttons slot="end">
-                    <ion-button fill="clear" @click="openPersonMenu">
-                        <ion-icon slot="icon-only" :icon="ioniconsPerson" />
-                    </ion-button>
-                </ion-buttons>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
@@ -76,13 +71,13 @@ const sendPasswordResetRequest = async () => {
                             :error="emailInputError"
                         />
                     </ion-list>
-                    <ion-button
+                    <uiButton
                         class="w-full mt-4"
                         expand="block"
                         @click="sendPasswordResetRequest"
                     >
                         Resetuj hasło
-                    </ion-button>
+                    </uiButton>
                 </uiCard>
             </div>
             <ion-toast

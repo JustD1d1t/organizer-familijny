@@ -40,24 +40,19 @@ const handleItem = async (name, category) => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
-            <ion-toolbar >
+        <ion-header style="background: var(--ion-color-light)">
+            <ion-toolbar>
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-            <ion-list>
-                <ion-item>
-                    <ion-input
-                        label="Czego szukasz..."
-                        label-placement="floating"
-                        ref="input"
-                        type="text"
-                        :clear-input="true"
-                        v-model="pantryItemInput"
-                        class="border-b-2 mb-4"
-                    ></ion-input>
-                </ion-item>
+            <ion-list lines="none">
+                <uiInput
+                    label="Napisz czego szukasz"
+                    type="text"
+                    v-model="pantryItemInput"
+                    placeholder="Szukaj..."
+                />
             </ion-list>
             <ion-accordion-group
                 v-if="pantryItemInput.length < 3"

@@ -6,6 +6,7 @@ $white: #ffffff;
 $orange: #e9a31b;
 $green: #1d7737;
 $red: #e73a3a;
+$yellow: #f0c330;
 
 // font-colors
 $primary-text-color: #1f2422;
@@ -24,21 +25,20 @@ $box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 // fonts
 h1,
 .h1 {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
 }
 h2,
 .h2 {
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
 }
 h3,
 .h3 {
-    font-size: 1.125rem;
+    font-size: 1.125rem !important;
 }
-p,
-span {
-    font-size: 1rem;
+p {
+    font-size: 1rem !important;
 }
 small,
 .small {
-    font-size: 0.75rem;
+    font-size: 0.75rem !important;
 }

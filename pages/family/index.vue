@@ -150,7 +150,7 @@ const leave = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Rodzina</ion-title>
             </ion-toolbar>
@@ -177,13 +177,14 @@ const leave = async () => {
                             >
                         </template>
                         <template #end>
-                            <ion-button
+                            <uiButton
+                                type="tertiary"
                                 @click="() => remove(member)"
                                 size="small"
                                 v-if="familyOwner && member.id !== uid"
                             >
                                 <ion-icon :icon="ioniconsTrash"></ion-icon>
-                            </ion-button>
+                            </uiButton>
                         </template>
                     </UiListItem>
                 </ion-list>
@@ -208,7 +209,9 @@ const leave = async () => {
                         <ion-icon :icon="ioniconsAdd"></ion-icon>
                     </ion-fab-button>
                     <ion-fab-button v-if="!familyOwner" @click="leave">
-                        <ion-icon :icon="ioniconsPlayForwardCircleOutline"></ion-icon>
+                        <ion-icon
+                            :icon="ioniconsPlayForwardCircleOutline"
+                        ></ion-icon>
                     </ion-fab-button>
                     <ion-fab-button v-if="familyOwner" @click="removeFamily">
                         <ion-icon :icon="ioniconsTrash"></ion-icon>

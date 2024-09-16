@@ -11,22 +11,24 @@ const props = defineProps({
 <template>
     <div class="inner-content">
         <h2>
-            Czy dodać <span data-test="test-name">{{ name }}</span> do listy
+            Czy dodać <span class="h2 font-bold">{{ name }}</span> do listy
             zakupowej?
         </h2>
         <div class="w-full flex justify-between flex-wrap">
-            <ion-button
+            <uiButton
                 @click="emit('cancelShoppingModal')"
-                color="danger"
+                color="alert"
                 data-test="cancel-button"
-                >Nie</ion-button
             >
-            <ion-button
+                Nie
+            </uiButton>
+            <uiButton
                 @click="emit('confirmShoppingModal')"
                 color="success"
                 data-test="submit-button"
-                >Tak</ion-button
             >
+                Tak
+            </uiButton>
         </div>
     </div>
 </template>

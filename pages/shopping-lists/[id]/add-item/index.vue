@@ -34,7 +34,7 @@ const localHandleItem = async (name, category) => {
     if (message === "added") {
         openToast("Dodano produkt do listy")
     } else {
-        openToast("Usunięto produkt z listy", 'danger')
+        openToast("Usunięto produkt z listy", "danger")
     }
 }
 
@@ -44,25 +44,20 @@ const handleCategory = (cat) => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
             <div class="ion-padding inner-content">
-                <ion-list>
-                    <ion-item>
-                        <ion-input
-                            label="Czego szukasz..."
-                            label-placement="floating"
-                            ref="input"
-                            type="text"
-                            :clear-input="true"
-                            v-model="shoppingItemInput"
-                            class="border-b-2 mb-4"
-                        ></ion-input>
-                    </ion-item>
+                <ion-list lines="none">
+                    <uiInput
+                        label="Napisz czego szukasz"
+                        type="text"
+                        v-model="shoppingItemInput"
+                        placeholder="Szukaj..."
+                    />
                 </ion-list>
                 <ion-accordion-group
                     v-show="shoppingItemInput.length === 0"

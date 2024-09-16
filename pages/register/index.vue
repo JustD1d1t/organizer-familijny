@@ -84,8 +84,14 @@ const register = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
                 <ion-title>Rejestracja</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -116,18 +122,19 @@ const register = async () => {
                             :error="nicknameInputError"
                         ></uiInput>
                     </ion-list>
-                    <ion-button
+                    <uiButton
                         class="w-full mt-4"
                         expand="block"
                         @click="register"
-                        >Zarejestruj</ion-button
+                        >Zarejestruj</uiButton
                     >
-                    <ion-button
+                    <uiButton
                         class="w-full mt-4"
                         expand="block"
                         fill="outline"
                         router-link="/login"
-                        >Logowanie</ion-button
+                        type="secondary"
+                        >Logowanie</uiButton
                     >
                 </uiCard>
             </div>

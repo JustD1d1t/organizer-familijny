@@ -12,9 +12,9 @@ const props = defineProps({
 })
 </script>
 <template>
-    <ion-button fill="clear" :id="sortId">
+    <uiButton :id="sortId" type="tertiary">
         <ion-icon slot="icon-only" :icon="ioniconsEllipsisVerticalOutline" />
-    </ion-button>
+    </uiButton>
     <ion-popover
         :trigger="sortId"
         trigger-action="click"

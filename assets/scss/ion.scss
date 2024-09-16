@@ -9,6 +9,8 @@ ion-list {
     gap: 0.5rem;
     display: flex;
     flex-direction: column;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 ::slotted([slot="end"]) {
@@ -60,16 +62,49 @@ ion-item {
     }
 }
 
-ion-input,
-ion-select {
-    background: $white;
-    --padding-top: 0 !important;
-    --padding-bottom: 0.25rem !important;
-    --padding-start: 0.5rem !important;
-    --padding-end: 0.5rem !important;
-    border: 1px solid $light-gray;
-    border-radius: $border-radius-big;
+ion-input {
+    .native-wrapper {
+        background-color: $white;
+        border: 1px solid $light-gray;
+        border-radius: $border-radius-big;
+        --padding-top: 0 !important;
+        --padding-bottom: 0.5rem !important;
+        --padding-start: 0.5rem !important;
+        --padding-end: 0.5rem !important;
+        input {
+            padding: 0.5rem !important;
+        }
+    }
+    .label-text-wrapper {
+        margin-bottom: 0.5rem;
+    }
 }
+
+ion-select {
+    &::part(container) {
+        background-color: $white;
+        border: 1px solid $light-gray;
+        border-radius: $border-radius-big;
+        padding: 0.5rem;
+        min-height: 19px;
+    }
+    &::part(label) {
+        margin-bottom: 0.5rem;
+    }
+    &::part(icon) {
+        margin-top: 0.75rem;
+    }
+}
+
+// ion-select {
+//     background: $white;
+//     --padding-top: 0 !important;
+//     --padding-bottom: 0.25rem !important;
+//     --padding-start: 0.5rem !important;
+//     --padding-end: 0.5rem !important;
+//     border: 1px solid $light-gray;
+//     border-radius: $border-radius-big;
+// }
 
 ion-fab-button {
     &::part(native) {

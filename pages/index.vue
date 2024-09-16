@@ -18,9 +18,9 @@ const nick = nickname.value.length
             <ion-toolbar>
                 <ion-title>Cześć, {{ nick }}!</ion-title>
                 <ion-buttons slot="end">
-                    <ion-button fill="clear" @click="openPersonMenu">
+                    <uiButton type="tertiary" @click="openPersonMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsPerson" />
-                    </ion-button>
+                    </uiButton>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>

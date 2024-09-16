@@ -169,19 +169,16 @@ const handleSortType = (type) => {
         <ion-content>
             <div class="h-full overflow-auto">
                 <h2>{{ currentPantry.name }}</h2>
-                <ion-item class="mb-4">
-                    <ion-input
-                        data-test="shop-input"
-                        label="Szukaj..."
-                        label-placement="floating"
-                        ref="shopInput"
-                        class="shopInput"
-                        type="text"
-                        v-model="searchValue"
-                    ></ion-input>
-                </ion-item>
-                <UiList class="overflow-auto max-h-[75%]" 
+                <UiList
                     v-if="itemsToDisplay.length">
+                    <uiInput
+                        label="Wyszukaj produkt"
+                        type="text"
+                        placeholder="Szukaj..."
+                        v-model="searchValue"
+                    />
+                </UiList>   
+                <UiList class="overflow-auto max-h-[75%]" :lines=true>
                     <UiListItemCounter
                         v-for="(item, index) in itemsToDisplay"
                         :key="item.name"
@@ -203,8 +200,8 @@ const handleSortType = (type) => {
                             </div>
                         </template>
                         <template #actions>
-                            <ion-button
-                                fill="clear"
+                            <uiButton
+                                type="tertiary"
                                 :id="'open-pantry-menu-' + index"
                                 class="ml-auto"
                                 size="small"
@@ -213,7 +210,7 @@ const handleSortType = (type) => {
                                     size="medium"
                                     :icon="ioniconsEllipsisVerticalOutline"
                                 />
-                            </ion-button>
+                            </uiButton>
                             <ion-popover
                                 :trigger="'open-pantry-menu-' + index"
                                 trigger-action="click"
@@ -274,11 +271,6 @@ const handleSortType = (type) => {
 </template>
 
 <style lang="scss" scoped>
-ion-list {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    background-color: white !important;
-}
 .list-inset {
     border-radius: 1rem !important;
     overflow: auto;

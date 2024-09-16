@@ -27,14 +27,14 @@ const props = defineProps({
             :checked="props.item.checked"
         ></ion-checkbox>
         <slot name="label" />
-        <ion-button
+        <uiButton
             slot="end"
             @click="() => props.removeItem(props.item)"
             size="small"
-            fill="clear"
+            type="tertiary"
         >
             <ion-icon :icon="ioniconsTrash"></ion-icon>
-        </ion-button>
+        </uiButton>
     </ion-item>
 </template>
 

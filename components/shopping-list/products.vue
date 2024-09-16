@@ -66,7 +66,7 @@ const boughtRecipes = computed(() =>
 </script>
 
 <template>
-    <UiList v-if="notBoughtItems.length || notBoughtRecipes.length">
+    <UiList v-if="notBoughtItems.length || notBoughtRecipes.length" :lines="true">
         <ShoppingListItem
             v-for="item in notBoughtItems"
             :key="item"
@@ -98,11 +98,6 @@ const boughtRecipes = computed(() =>
 </template>
 
 <style lang="scss" scoped>
-ion-list {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    background-color: white !important;
-}
 .list-inset {
     border-radius: 1rem !important;
 }

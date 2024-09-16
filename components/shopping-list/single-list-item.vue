@@ -55,18 +55,18 @@ const familyMembers = computed(() => {
                     </span>
                 </div>
             </div>
-            <ion-button
-                fill="clear"
+            <uiButton
                 :id="'open-shopping-menu-' + shoppingList.id"
                 class="ml-auto"
                 size="small"
+                type="tertiary"
                 v-if="!collaboratedList"
             >
                 <ion-icon
                     size="medium"
                     :icon="ioniconsEllipsisVerticalOutline"
                 />
-            </ion-button>
+            </uiButton>
             <ion-popover
                 :trigger="'open-shopping-menu-' + shoppingList.id"
                 trigger-action="click"

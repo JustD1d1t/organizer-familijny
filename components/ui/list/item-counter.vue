@@ -29,23 +29,23 @@ const decreaseQuantity = () => {
             />
         </div>
         <div class="flex">
-            <ion-button
+            <uiButton
                 @click="() => decreaseQuantity()"
                 size="small"
                 class="my-0"
-                fill="clear"
+                type="tertiary"
             >
                 <ion-icon :icon="ioniconsRemoveOutline"></ion-icon>
-            </ion-button>
+            </uiButton>
             <span class="my-auto quantity w-5 text-center">{{ quantity }}</span>
-            <ion-button
+            <uiButton
                 @click="() => increaseQuantity()"
                 size="small"
                 class="my-0"
-                fill="clear"
+                type="tertiary"
             >
                 <ion-icon :icon="ioniconsAdd"></ion-icon>
-            </ion-button>
+            </uiButton>
             <slot name="actions" />
         </div>
     </ion-item>

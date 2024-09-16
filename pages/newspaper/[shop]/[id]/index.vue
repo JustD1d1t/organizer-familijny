@@ -121,7 +121,7 @@ onMounted(() => {
 
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button
@@ -150,11 +150,11 @@ onMounted(() => {
                     </ion-item>
                     <ion-item>
                         <div class="w-[100%] flex justify-between items-center">
-                            <ion-button @click="prevPage" fill="clear">
+                            <uiButton type="tertiary" @click="prevPage">
                                 Poprzednia
-                            </ion-button>
+                            </uiButton>
                             <span>{{ pageIndicator }}</span>
-                            <ion-button @click="nextPage" fill="clear">Następna</ion-button>
+                            <uiButton type="tertiary" @click="nextPage">Następna</uiButton>
                         </div>
                     </ion-item>
                 </ion-list>
