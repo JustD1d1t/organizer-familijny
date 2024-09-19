@@ -24,6 +24,7 @@
         "@nuxtjs/style-resources": "^1.2.2",
         "@pinia/nuxt": "^0.5.1",
         "axios": "^1.7.2",
+        "fuzzysort": "^3.0.2",
         "pdf-lib": "^1.17.1",
         "pdfjs-dist": "4.3.136",
         "pinia": "^2.1.7",

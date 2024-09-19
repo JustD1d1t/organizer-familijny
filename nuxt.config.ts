@@ -13,6 +13,8 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@nuxt/fonts",
         "nuxt-echarts",
+        // "@nuxt/http",
+        // "@nuxtjs/proxy",
     ],
     css: ["@/assets/scss/styles.scss", "@/theme/variables.css"],
     styleResources: {
@@ -21,5 +23,18 @@ export default defineNuxtConfig({
     plugins: [{ src: "~/plugins/file-jsevent-ex.js", mode: "client" }],
     // typescript: {
     //   typeCheck: true,
+    // },
+    // http: {
+    //     proxy: true,
+    // },
+    // proxy: {
+    //     "/api/": {
+    //         target: "https://your-backend-url.com",
+    //         secure: false, // jeśli masz problem z certyfikatami samopodpisanymi
+    //         changeOrigin: true,
+    //         pathRewrite: {
+    //             "^/api/": "",
+    //         },
+    //     },
     // },
 })
