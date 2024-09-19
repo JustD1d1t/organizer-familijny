@@ -137,24 +137,102 @@ const getMatchingStore = (line) => {
     return null
 }
 
+const characterConfusions = {
+    O: ["0"], // Cyfra zero
+    0: ["O"], // Litera O
+    I: ["1", "l"], // Cyfra jeden i litera l
+    1: ["I", "l"], // Litera I i litera l
+    l: ["I", "1"], // Litera I i cyfra 1
+    o: ["0"], // Cyfra zero
+    i: ["1", "l"], // Cyfra jeden i litera l
+    5: ["S"], // Litera S
+    S: ["5"], // Cyfra 5
+    2: ["Z"], // Litera Z
+    Z: ["2"], // Cyfra 2
+    8: ["B"], // Litera B
+    B: ["8"], // Cyfra 8
+    7: ["T"], // Litera T
+    T: ["7"], // Cyfra 7
+    E: ["F"], // Litera F
+    F: ["E"], // Litera E
+    G: ["6"], // Cyfra 6
+    6: ["G"], // Litera G
+    C: ["G"], // Litera G, gdyż w niektórych fontach mogą być podobne
+    D: ["O"], // Litera O
+    P: ["R"], // Litera R
+    R: ["P"], // Litera P
+    Q: ["O"], // Litera O
+    Y: ["V"], // Litera V
+    V: ["Y"], // Litera Y
+    X: ["K"], // Litera K
+    K: ["X"], // Litera X
+    W: ["V"], // Litera V
+    V: ["W"], // Litera W
+    N: ["M"], // Litera M
+    M: ["N"], // Litera N
+    U: ["V"], // Litera V
+    V: ["U"], // Litera U
+    a: ["q", "o"], // Litera q, o
+    q: ["a", "o"], // Litera a, o
+    s: ["5"], // Cyfra 5
+    z: ["2"], // Cyfra 2
+    b: ["8"], // Cyfra 8
+    g: ["6"], // Cyfra 6
+    h: ["n"], // Litera n
+    n: ["h"], // Litera h
+}
+
+const getConfusableCharacters = (char) => {
+    return characterConfusions[char] || []
+}
+
+const isConfusable = (char1, char2) => {
+    if (char1 === char2) return true
+    const confusable1 = getConfusableCharacters(char1)
+    const confusable2 = getConfusableCharacters(char2)
+    return confusable1.includes(char2) || confusable2.includes(char1)
+}
+
 const findCategory = (name) => {
     const lowerName = name.toLowerCase() // Zamiana nazwy na małe litery
     let category = undefined
 
     const searchForCategory = (minLength) => {
-        // Przeszukiwanie mapy kategorii
         for (let key in categoriesMap.value) {
-            const lowerKey = key.toLowerCase() // Zamiana klucza na małe litery
+            const lowerKey = key.toLowerCase()
 
-            // Sprawdzanie, czy istnieje wspólny ciąg o określonej długości
             for (let i = 0; i <= lowerKey.length - minLength; i++) {
-                const substring = lowerKey.slice(i, i + minLength) // Wycinek z klucza
+                const substring = lowerKey.slice(i, i + minLength)
+                let matchFound = false
+
+                // Check for exact match
                 if (lowerName.includes(substring)) {
-                    return categoriesMap.value[key] // Zwrócenie kategorii, gdy znaleziono dopasowanie
+                    matchFound = true
+                } else {
+                    // Check for confusable characters
+                    for (let j = 0; j < substring.length; j++) {
+                        const subChar = substring[j]
+                        const lowerNameChars = lowerName.slice(i, i + minLength)
+
+                        // Compare each character of the substring with corresponding character in lowerName
+                        if (
+                            lowerNameChars[j] &&
+                            isConfusable(subChar, lowerNameChars[j])
+                        ) {
+                            matchFound = true
+                        } else {
+                            matchFound = false
+                            break
+                        }
+                    }
+                }
+
+                if (matchFound) {
+                    return categoriesMap.value[key]
                 }
             }
         }
-        return undefined // Jeśli nie znaleziono, zwróć undefined
+        return ""
     }
 
     // Najpierw spróbuj z długością 7 znaków
@@ -174,7 +252,7 @@ const findCategory = (name) => {
     if (category) return category
 
     // Ostatecznie, jeśli nic nie znaleziono, zwróć undefined
-    return undefined
+    return ""
 }
 
 // Parses the receipt text and updates the product list and highest price
