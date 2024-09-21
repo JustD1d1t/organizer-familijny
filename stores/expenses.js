@@ -66,14 +66,14 @@ export const useExpensesStore = defineStore({
             this.setLoading(false)
             return data.url
         },
-        async addExpenseToStore(expense, document, photoBase64) {
+        async addExpenseToStore(expense) {
             this.setLoading(true)
             const data = await request(`${backendUrl}/expenses/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ expense, document, photoBase64 }),
+                body: JSON.stringify({ expense }),
             })
             this.expenses.unshift({
                 ...expense,

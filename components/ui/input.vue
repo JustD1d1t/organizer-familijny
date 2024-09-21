@@ -1,4 +1,6 @@
 <script setup>
+import { ref, watch } from 'vue'
+
 const emit = defineEmits(["update:modelValue"])
 const props = defineProps({
     modelValue: {
@@ -30,12 +32,20 @@ const props = defineProps({
         default: "",
     },
 })
+
 const inputValue = ref(props.modelValue)
 
+// Watch for changes in modelValue and update inputValue
+watch(() => props.modelValue, (newValue) => {
+    inputValue.value = newValue
+})
+
+// Watch for changes in inputValue and emit updates
 watch(inputValue, (newValue) => {
     emit("update:modelValue", newValue)
 })
 </script>
+
 <template>
     <ion-item class="flex flex-col relative" :class="{ 'mb-3': error }">
         <ion-input
@@ -52,6 +62,7 @@ watch(inputValue, (newValue) => {
         </span>
     </ion-item>
 </template>
+
 <style lang="scss" scoped>
 ion-item {
     overflow: visible;

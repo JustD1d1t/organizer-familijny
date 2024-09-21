@@ -26,11 +26,34 @@ function groupExpensesByCategory() {
     return sortedExpenses
 }
 
+function groupItemsByCategory() {
+    const groupedItems = new Map()
+
+    expenses.value.forEach((expense) => {
+        expense.items.forEach((item) => {
+            const { category, price } = item
+
+            if (groupedItems.has(category)) {
+                groupedItems.set(category, groupedItems.get(category) + price)
+            } else {
+                groupedItems.set(category, price)
+            }
+        })
+    })
+
+    // Sortowanie według wartości
+    const sortedItems = new Map(
+        [...groupedItems.entries()].sort((a, b) => b[1] - a[1])
+    )
+
+    return sortedItems
+}
+
 // Referencja do div, w którym będzie rysowany wykres
 const chart = ref(null)
 
 const prepareChart = () => {
-    const groupedExpenses = groupExpensesByCategory()
+    const groupedExpenses = groupItemsByCategory()
 
     // Inicjalizacja ECharts na referencji do elementu
     const myChart = init(chart.value)
@@ -116,7 +139,7 @@ onMounted(() => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Wydatki</ion-title>
                 <ion-buttons slot="start">

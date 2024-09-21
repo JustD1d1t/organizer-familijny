@@ -40,8 +40,64 @@ export const useAlerts = () => {
         await alert.present()
     }
 
+    const openInfoModal = async (header, message) => {
+        const alert = await alertController.create({
+            header,
+            message,
+            buttons: [
+                {
+                    text: "OK",
+                    role: "cancel",
+                },
+            ],
+        })
+
+        await alert.present()
+    }
+
+    const openDecideModal = async (
+        header,
+        message,
+        onConfirm,
+        onSecondConfirm,
+        buttonText,
+        secondButtonText
+    ) => {
+        const alert = await alertController.create({
+            header,
+            message,
+            buttons: [
+                {
+                    text: buttonText ?? "Anuluj",
+                    role: "cancel",
+                    handler: () => {
+                        if (onConfirm && typeof onConfirm === "function") {
+                            onConfirm()
+                        }
+                    },
+                },
+                {
+                    text: secondButtonText ?? "Potwierdź",
+                    cssClass: "danger",
+                    handler: () => {
+                        if (
+                            onSecondConfirm &&
+                            typeof onSecondConfirm === "function"
+                        ) {
+                            onSecondConfirm()
+                        }
+                    },
+                },
+            ],
+        })
+
+        await alert.present()
+    }
+
     return {
         openAlert,
+        openDecideModal,
+        openInfoModal,
         openToast,
     }
 }

@@ -54,8 +54,11 @@ const removeExpense = async (item: Expense) => {
             <div class="flex flex-col">
                 <div class="flex-flex-col">
                     <p class="text-base expense-shop">
-                        {{ expense.shop }} - {{ expense.name }} -
-                        {{ expense.category.toLowerCase() }}
+                        {{ expense.shop }}
+                        <span v-if="expense.name">- {{ expense.name }}</span>
+                        <span v-if="expense.category">
+                            - {{ expense.category.toLowerCase() }}
+                        </span>
                     </p>
                 </div>
                 <p class="text-lg font-bold expense-date">

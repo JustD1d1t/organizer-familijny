@@ -29,12 +29,6 @@ ion-modal {
             }
             // background: var(--ion-color-primary);
         }
-        & ion-input {
-            padding: 0 0.5rem !important;
-            &.sc-ion-input-ios-h {
-                padding: 0 0.5rem !important;
-            }
-        }
     }
     & ion-item::part(native) {
         padding: 0 0.5rem;
