@@ -279,6 +279,7 @@ const addExpense = async () => {
         userId: uid,
         familyMembers: expenseMembers.value,
         items: productList.value,
+        category: selectedCategory.value,
     }
     await addExpenseToStore(newExpense)
     router.back()
