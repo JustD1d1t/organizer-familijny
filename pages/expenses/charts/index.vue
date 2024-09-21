@@ -30,7 +30,7 @@ function groupItemsByCategory() {
     const groupedItems = new Map()
 
     expenses.value.forEach((expense) => {
-        if (expense.items) {
+        if (expense.items && expense.items.length) {
             expense.items.forEach((item) => {
                 const { category, price } = item
 
