@@ -22,6 +22,14 @@ const expenseMembers = ref([])
 const document = ref(null)
 const photoBase64 = ref(null)
 const billLoaded = ref(false)
+const billLoading = ref(false)
+
+const inputErrors = ref({
+    newShopName: "",
+    newExpenseName: "",
+    newExpenseValue: "",
+    newExpenseDate: "",
+})
 
 const editingItem = ref(null)
 
@@ -60,6 +68,7 @@ let highestNumber = 0 // Initialize as 0
 
 const handleImageUpload = async (event) => {
     billLoaded.value = false
+    billLoading.value = true
     ocrResult.value = null
     priceFromSumaPLN = null
     priceFromRazemPLN = null
@@ -308,6 +317,7 @@ const parseReceipt = (text) => {
         allowAddProducts.value = true
     }
     billLoaded.value = true
+    billLoading.value = false
 }
 
 // Updates the price from SUMA PLN or RAZEM PLN match
@@ -329,7 +339,24 @@ const determineHighestPrice = () => {
     return highestNumber
 }
 
+const validateInputs = () => {
+    inputErrors.value["shopName"] = ""
+    inputErrors.value["newExpenseValue"] = ""
+    inputErrors.value["newExpenseDate"] = ""
+    if (!newShopName.value) {
+        inputErrors.value["shopName"] = "Nazwa sklepu jest wymagana"
+    }
+    if (!newExpenseValue.value) {
+        inputErrors.value["newExpenseValue"] = "Kwota jest wymagana"
+    }
+    if (!newExpenseDate.value) {
+        inputErrors.value["newExpenseDate"] = "Data jest wymagana"
+    }
+}
+
 const addExpense = async () => {
+    validateInputs()
+    if (Object.values(inputErrors.value).some((error) => error)) return
     const newExpense = {
         name: newExpenseName.value.toLowerCase(),
         value: parseFloat(newExpenseValue.value),
@@ -390,16 +417,22 @@ const addNewProduct = () => {
         <ion-content>
             <div class="inner-content">
                 <ion-list lines="none">
-                    <uiInput label="Nazwa sklepu" v-model="newShopName" />
+                    <uiInput
+                        label="Nazwa sklepu"
+                        v-model="newShopName"
+                        :error="inputErrors['shopName']"
+                    />
                     <uiInput label="Nawa wydatku" v-model="newExpenseName" />
                     <uiInput
                         label="Całkowita kwota"
                         type="number"
+                        :error="inputErrors['newExpenseValue']"
                         v-model="newExpenseValue"
                     />
                     <uiInput
                         label="Data"
                         type="date"
+                        :error="inputErrors['newExpenseDate']"
                         v-model="newExpenseDate"
                     />
                     <ion-item v-if="!productList.length && billLoaded">
@@ -420,6 +453,12 @@ const addNewProduct = () => {
                     <div>
                         <input type="file" @change="handleImageUpload" />
                         <canvas ref="canvas" style="display: none"></canvas>
+                        <div
+                            v-if="billLoading"
+                            class="w-full mt-8 flex justify-center items-center h-full"
+                        >
+                            <ion-spinner name="lines-sharp"></ion-spinner>
+                        </div>
 
                         <div v-if="ocrResult && productList.length">
                             <h2>Rozpoznane produkty:</h2>
@@ -431,7 +470,9 @@ const addNewProduct = () => {
                                     :price="item.price"
                                     :category="item.category"
                                     @buttonClick="() => editExpenseItem(item)"
-                                    @removeClick="() => productList.splice(index, 1)"
+                                    @removeClick="
+                                        () => productList.splice(index, 1)
+                                    "
                                 />
                             </uiList>
                             <uiButton
