@@ -2,14 +2,14 @@
 import Tesseract from "tesseract.js"
 const { popularStores } = usePopularStores()
 const { shoppingItemsCategories } = useShoppingItemsCategories()
-import { usePhotoGallery } from "../composables/usePhotoGallery"
-const { photoFromCamera, selectPhotoFromData } = usePhotoGallery()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
 const { addExpenseToStore } = expensesStore
 const uid = localStorage.getItem("uid")
 
 const { billCategories } = useBillCategories()
+
+const { openDecideModal } = useAlerts()
 
 const router = useRouter()
 const selectedCategory = ref("")
@@ -21,7 +21,6 @@ const newShopName = ref("")
 const expenseMembers = ref([])
 const document = ref(null)
 const photoBase64 = ref(null)
-const photoEdited = ref(false)
 const billLoaded = ref(false)
 const billLoading = ref(false)
 
@@ -37,6 +36,17 @@ const editingItem = ref(null)
 const isOpen = ref(false)
 const isOpenAddModal = ref(false)
 
+const categoriesMap = computed(() => {
+    const map = {}
+    for (const [category, items] of Object.entries(shoppingItemsCategories)) {
+        items.forEach((item) => {
+            map[item] = category
+        })
+    }
+    return map
+})
+
+const allowAddProducts = ref(false)
 const newItem = ref({
     name: "",
     price: "",
@@ -45,7 +55,12 @@ const newItem = ref({
 
 const ocrResult = ref(null)
 const productList = ref([])
+const highestPrice = ref(0)
 const canvas = ref(null) // Reference to the canvas
+const date = ref(null)
+const productListPriceSum = computed(() =>
+    productList.value.reduce((acc, item) => acc + item.price, 0)
+)
 
 let priceFromSumaPLN = null
 let priceFromRazemPLN = null
@@ -74,17 +89,6 @@ const handleImageUpload = async (event) => {
     img.onload = () => processImage(img)
 
     reader.readAsDataURL(file) // Read the image as data URL
-}
-
-const addPhoto = async () => {
-    try {
-        const { pb64, doc } = await photoFromCamera()
-        photoBase64.value = pb64
-        document.value = doc
-        photoEdited.value = true
-    } catch (error) {
-        console.error("Error adding photo", error)
-    }
 }
 
 const processImage = (img) => {
@@ -198,19 +202,81 @@ const isConfusable = (char1, char2) => {
     return confusable1.includes(char2) || confusable2.includes(char1)
 }
 
+const findCategory = (name) => {
+    const lowerName = name.toLowerCase()
+    let category = undefined
+
+    const searchForCategory = (minLength) => {
+        for (let key in categoriesMap.value) {
+            const lowerKey = key.toLowerCase()
+
+            for (let i = 0; i <= lowerKey.length - minLength; i++) {
+                const substring = lowerKey.slice(i, i + minLength)
+                let matchFound = false
+
+                if (lowerName.includes(substring)) {
+                    matchFound = true
+                } else {
+                    for (let j = 0; j < substring.length; j++) {
+                        const subChar = substring[j]
+                        const lowerNameChars = lowerName.slice(i, i + minLength)
+
+                        if (
+                            lowerNameChars[j] &&
+                            isConfusable(subChar, lowerNameChars[j])
+                        ) {
+                            matchFound = true
+                        } else {
+                            matchFound = false
+                            break
+                        }
+                    }
+                }
+
+                if (matchFound) {
+                    return categoriesMap.value[key]
+                }
+            }
+        }
+        return ""
+    }
+
+    category = searchForCategory(7)
+    if (category) return category
+
+    category = searchForCategory(6)
+    if (category) return category
+
+    category = searchForCategory(5)
+    if (category) return category
+
+    category = searchForCategory(4)
+    if (category) return category
+
+    return ""
+}
+
 const parseReceipt = (text) => {
     const lines = text.split("\n")
     const products = []
+    let totalPrice = 0
 
     lines.forEach((line) => {
+        if (line.match(/gotówka/i)) return
         if (!newShopName.value) {
             const store = getMatchingStore(line)
             newShopName.value = store
         }
+
+        const priceMatch = line.match(/\d{1,4},\d{2}[ABC\(48\%]/)
+        const discountPriceMatch = line.match(
+            /-\d{1,4},\d{2}\s*-\s*\d{1,4},\d{2}/
+        )
         const highestPriceMatch = line.match(/\d{1,4},\d{2}/)
         const sumaPLN = line.match(/SUMA\sPLN/)
         const razemPLN = line.match(/RAZEM\sPLN/)
         const dateMatch = line.match(/\d{4}\s*-\s*\d{2}\s*-\s*\d{2}/)
+        console.log(line, discountPriceMatch)
 
         if (sumaPLN) updatePriceFromMatch(sumaPLN, "sumaPLN")
         if (razemPLN) updatePriceFromMatch(razemPLN, "razemPLN")
@@ -223,9 +289,45 @@ const parseReceipt = (text) => {
             const price = parseFloat(highestPriceMatch[0].replace(",", "."))
             if (price > highestNumber) highestNumber = price
         }
+
+        if (priceMatch) {
+            const nameMatch = line.match(
+                /^[^a-zA-ZąśćółęźżĄŚĆÓŁĘŹŻ]*(?:[a-zA-ZąśćółęźżĄŚĆÓŁĘŹŻ.,\s]{2,})/
+            )
+            const cleanedPrice = priceMatch[0]
+                .replace(/[ABC]/, "")
+                .replace(",", ".")
+
+            totalPrice += cleanedPrice
+            if (nameMatch) {
+                const category = findCategory(nameMatch[0].trim())
+                products.push({
+                    name: nameMatch[0].trim(),
+                    price: cleanedPrice
+                        ? parseFloat(cleanedPrice).toFixed(2)
+                        : null,
+                    category,
+                })
+            }
+        }
     })
 
     newExpenseValue.value = determineHighestPrice()
+    productList.value = products
+    if (productListPriceSum.value !== newExpenseValue.value) {
+        openDecideModal(
+            "Błąd w kwocie",
+            "Kwota wydatku nie zgadza się z sumą produktów na paragonie. Proszę sprawdzić dane. Chcesz sprawdzić poszczególne produkty czy dodać paragon jedynie z całkowitą kwotą?",
+            () => {
+                ocrResult.value = null
+                productList.value = []
+            },
+            () => {},
+            "Zapisz kwotę",
+            "Sprawdź produkty"
+        )
+        allowAddProducts.value = true
+    }
     billLoaded.value = true
     billLoading.value = false
 }
@@ -253,7 +355,6 @@ const validateInputs = () => {
     inputErrors.value["shopName"] = ""
     inputErrors.value["newExpenseValue"] = ""
     inputErrors.value["newExpenseDate"] = ""
-    inputErrors.value["selectedCategory"] = ""
     if (!newShopName.value) {
         inputErrors.value["shopName"] = "Nazwa sklepu jest wymagana"
     }
@@ -263,9 +364,6 @@ const validateInputs = () => {
     if (!newExpenseDate.value) {
         inputErrors.value["newExpenseDate"] = "Data jest wymagana"
     }
-    // if (!selectedCategory.value) {
-    //     inputErrors.value["selectedCategory"] = "Kategoria jest wymagana"
-    // }
 }
 
 const addExpense = async () => {
@@ -297,6 +395,11 @@ const handleMember = (member) => {
 const setOpen = (open) => (isOpen.value = open)
 const setAddOpen = (open) => (isOpenAddModal.value = open)
 
+const editExpenseItem = (item) => {
+    editingItem.value = item
+    setOpen(true)
+}
+
 const addNewProduct = () => {
     productList.value.push({
         name: newItem.value.name,
@@ -326,7 +429,6 @@ const addNewProduct = () => {
         <ion-content>
             <div class="inner-content">
                 <ion-list lines="none">
-                    <uiInput type="file" @change="handleImageUpload" />
                     <uiInput
                         label="Nazwa sklepu"
                         v-model="newShopName"
@@ -345,7 +447,7 @@ const addNewProduct = () => {
                         :error="inputErrors['newExpenseDate']"
                         v-model="newExpenseDate"
                     />
-                    <ion-item>
+                    <ion-item v-if="!productList.length && billLoaded">
                         <ion-select
                             label="Kategoria"
                             label-placement="stacked"
@@ -360,16 +462,42 @@ const addNewProduct = () => {
                         </ion-select>
                     </ion-item>
                     <FamilyDropdownSelectMember @toggleMember="handleMember" />
-                    <!-- <uiButton @click="addPhoto" type="secondary">
-                            <span> Zrób zdjęcie</span>
-                        </uiButton> -->
                     <div>
+                        <input type="file" @change="handleImageUpload" />
                         <canvas ref="canvas" style="display: none"></canvas>
                         <div
                             v-if="billLoading"
                             class="w-full mt-8 flex justify-center items-center h-full"
                         >
                             <ion-spinner name="lines-sharp"></ion-spinner>
+                        </div>
+
+                        <div v-if="ocrResult && productList.length">
+                            <h2>Rozpoznane produkty:</h2>
+                            <uiList>
+                                <ExpensesNewItem
+                                    v-for="(item, index) in productList"
+                                    :key="index"
+                                    :name="item.name"
+                                    :price="item.price"
+                                    :category="item.category"
+                                    @buttonClick="() => editExpenseItem(item)"
+                                    @removeClick="
+                                        () => productList.splice(index, 1)
+                                    "
+                                />
+                            </uiList>
+                            <uiButton
+                                type="tertiary"
+                                class="w-full"
+                                @click="setAddOpen(true)"
+                            >
+                                <ion-icon
+                                    slot="icon-only"
+                                    :icon="ioniconsAdd"
+                                ></ion-icon>
+                                Dodaj produkt
+                            </uiButton>
                         </div>
                     </div>
                 </ion-list>

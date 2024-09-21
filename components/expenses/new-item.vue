@@ -9,7 +9,7 @@ const props = defineProps({
         required: true,
     },
     price: {
-        type: Number,
+        type: [Number, String],
         required: true,
     },
 })

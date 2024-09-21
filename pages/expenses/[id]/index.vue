@@ -382,6 +382,6 @@ const addNewProduct = () => {
 
 <style lang="scss" scoped>
 ion-modal {
-    --height: 40vh;
+    --height: 400px;
 }
 </style>
