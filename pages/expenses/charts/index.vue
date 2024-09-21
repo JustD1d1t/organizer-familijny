@@ -30,15 +30,28 @@ function groupItemsByCategory() {
     const groupedItems = new Map()
 
     expenses.value.forEach((expense) => {
-        expense.items.forEach((item) => {
-            const { category, price } = item
+        if (expense.items) {
+            expense.items.forEach((item) => {
+                const { category, price } = item
+
+                if (groupedItems.has(category)) {
+                    groupedItems.set(
+                        category,
+                        groupedItems.get(category) + price
+                    )
+                } else {
+                    groupedItems.set(category, price)
+                }
+            })
+        } else {
+            const { category, value } = expense
 
             if (groupedItems.has(category)) {
-                groupedItems.set(category, groupedItems.get(category) + price)
+                groupedItems.set(category, groupedItems.get(category) + value)
             } else {
-                groupedItems.set(category, price)
+                groupedItems.set(category, value)
             }
-        })
+        }
     })
 
     // Sortowanie według wartości
