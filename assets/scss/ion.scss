@@ -81,6 +81,11 @@ ion-input {
 }
 
 ion-select {
+    &.select-label-placement-start {
+        &::part(icon) {
+            margin-top: 0;
+        }
+    }
     &::part(container) {
         background-color: $white;
         border: 1px solid $light-gray;
@@ -93,6 +98,13 @@ ion-select {
     }
     &::part(icon) {
         margin-top: 0.75rem;
+    }
+
+    .select-wrapper-inner {
+        flex-grow: 1;
+        &::part(container) {
+            flex-grow: 1;
+        }
     }
 }
 

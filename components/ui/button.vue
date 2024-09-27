@@ -82,6 +82,7 @@ const buttonClass = computed(() => {
     &::part(native) {
         background-color: transparent;
         color: $primary-color;
+        box-shadow: unset;
     }
     &.danger-color {
         &::part(native) {
