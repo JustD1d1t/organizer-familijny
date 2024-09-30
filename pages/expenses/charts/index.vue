@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted } from "vue"
-import { init } from "echarts"
+import { ref, computed, onMounted, watch, onBeforeMount } from "vue"
+import { init, dispose } from "echarts"
 
 const expensesStore = useExpensesStore()
 const { expenses } = storeToRefs(expensesStore)
@@ -16,7 +16,9 @@ const totalSum = computed(() => {
     ).toFixed(2)
 })
 
-function groupExpensesByCategory() {
+const minChartSize = ref(350)
+
+const groupExpensesByCategory = computed(() => {
     const groupedExpenses = new Map()
 
     expenses.value.forEach((expense) => {
@@ -34,48 +36,17 @@ function groupExpensesByCategory() {
     )
 
     return sortedExpenses
-}
-
-const groupedItemsByCategory = computed(() => {
-    const groupedItems = new Map()
-
-    expenses.value.forEach((expense) => {
-        if (expense.items && expense.items.length) {
-            expense.items.forEach((item) => {
-                const { category, price } = item
-
-                if (groupedItems.has(category)) {
-                    groupedItems.set(
-                        category,
-                        groupedItems.get(category) + price
-                    )
-                } else {
-                    groupedItems.set(category, price)
-                }
-            })
-        } else {
-            const { category, value } = expense
-
-            if (groupedItems.has(category)) {
-                groupedItems.set(category, groupedItems.get(category) + value)
-            } else {
-                groupedItems.set(category, value)
-            }
-        }
-    })
-
-    const sortedItems = new Map(
-        [...groupedItems.entries()].sort((a, b) => b[1] - a[1])
-    )
-    groupedItems.value = sortedItems
-    return sortedItems
 })
 
 const chart = ref(null)
 
 const prepareChart = () => {
-    const groupedExpenses = groupedItemsByCategory.value
+    // Jeśli instancja wykresu już istnieje, zniszcz ją
+
+    // Utwórz nową instancję wykresu
     const myChart = init(chart.value)
+
+    const groupedExpenses = groupExpensesByCategory.value
 
     const colors = [
         "#5470C6",
@@ -145,12 +116,24 @@ const prepareChart = () => {
     }
 
     myChart.setOption(option)
+
+    // Resize chart to fit the container
+    myChart.resize()
 }
+
 const openFilterMenu = async () => {
     await menuController.open("expense-filter")
 }
 
+onBeforeMount(() => {
+    minChartSize.value = window.innerWidth - 2 * 16
+})
+
 onMounted(() => {
+    prepareChart()
+})
+
+watch(expenses, () => {
     prepareChart()
 })
 </script>
@@ -166,22 +149,23 @@ onMounted(() => {
                         :icon="ioniconsArrowBackOutline"
                     ></ion-back-button>
                 </ion-buttons>
-                <ion-buttons slot="end">
+                <!-- <ion-buttons slot="end">
                     <uiButton type="tertiary" @click="openFilterMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsFilter" />
                     </uiButton>
-                </ion-buttons>
+                </ion-buttons> -->
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true" class="h-dvh overflow-hidden">
-            <!-- Kontener z przewijaniem w poziomie -->
             <div style="overflow-x: auto">
-                <!-- Ustaw szerokość na większą od 400px, aby pomieścić szerokie słupki -->
+                {{ 70 * groupExpensesByCategory.size }}
                 <div
                     ref="chart"
                     :style="{
-                        'min-width': '350px !important',
-                        width: `${70 * groupedItemsByCategory.size}px`,
+                        width: `${Math.max(
+                            70 * groupExpensesByCategory.size,
+                            minChartSize
+                        )}px`,
                         height: '400px',
                         margin: '0 auto',
                     }"
@@ -194,7 +178,7 @@ onMounted(() => {
                     <ion-label>Razem {{ totalSum }}</ion-label>
                 </ion-item>
                 <ion-item
-                    v-for="[key, value] in groupedItemsByCategory"
+                    v-for="[key, value] in groupExpensesByCategory"
                     :key="key"
                     class="flex flex-col py-2 pl-6 pr-2 bg-white rounded-2xl shadow-lg"
                 >
