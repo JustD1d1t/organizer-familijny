@@ -179,11 +179,12 @@ onMounted(() => {
                 <!-- Ustaw szerokość na większą od 400px, aby pomieścić szerokie słupki -->
                 <div
                     ref="chart"
-                    style="
-                        width: calc(40px * 20);
-                        height: 400px;
-                        margin: 0 auto;
-                    "
+                    :style="{
+                        'min-width': '350px !important',
+                        width: `${70 * groupedItemsByCategory.size}px`,
+                        height: '400px',
+                        margin: '0 auto',
+                    }"
                 ></div>
             </div>
             <uiList>

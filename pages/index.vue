@@ -7,16 +7,13 @@ const { nickname } = storeToRefs(userStore)
 const openPersonMenu = async () => {
     await menuController.open("person")
 }
-const nick = nickname.value.length
-    ? nickname.value
-    : localStorage.getItem("nickname")
 </script>
 
 <template>
     <ion-page id="main-content">
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
-                <ion-title>Cześć, {{ nick }}!</ion-title>
+                <ion-title>Cześć, {{ nickname }}!</ion-title>
                 <ion-buttons slot="end">
                     <uiButton type="tertiary" @click="openPersonMenu">
                         <ion-icon slot="icon-only" :icon="ioniconsPerson" />

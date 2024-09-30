@@ -11,9 +11,14 @@ export const useNewspapersStore = defineStore({
     actions: {
         async fetchShops() {
             try {
+                const token = localStorage.getItem("idToken")
                 const response = await axios.get(`${backendUrl}/html`, {
                     params: {
                         url: "https://www.gazetkipromocyjne.net/",
+                    },
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json", // Jeśli potrzebujesz innego typu zawartości
                     },
                 })
                 return response.data.data

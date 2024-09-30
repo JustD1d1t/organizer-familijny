@@ -32,9 +32,14 @@ const fetchContent = async (url) => {
     try {
         waitingForRender.value = true
         isLoading.value = true
+        const token = localStorage.getItem("idToken")
         const response = await axios.get(`${backendUrl}/html/pdf`, {
             params: { url: url },
             responseType: "arraybuffer",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json", // Jeśli potrzebujesz innego typu zawartości
+            },
         })
         return response.data
     } catch (error) {
@@ -154,7 +159,9 @@ onMounted(() => {
                                 Poprzednia
                             </uiButton>
                             <span>{{ pageIndicator }}</span>
-                            <uiButton type="tertiary" @click="nextPage">Następna</uiButton>
+                            <uiButton type="tertiary" @click="nextPage"
+                                >Następna</uiButton
+                            >
                         </div>
                     </ion-item>
                 </ion-list>
