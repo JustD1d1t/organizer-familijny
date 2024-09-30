@@ -92,6 +92,7 @@ const prepareChart = () => {
                     color: function (params) {
                         return colors[params.dataIndex % colors.length]
                     },
+                    borderRadius: [10, 10, 0, 0],
                 },
                 label: {
                     show: true,
