@@ -25,10 +25,15 @@ const currentShop = computed(() => shops.value[shop])
 
 const fetchNewspapers = async () => {
     try {
+        const token = localStorage.getItem("idToken")
         isLoading.value = true
         const response = await axios.get(`${backendUrl}/html`, {
             params: {
                 url: currentShop.value.url,
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json", // Jeśli potrzebujesz innego typu zawartości
             },
         })
         return response.data.data
@@ -67,7 +72,7 @@ onMounted(() => {
 
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button

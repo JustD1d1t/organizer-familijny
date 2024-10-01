@@ -61,6 +61,34 @@ const goToAddRecipePage = (recipe) => {
                 </uiInfoCard>
             </div>
             <div class="w-full" v-else>
+                <ion-accordion-group>
+                    <ion-accordion value="first">
+                        <ion-item slot="header" color="light">
+                            <ion-label><b>Czy wiesz, że...</b></ion-label>
+                        </ion-item>
+                        <div class="ion-padding" slot="content">
+                            <uiInfoCard
+                                subtitle="Możesz dodawać przepisy ze stron:"
+                                icon="ioniconsBulb"
+                                class="mb-4 mt-2"
+                            >
+                                <ul class="my-2">
+                                    <li>www.przepisy.pl</li>
+                                    <li>www.aniagotuje.pl</li>
+                                    <li>www.kwestiasmaku.com</li>
+                                    <li>www.kucnialidla.pl</li>
+                                    <li>www.poprostupycha.com.pl</li>
+                                    <li>www.aniastarmach.pl</li>
+                                    <li>www.doradcasmaku.pl</li>
+                                </ul>
+                                <p>
+                                    Zawsze możesz zapisać również swój własny
+                                    przepis
+                                </p>
+                            </uiInfoCard>
+                        </div>
+                    </ion-accordion>
+                </ion-accordion-group>
                 <RecipesItem
                     v-for="recipe in recipes"
                     :key="recipe.id"

@@ -79,6 +79,9 @@ const buttonClass = computed(() => {
     }
 }
 .button-tertiary {
+    &.ion-activated {
+        --background-activated: transparent !important;
+    }
     &::part(native) {
         background-color: transparent;
         color: $primary-color;
