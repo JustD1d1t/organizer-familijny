@@ -5,7 +5,7 @@ const hasEndSlotContent = computed(() => {
 })
 </script>
 <template>
-    <ion-item class="flex flex-col bg-white">
+    <ion-item class="flex flex-col">
         <span :class="{ 'w-10/12': hasEndSlotContent }">
             <slot name="start" />
         </span>

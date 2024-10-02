@@ -14,7 +14,7 @@ const { uid } = storeToRefs(userStore)
 
 const router = useRouter()
 
-const selectedCategory = ref("")
+const selectedCategory = ref(currentExpense.value.category)
 
 const document = ref(null)
 const photoBase64 = ref(null)
@@ -25,10 +25,6 @@ const newName = ref(currentExpense.value.name)
 const newValue = ref(currentExpense.value.value)
 const newTimestamp = ref(currentExpense.value.timestamp)
 const newMembers = ref(currentExpense.value.familyMembers)
-
-const categoryToDisplay = computed(
-    () => selectedCategory.value || currentExpense.value.category
-)
 
 const convertTimestampToDate = () => {
     let date
@@ -94,8 +90,6 @@ onMounted(async () => {
     convertTimestampToDate()
 })
 
-console.log(currentExpense.value)
-
 const handleMember = (members) => {
     newMembers.value = members
 }
@@ -143,7 +137,7 @@ const handleMember = (members) => {
                         <ion-select
                             label="Kategoria"
                             label-placement="stacked"
-                            v-model="categoryToDisplay"
+                            v-model="selectedCategory"
                         >
                             <ion-select-option
                                 v-for="(category, index) in billCategories"

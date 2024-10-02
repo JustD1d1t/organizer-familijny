@@ -23,13 +23,16 @@ const groupExpensesByCategory = computed(() => {
 
     expenses.value.forEach((expense) => {
         const { category, value } = expense
-
         if (groupedExpenses.has(category)) {
             groupedExpenses.set(category, groupedExpenses.get(category) + value)
         } else {
             groupedExpenses.set(category, value)
         }
     })
+
+    for (const [key, value] of groupedExpenses) {
+        groupedExpenses.set(key, value.toFixed(2))
+    }
 
     const sortedExpenses = new Map(
         [...groupedExpenses.entries()].sort((a, b) => b[1] - a[1])

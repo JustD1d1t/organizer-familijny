@@ -100,10 +100,13 @@ ion-select {
         margin-top: 0.75rem;
     }
 
-    .select-wrapper-inner {
-        flex-grow: 1;
-        &::part(container) {
+    &::part(label) {
+        color: blue;
+        & + div {
             flex-grow: 1;
+            &::part(container) {
+                flex-grow: 1;
+            }
         }
     }
 }
