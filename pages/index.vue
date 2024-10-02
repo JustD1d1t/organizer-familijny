@@ -1,8 +1,7 @@
 <script setup>
 const pages = usePages()
-const uid = localStorage.getItem("uid")
 const userStore = useUserStore()
-const { nickname } = storeToRefs(userStore)
+const { nickname, uid } = storeToRefs(userStore)
 
 const openPersonMenu = async () => {
     await menuController.open("person")
@@ -20,6 +19,7 @@ const openPersonMenu = async () => {
                     </uiButton>
                 </ion-buttons>
             </ion-toolbar>
+            
         </ion-header>
 
         <ion-content :fullscreen="true" v-if="uid">

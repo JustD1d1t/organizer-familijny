@@ -1,6 +1,7 @@
 <script setup>
 const router = useRouter()
-const uid = localStorage.getItem("uid")
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
@@ -29,7 +30,7 @@ const handleMember = (member) => {
     }
 }
 
-const collaboratedPantry = computed(() => currentPantry.value.ownerId !== uid)
+const collaboratedPantry = computed(() => currentPantry.value.ownerId !== uid.value)
 
 const leave = async () => {
     await leaveList()

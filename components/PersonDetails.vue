@@ -1,13 +1,10 @@
 <script setup>
 import { StateEntries } from "@/types"
 
-// const { logoutUser } = useFirebaseAuth()
 const userStore = useUserStore()
 const { logoutUser } = userStore
-const { email } = storeToRefs(userStore)
-const localStorageMail = localStorage.getItem("email")
-const userEmail = email.value.length ? email.value : localStorageMail
-const emailVerified = localStorage.getItem("emailVerified")
+const { email, emailVerified } = storeToRefs(userStore)
+const userEmail = computed(() => email.value)
 
 const shoppingListsStore = useShoppingListsStore()
 const recipesStore = useRecipesStore()
@@ -30,7 +27,6 @@ const unreadNotifications = computed(() => {
 })
 
 const handleLogout = () => {
-    localStorage.removeItem("uid")
     logoutUser()
     clearShoppingLists()
     clearRecipes()
@@ -51,7 +47,7 @@ const navigate = (url) => {
         content-id="main-content"
         swipeGesture="false"
     >
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Użytkownik</ion-title>
             </ion-toolbar>
@@ -65,7 +61,7 @@ const navigate = (url) => {
             <ion-list lines="none" :inset="true">
                 <ion-menu-toggle auto-hide="false">
                     <ion-item
-                        v-if="emailVerified !== 'false'"
+                        v-if="emailVerified"
                         router-direction="root"
                         @click="navigate('/notifications')"
                     >
@@ -75,7 +71,7 @@ const navigate = (url) => {
                         Powiadomienia
                     </ion-item>
                     <ion-item
-                        v-if="emailVerified !== 'false'"
+                        v-if="emailVerified"
                         router-direction="root"
                         @click="navigate('/family')"
                     >

@@ -1,6 +1,7 @@
 <script setup>
 import { StateEntries } from "@/types"
-const uid = localStorage.getItem("uid")
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 const expensesStore = useExpensesStore()
 const { queryExpenses, setCurrentExpense } = expensesStore
@@ -50,13 +51,15 @@ const expensesToShow = computed(() => {
     } else if (showSelect.value === "my") {
         return expenses.value.filter(
             (expense) =>
-                expense.userId === uid && expense.familyMembers.length === 0
+                expense.userId === uid.value &&
+                expense.familyMembers.length === 0
         )
     } else {
         return expenses.value.filter(
             (expense) =>
-                (expense.userId === uid && expense.familyMembers.length > 0) ||
-                expense.familyMembers.includes(uid)
+                (expense.userId === uid.value &&
+                    expense.familyMembers.length > 0) ||
+                expense.familyMembers.includes(uid.value)
         )
     }
 })
@@ -118,7 +121,9 @@ const openExpensesCharts = () => {
             >
                 <ion-spinner name="lines-sharp"></ion-spinner>
             </div>
-            <h2 v-else-if="!isLoading && !expensesToShow.length">Brak wydatków</h2>
+            <h2 v-else-if="!isLoading && !expensesToShow.length">
+                Brak wydatków
+            </h2>
             <div v-else class="h-full overflow-auto">
                 <div class="text-2xl my-4 flex justify-between font-bold">
                     <span>Razem </span>

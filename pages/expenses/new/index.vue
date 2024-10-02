@@ -7,7 +7,8 @@ const { photoFromCamera, selectPhotoFromData } = usePhotoGallery()
 import { useExpensesStore } from "~/stores/expenses"
 const expensesStore = useExpensesStore()
 const { addExpenseToStore } = expensesStore
-const uid = localStorage.getItem("uid")
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 const { billCategories } = useBillCategories()
 
@@ -276,7 +277,7 @@ const addExpense = async () => {
         value: parseFloat(newExpenseValue.value),
         timestamp: new Date(newExpenseDate.value).getTime(),
         shop: newShopName.value.toLowerCase(),
-        userId: uid,
+        userId: uid.value,
         familyMembers: expenseMembers.value,
         items: productList.value,
         category: selectedCategory.value,

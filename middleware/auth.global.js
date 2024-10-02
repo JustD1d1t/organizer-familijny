@@ -30,10 +30,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
                 to.path === "/register" ||
                 to.path === "/verify-email"
             ) {
-                if (to.path !== "/") {
-                    console.log("Redirecting to /")
-                    return navigateTo("/")
-                }
+                console.log(`redirecting to ${to.path}`)
             }
         }
     }

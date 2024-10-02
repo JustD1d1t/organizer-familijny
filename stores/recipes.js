@@ -1,7 +1,9 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
-const uid = localStorage.getItem("uid")
+
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 export const useRecipesStore = defineStore({
     id: "recipes-store",
@@ -29,7 +31,7 @@ export const useRecipesStore = defineStore({
             this.setLoading(true)
             try {
                 const data = await request(
-                    `${backendUrl}/recipes/get-all?userId=${uid}`
+                    `${backendUrl}/recipes/get-all?userId=${uid.value}`
                 )
                 this.setRecipes(data.recipes)
             } catch (error) {

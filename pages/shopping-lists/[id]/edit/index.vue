@@ -7,10 +7,13 @@ const shoppingListsStore = useShoppingListsStore()
 const { editShoppingList, leaveList } = shoppingListsStore
 const { currentShoppingList } = storeToRefs(shoppingListsStore)
 
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
+
 const input = ref()
 
 const collaboratedList = computed(() => {
-    return localStorage.getItem("uid") !== currentShoppingList.value.ownerId
+    return uid.value !== currentShoppingList.value.ownerId
 })
 
 const newMembers = ref(

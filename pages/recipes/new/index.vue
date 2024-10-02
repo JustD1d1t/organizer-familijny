@@ -1,11 +1,10 @@
 <script setup>
 import axios from "axios"
-import { StateEntries } from "@/types"
 const router = useRouter()
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 const { backendUrl } = useConfig()
-
-const uid = localStorage.getItem("uid")
 
 const recipesStore = useRecipesStore()
 const { addRecipe } = recipesStore
@@ -75,7 +74,7 @@ const add = async () => {
     const recipe = {
         name: name,
         ingredients: ingredientsArray,
-        userId: uid,
+        userId: uid.value,
         url: recipeLink.value,
     }
     await addRecipe(recipe)
@@ -113,11 +112,11 @@ const addOwnRecipe = () => {
                 </ul>
             </uiInfoCard>
 
-            <uiButton  @click="add" class="my-6">
+            <uiButton @click="add" class="my-6">
                 Dodaj przepis ze strony
             </uiButton>
             <span class="text-center block">lub</span>
-            <uiButton type="secondary"  @click="addOwnRecipe" class="my-6">
+            <uiButton type="secondary" @click="addOwnRecipe" class="my-6">
                 Zapisz swój własny przepis
             </uiButton>
         </ion-content>

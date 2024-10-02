@@ -11,18 +11,14 @@ const { updateMembers, getFamilyDetails } = familyMembersStore
 const { familyMembersDetails, familyMembers } = storeToRefs(familyMembersStore)
 
 const userStore = useUserStore()
-const { email } = storeToRefs(userStore)
+const { email, uid } = storeToRefs(userStore)
 
 const route = useRoute()
 const params = route.params
-
-const uid = localStorage.getItem("uid")
 const notification = computed(() =>
     notifications.value.find((n) => n.id === params.id)
 )
-const userEmail = computed(() => {
-    return email.value !== "" ? email.value : localStorage.getItem("email")
-})
+const userEmail = computed(() => email.value)
 
 const handleFamilyInvitation = async (accepted) => {
     const editedNotification = { ...notification.value, accepted }
@@ -30,7 +26,7 @@ const handleFamilyInvitation = async (accepted) => {
     await updateNotification(editedNotification)
 
     const copiedMembersDetails = [...familyMembersDetails.value]
-    const searchedMember = copiedMembersDetails.find((m) => m.id === uid)
+    const searchedMember = copiedMembersDetails.find((m) => m.id === uid.value)
 
     notification.value.accepted = accepted
 
@@ -41,7 +37,7 @@ const handleFamilyInvitation = async (accepted) => {
 
         await updateMembers(
             familyMembersDetails.value,
-            [...familyMembers.value, uid],
+            [...familyMembers.value, uid.value],
             notification.value.ownerId
         )
         await sendNotification(
@@ -60,7 +56,9 @@ const handleFamilyInvitation = async (accepted) => {
             notification.value.ownerId
         )
 
-        familyMembersDetails = familyMembersDetails.filter((m) => m.id !== uid)
+        familyMembersDetails = familyMembersDetails.filter(
+            (m) => m.id !== uid.value
+        )
         await updateMembers(familyMembersDetails, _, notification.value.ownerId)
     }
 }

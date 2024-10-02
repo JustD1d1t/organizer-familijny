@@ -9,10 +9,10 @@ const { removeExpenseFromStore, editExpense, getExpensePhoto } = expensesStore
 const { currentExpense } = storeToRefs(expensesStore)
 const { billCategories } = useBillCategories()
 const { openAlert } = useAlerts()
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 const router = useRouter()
-
-const uid = localStorage.getItem("uid")
 
 const selectedCategory = ref("")
 

@@ -8,6 +8,9 @@ import { StateEntries } from "@/types"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
 
+const userStore = useUserStore()
+const { idToken } = storeToRefs(userStore)
+
 GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.worker.min.mjs"
 
@@ -32,7 +35,7 @@ const fetchContent = async (url) => {
     try {
         waitingForRender.value = true
         isLoading.value = true
-        const token = localStorage.getItem("idToken")
+        const token = idToken.value
         const response = await axios.get(`${backendUrl}/html/pdf`, {
             params: { url: url },
             responseType: "arraybuffer",

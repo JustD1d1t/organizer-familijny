@@ -5,6 +5,8 @@ const props = defineProps({
         default: () => {},
     },
 })
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 const shoppingListsStore = useShoppingListsStore()
 const { removeShoppingList, setCurrentShoppingList } = shoppingListsStore
@@ -23,7 +25,7 @@ const boughtItems = computed(
 )
 
 const collaboratedList = computed(
-    () => props.shoppingList.ownerId !== localStorage.getItem("uid")
+    () => props.shoppingList.ownerId !== uid.value
 )
 
 const familyMembers = computed(() => {

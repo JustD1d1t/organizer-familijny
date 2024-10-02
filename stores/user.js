@@ -52,8 +52,6 @@ export const useUserStore = defineStore({
             })
 
             localStorage.setItem("uid", data.localId)
-            localStorage.setItem("email", email)
-            localStorage.setItem("nickname", data.displayName)
             localStorage.setItem("emailVerified", data.emailVerified)
             localStorage.setItem("idToken", data.idToken)
             localStorage.setItem("refreshToken", data.refreshToken)
@@ -62,6 +60,7 @@ export const useUserStore = defineStore({
             this.setEmailVerified(data.emailVerified)
             this.setIdToken(data.idToken)
             this.setLoading(false)
+            this.setUid(data.localId)
             return data
         },
         async logoutUser() {
@@ -74,8 +73,6 @@ export const useUserStore = defineStore({
                 credentials: "include",
             })
             localStorage.removeItem("uid")
-            localStorage.removeItem("email")
-            localStorage.removeItem("nickname")
             localStorage.removeItem("emailVerified")
             localStorage.removeItem("idToken")
             localStorage.removeItem("refreshToken")
@@ -84,6 +81,7 @@ export const useUserStore = defineStore({
             this.setEmailVerified(false)
             this.setIdToken("")
             this.setLoading(false)
+            this.setUid("")
         },
         async resendVerificationEmail() {
             this.setLoading(true)
@@ -165,6 +163,8 @@ export const useUserStore = defineStore({
                     }),
                     credentials: "include",
                 })
+                localStorage.setItem("uid", data.localId)
+                localStorage.setItem("emailVerified", data.emailVerified)
                 this.setUid(data.localId)
                 this.setEmail(data.email)
                 this.setNickname(data.displayName)

@@ -9,8 +9,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(["toggleMember"])
-
-const uid = localStorage.getItem("uid")
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 const familyMembersStore = useFamilyMembersStore()
 const { familyMembersDetails, familyMembers } = storeToRefs(familyMembersStore)
 
@@ -19,7 +19,7 @@ const membersToShow = computed(() => {
         (member) =>
             member.status === "accepted" &&
             familyMembers.value.includes(member.id) &&
-            member.id !== uid
+            member.id !== uid.value
     )
 })
 

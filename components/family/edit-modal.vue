@@ -7,12 +7,12 @@ const { request } = useFetchRequest()
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, createFamily } = familyMembersStore
 const { familyMembersDetails } = storeToRefs(familyMembersStore)
+const userStore = useUserStore()
+const { uid, email, nickname } = storeToRefs(userStore)
 
 const emit = defineEmits("cancel", "confirmModal")
 
-const email = ref("")
 const emailInput = ref()
-const uid = localStorage.getItem("uid")
 
 const addMember = async (user) => {
     const newMembersDetails = [
@@ -26,10 +26,10 @@ const addMember = async (user) => {
 const create = async (user) => {
     const newMembersDetails = [
         {
-            email: localStorage.getItem("email"),
-            id: localStorage.getItem("uid"),
-            uid: localStorage.getItem("uid"),
-            nickname: localStorage.getItem("nickname"),
+            email: email.value,
+            id: uid.value,
+            uid: uid.value,
+            nickname: nickname.value,
             status: "accepted",
         },
         { ...user, status: "pending" },
@@ -56,14 +56,10 @@ const handleFamilyMember = async () => {
 
     await sendNotification(
         {
-            title: `Zaproszenie do rodziny użytkownika "${localStorage.getItem(
-                "email"
-            )}"`,
-            content: `Zostałeś zaproszony do rodziny przez użytkownika "${localStorage.getItem(
-                "email"
-            )}"`,
+            title: `Zaproszenie do rodziny użytkownika "${email.value}"`,
+            content: `Zostałeś zaproszony do rodziny przez użytkownika "${email.value}"`,
             type: "invitation-to-family",
-            ownerId: uid,
+            ownerId: uid.value,
         },
         user.uid
     )
@@ -78,9 +74,9 @@ const cancel = () => {
 
 <template>
     <div class="ion-padding inner-content">
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
-                <ion-buttons  slot="start">
+                <ion-buttons slot="start">
                     <ion-button @click="cancel()">Anuluj</ion-button>
                 </ion-buttons>
                 <ion-buttons slot="end">

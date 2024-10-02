@@ -2,6 +2,9 @@ import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
 
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
+
 export const useFamilyMembersStore = defineStore({
     id: "family-members-store",
     state: () => {
@@ -44,7 +47,7 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     members,
-                    familyId: this.familyId ?? localStorage.getItem("uid"),
+                    familyId: this.familyId ?? uid.value,
                 }),
             })
             this.setLoading(false)
@@ -55,7 +58,7 @@ export const useFamilyMembersStore = defineStore({
             this.setLoading(true)
             const data = await request(
                 `${backendUrl}/family/get-family-details?familyId=${
-                    id ?? localStorage.getItem("uid")
+                    id ?? uid.value
                 }`
             )
             this.setLoading(false)
@@ -73,7 +76,7 @@ export const useFamilyMembersStore = defineStore({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    familyId: localStorage.getItem("uid"),
+                    familyId: uid.value,
                 }),
             })
             this.setLoading(false)
@@ -89,7 +92,7 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     members,
-                    familyId: this.familyId ?? localStorage.getItem("uid"),
+                    familyId: this.familyId ?? uid.value,
                 }),
             })
             this.setLoading(false)
@@ -104,13 +107,13 @@ export const useFamilyMembersStore = defineStore({
                 },
                 body: JSON.stringify({
                     membersDetails,
-                    familyId: localStorage.getItem("uid"),
+                    familyId: uid.value,
                 }),
             })
             this.setLoading(false)
-            this.familyMembers = [localStorage.getItem("uid")]
+            this.familyMembers = [uid.value]
             this.familyMembersDetails = membersDetails
-            this.familyId = localStorage.getItem("uid")
+            this.familyId = uid.value
         },
     },
 })

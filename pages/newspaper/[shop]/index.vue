@@ -10,6 +10,9 @@ const { backendUrl } = useConfig()
 const newspapersStore = useNewspapersStore()
 const { shops } = storeToRefs(newspapersStore)
 
+const userStore = useUserStore()
+const { idToken } = storeToRefs(userStore)
+
 GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.worker.min.mjs"
 
@@ -25,7 +28,7 @@ const currentShop = computed(() => shops.value[shop])
 
 const fetchNewspapers = async () => {
     try {
-        const token = localStorage.getItem("idToken")
+        const token = idToken.value
         isLoading.value = true
         const response = await axios.get(`${backendUrl}/html`, {
             params: {

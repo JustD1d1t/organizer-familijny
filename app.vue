@@ -14,7 +14,7 @@ const newspapersStore = useNewspapersStore()
 const { setShops } = newspapersStore
 const userStore = useUserStore()
 const { logoutUser, getUserData } = userStore
-const { uid, email, emailVerified, nickname } = storeToRefs(userStore)
+const { uid } = storeToRefs(userStore)
 const route = useRoute()
 
 CapacitorApp.addListener("backButton", (e) => {
@@ -37,29 +37,15 @@ const onWidthChange = () => {
 onMounted(async () => {
     window.addEventListener("resize", onWidthChange)
     isMobile.value = window.innerWidth < 750
-    const localUid = localStorage.getItem("uid")
-    const localEmail = localStorage.getItem("email")
-    const localEmailVerified = localStorage.getItem("emailVerified")
-    const localNickname = localStorage.getItem("nickname")
     const localIdToken = localStorage.getItem("idToken")
+    const localRefreshToken = localStorage.getItem("refreshToken")
     await getUserData()
-    if (localStorage.getItem("uid")) {
+    if (uid.value) {
         await getFamilyDetails()
         await getNotifications()
         setShops()
     }
-    const localEmailVerifiedBool = localEmailVerified === "true"
-    if (
-        !localUid ||
-        uid.value !== localUid ||
-        !localEmail ||
-        email.value !== localEmail ||
-        !localEmailVerified ||
-        emailVerified.value !== localEmailVerifiedBool ||
-        !localNickname ||
-        nickname.value !== localNickname ||
-        !localIdToken
-    ) {
+    if (!localIdToken || !localRefreshToken) {
         await logoutUser()
         return
     }

@@ -6,6 +6,8 @@ const name = ref("")
 const addIngredient = () => {
     ingredients.value.push({ name: "" })
 }
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 const recipesStore = useRecipesStore()
 const { addRecipe } = recipesStore
@@ -14,7 +16,7 @@ const saveRecipe = async () => {
     const objToSend = {
         name: name.value,
         ingredients: ingredients.value,
-        userId: localStorage.getItem("uid"),
+        userId: uid.value,
     }
     if (steps.value) {
         objToSend.steps = steps.value

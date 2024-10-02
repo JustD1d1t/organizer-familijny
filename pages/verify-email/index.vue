@@ -1,13 +1,11 @@
 <script setup>
-const toastMessage = ref("")
-const isOpen = ref(false)
-
 const userStore = useUserStore()
-const { resendVerificationEmail, checkEmailVerification } = userStore
+const { resendVerificationEmail, checkEmailVerification, setEmailVerified } =
+    userStore
 const checkVerification = async () => {
     const { emailVerified } = await checkEmailVerification()
     if (emailVerified) {
-        localStorage.setItem("emailVerified", true)
+        setEmailVerified(true)
         navigateTo("/")
     }
 }

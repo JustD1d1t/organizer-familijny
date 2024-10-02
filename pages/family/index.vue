@@ -1,8 +1,8 @@
 <script setup>
 const notificationsStore = useNotificationsStore()
 const { sendNotification } = notificationsStore
-
-const uid = localStorage.getItem("uid")
+const userStore = useUserStore()
+const { uid, email } = storeToRefs(userStore)
 
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, removeFamily, leaveFamily } = familyMembersStore
@@ -23,7 +23,7 @@ const { expenses } = storeToRefs(expensesStore)
 const { getAllMyExpenses, editExpense } = expensesStore
 
 const familyOwner = computed(() => {
-    return familyId.value === uid
+    return familyId.value === uid.value
 })
 
 const cancel = () => modal.value.$el.dismiss(null, "cancel")
@@ -128,12 +128,8 @@ const remove = async (member) => {
     await removeMemberFromExpenses(member)
     await sendNotification(
         {
-            title: `Zostałeś usunięty z rodziny "${localStorage.getItem(
-                "email"
-            )}"`,
-            content: `Zostałeś usunięty z rodziny przez użytkownika "${localStorage.getItem(
-                "email"
-            )}`,
+            title: `Zostałeś usunięty z rodziny "${email.value}"`,
+            content: `Zostałeś usunięty z rodziny przez użytkownika "${email.value}`,
         },
         member.id
     )
@@ -141,9 +137,9 @@ const remove = async (member) => {
 
 const leave = async () => {
     const newMembersDetails = familyMembersDetails.value.filter(
-        (m) => m.id !== uid
+        (m) => m.id !== uid.value
     )
-    const newMembers = familyMembers.value.filter((m) => m !== uid)
+    const newMembers = familyMembers.value.filter((m) => m !== uid.value)
     await leaveFamily(newMembersDetails, newMembers)
     navigateTo("/")
 }

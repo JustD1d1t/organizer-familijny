@@ -2,6 +2,9 @@ import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
 
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
+
 export const useNotificationsStore = defineStore({
     id: "notifications-store",
     state: () => {
@@ -21,7 +24,7 @@ export const useNotificationsStore = defineStore({
             this.isLoading = isLoading
         },
         async getNotifications() {
-            const uid = localStorage.getItem("uid")
+            const uid = uid.value
             this.setLoading(true)
             const data = await request(
                 `${backendUrl}/notifications/get-all?userId=${uid}`
@@ -30,7 +33,7 @@ export const useNotificationsStore = defineStore({
             this.setNotifications(data.notifications)
         },
         async updateNotification(notification) {
-            const uid = localStorage.getItem("uid")
+            const uid = uid.value
             this.setLoading(true)
             await request(`${backendUrl}/notifications/update?userId=${uid}`, {
                 method: "PATCH",
