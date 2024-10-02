@@ -75,6 +75,7 @@ const familyMembers = computed(() => {
                 side="bottom"
                 alignment="center"
                 :dismiss-on-select="true"
+                v-if="!collaboratedList"
             >
                 <ion-content class="ion-padding mr-8">
                     <ion-list>

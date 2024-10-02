@@ -26,6 +26,8 @@ const newValue = ref(currentExpense.value.value)
 const newTimestamp = ref(currentExpense.value.timestamp)
 const newMembers = ref(currentExpense.value.familyMembers)
 
+const categoryToDisplay = computed(() => selectedCategory.value || currentExpense.value.category)
+
 const convertTimestampToDate = () => {
     let date
     if (currentExpense.value.timestamp.seconds) {
@@ -86,16 +88,14 @@ const fetchBillUrl = async () => {
 }
 
 onMounted(async () => {
-    await fetchBillUrl()
+    // await fetchBillUrl()
     convertTimestampToDate()
 })
 
-const handleMember = (member) => {
-    if (newMembers.value.includes(member.id)) {
-        newMembers.value = newMembers.value.filter((m) => m != member.id)
-    } else {
-        newMembers.value.push(member.id)
-    }
+console.log(currentExpense.value)
+
+const handleMember = (members) => {
+    newMembers.value = members;
 }
 </script>
 <template>
@@ -167,7 +167,7 @@ const handleMember = (member) => {
                         <ion-select
                             label="Kategoria"
                             label-placement="stacked"
-                            v-model="selectedCategory"
+                            v-model="categoryToDisplay"
                         >
                             <ion-select-option
                                 v-for="(category, index) in billCategories"
