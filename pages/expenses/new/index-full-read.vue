@@ -383,14 +383,8 @@ const addExpense = async () => {
     router.back()
 }
 
-const handleMember = (member) => {
-    if (expenseMembers.value.includes(member.id)) {
-        expenseMembers.value = expenseMembers.value.filter(
-            (m) => m != member.id
-        )
-    } else {
-        expenseMembers.value.push(member.id)
-    }
+const handleMember = (members) => {
+    expenseMembers.value = members
 }
 
 const setOpen = (open) => (isOpen.value = open)

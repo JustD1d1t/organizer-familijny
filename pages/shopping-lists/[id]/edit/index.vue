@@ -31,17 +31,9 @@ const update = async () => {
     router.back()
 }
 
-const toggleMember = (member) => {
-    const isMemberInMembers = newMembers.value.find((m) => m.id === member.id)
-    if (isMemberInMembers) {
-        newMembers.value = newMembers.value.filter((m) => m.id !== member.uid)
-        newMembersIds.value = newMembersIds.value.filter(
-            (id) => id !== member.uid
-        )
-    } else {
-        newMembers.value.push(member)
-        newMembersIds.value.push(member.uid)
-    }
+const toggleMember = (membersIds, members) => {
+    newMembers.value = members
+    newMembersIds.value = membersIds
 }
 </script>
 <template>
@@ -66,7 +58,7 @@ const toggleMember = (member) => {
                 />
                 <FamilyDropdownSelectMember
                     :members="currentShoppingList.members"
-                    @toggleMember="(member) => toggleMember(member)"
+                    @toggleMember="toggleMember"
                     v-if="!collaboratedList"
                 />
             </ion-list>

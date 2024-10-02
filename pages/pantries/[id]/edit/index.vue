@@ -21,13 +21,8 @@ const updatePantry = async () => {
     router.back()
 }
 
-const handleMember = (member) => {
-    const isMemberInMembers = newMembers.value.find((m) => m.id === member.id)
-    if (isMemberInMembers) {
-        newMembers.value = newMembers.value.filter((m) => m.id != member.id)
-    } else {
-        newMembers.value.push(member)
-    }
+const handleMember = (members) => {
+    newMembers.value = members
 }
 
 const collaboratedPantry = computed(() => currentPantry.value.ownerId !== uid.value)

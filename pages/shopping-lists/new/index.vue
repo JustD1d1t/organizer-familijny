@@ -27,20 +27,9 @@ const add = async () => {
 const familyMembersIds = ref([])
 const familyMembers = ref([])
 
-const handleMember = (member) => {
-    if (familyMembersIds.value.includes(member.id)) {
-        familyMembersIds.value = familyMembersIds.value.filter(
-            (m) => m != member.id
-        )
-        familyMembers.value = familyMembers.value.filter(
-            (m) => m.id != member.id
-        )
-        openToast(`Usunięto ${member.nickname} z listy zakupowej`, "danger")
-    } else {
-        familyMembersIds.value.push(member.id)
-        familyMembers.value.push(member)
-        openToast(`Dodano ${member.nickname} do listy zakupowej`)
-    }
+const handleMember = (membersIds, members) => {
+    familyMembersIds.value = membersIds
+    familyMembers.value = members
 }
 </script>
 <template>

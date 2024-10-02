@@ -25,18 +25,9 @@ const add = async () => {
     openToast("Dodano spiżarnię")
     router.back()
 }
-const handleMember = (member) => {
-    if (familyMembers.value.includes(member.id)) {
-        familyMembersIds.value = familyMembersIds.value.filter(
-            (m) => m != member.id
-        )
-        familyMembers.value = familyMembers.value.filter(
-            (m) => m.id != member.id
-        )
-    } else {
-        familyMembersIds.value.push(member.id)
-        familyMembers.value.push(member)
-    }
+const handleMember = (membersIds, members) => {
+    familyMembersIds.value = membersIds
+    familyMembers.value = members
 }
 </script>
 <template>

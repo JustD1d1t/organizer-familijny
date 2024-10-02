@@ -25,7 +25,10 @@ const membersToShow = computed(() => {
 
 const handleMember = (e) => {
     const membersIds = e.target.value
-    emit("toggleMember", membersIds)
+    const members = familyMembersDetails.value.filter((member) =>
+        membersIds.includes(member.id)
+    )
+    emit("toggleMember", membersIds, members)
 }
 
 const selectedMembers = computed(() => {

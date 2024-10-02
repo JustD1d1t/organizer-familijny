@@ -120,12 +120,8 @@ onMounted(async () => {
     convertTimestampToDate()
 })
 
-const handleMember = (member) => {
-    if (newMembers.value.includes(member.id)) {
-        newMembers.value = newMembers.value.filter((m) => m != member.id)
-    } else {
-        newMembers.value.push(member.id)
-    }
+const handleMember = (members) => {
+    newMembers.value = members
 }
 
 const setOpen = (open) => (isOpen.value = open)
