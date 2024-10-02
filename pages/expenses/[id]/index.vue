@@ -26,7 +26,9 @@ const newValue = ref(currentExpense.value.value)
 const newTimestamp = ref(currentExpense.value.timestamp)
 const newMembers = ref(currentExpense.value.familyMembers)
 
-const categoryToDisplay = computed(() => selectedCategory.value || currentExpense.value.category)
+const categoryToDisplay = computed(
+    () => selectedCategory.value || currentExpense.value.category
+)
 
 const convertTimestampToDate = () => {
     let date
@@ -95,44 +97,18 @@ onMounted(async () => {
 console.log(currentExpense.value)
 
 const handleMember = (members) => {
-    newMembers.value = members;
+    newMembers.value = members
 }
 </script>
 <template>
     <ion-page>
         <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
-                <ion-buttons
-                    slot="start"
-                    v-if="currentExpense && currentExpense.userId === uid"
-                >
-                    <uiButton
-                        type="tertiary"
-                        :strong="true"
-                        color="danger"
-                        @click="
-                            () =>
-                                openAlert(
-                                    'Usuwanie wydatku',
-                                    'Czy na pewno chcesz usunąć wydatek?',
-                                    'alert-button-confirm',
-                                    removeExpense
-                                )
-                        "
-                        >Usuń</uiButton
-                    >
-                </ion-buttons>
-                <ion-buttons
-                    slot="end"
-                    v-if="currentExpense && currentExpense.userId === uid"
-                >
-                    <uiButton
-                        type="tertiary"
-                        :strong="true"
-                        color="success"
-                        @click="edit()"
-                        >Zapisz</uiButton
-                    >
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
@@ -184,6 +160,33 @@ const handleMember = (members) => {
                     />
                 </ion-list>
 
+                <div
+                    class="flex justify-between mt-4"
+                    v-if="currentExpense.userId === uid"
+                >
+                    <uiButton
+                        type="tertiary"
+                        :strong="true"
+                        color="danger"
+                        @click="
+                            () =>
+                                openAlert(
+                                    'Usuwanie wydatku',
+                                    'Czy na pewno chcesz usunąć wydatek?',
+                                    'alert-button-confirm',
+                                    removeExpense
+                                )
+                        "
+                        >Usuń</uiButton
+                    >
+                    <uiButton
+                        type="tertiary"
+                        :strong="true"
+                        color="success"
+                        @click="edit()"
+                        >Zapisz</uiButton
+                    >
+                </div>
                 <!-- <div
                     class="flex justify-between mt-4"
                     v-if="currentExpense.userId === uid"

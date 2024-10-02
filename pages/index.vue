@@ -19,7 +19,6 @@ const openPersonMenu = async () => {
                     </uiButton>
                 </ion-buttons>
             </ion-toolbar>
-            
         </ion-header>
 
         <ion-content :fullscreen="true" v-if="uid">
@@ -39,6 +38,14 @@ const openPersonMenu = async () => {
                 </UiImageWithTitle>
             </div>
             <MainPageNewspapers />
+        </ion-content>
+        <ion-content :fullscreen="true" v-else>
+            <div
+                v-if="isLoading"
+                class="w-full flex justify-center items-center h-full"
+            >
+                <ion-spinner name="lines-sharp"></ion-spinner>
+            </div>
         </ion-content>
     </ion-page>
 </template>
