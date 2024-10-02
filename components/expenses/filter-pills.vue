@@ -4,6 +4,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    disableRemoveFilter: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const expensesStore = useExpensesStore()
@@ -84,7 +88,7 @@ const removeFilter = async (type) => {
                 v-if="selectedPeriod.value !== 'month'"
                 @click="removeFilter('selectedPeriod')"
             >
-                <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
+                <ion-icon v-if="!disableRemoveFilter" :icon="ioniconsCloseOutline"></ion-icon>
             </uiButton>
         </UiPill>
         <UiPill v-if="shopName">
@@ -94,7 +98,7 @@ const removeFilter = async (type) => {
                 size="small"
                 @click="removeFilter('shopName')"
             >
-                <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
+                <ion-icon v-if="!disableRemoveFilter" :icon="ioniconsCloseOutline"></ion-icon>
             </uiButton>
         </UiPill>
         <UiPill v-if="category">
@@ -104,7 +108,7 @@ const removeFilter = async (type) => {
                 size="small"
                 @click="removeFilter('category')"
             >
-                <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
+                <ion-icon v-if="!disableRemoveFilter" :icon="ioniconsCloseOutline"></ion-icon>
             </uiButton>
         </UiPill>
         <UiPill v-if="expenseName">
@@ -114,7 +118,7 @@ const removeFilter = async (type) => {
                 size="small"
                 @click="removeFilter('expenseName')"
             >
-                <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
+                <ion-icon v-if="!disableRemoveFilter" :icon="ioniconsCloseOutline"></ion-icon>
             </uiButton>
         </UiPill>
         <UiPill v-if="priceRange">
@@ -124,7 +128,7 @@ const removeFilter = async (type) => {
                 size="small"
                 @click="removeFilter('priceRange')"
             >
-                <ion-icon :icon="ioniconsCloseOutline"></ion-icon>
+                <ion-icon v-if="!disableRemoveFilter" :icon="ioniconsCloseOutline"></ion-icon>
             </uiButton>
         </UiPill>
     </div>

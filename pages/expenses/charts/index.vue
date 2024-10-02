@@ -158,6 +158,7 @@ watch(expenses, () => {
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true" class="h-dvh overflow-hidden">
+            <ExpensesFilterPills :disableRemoveFilter="true" />
             <div style="overflow-x: auto">
                 {{ 70 * groupExpensesByCategory.size }}
                 <div
