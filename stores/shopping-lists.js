@@ -2,9 +2,7 @@ import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { displayToast, showAlert, showConfirm, showPrompt } = useAlerts()
 const { request } = useFetchRequest()
-
-const userStore = useUserStore()
-const { uid } = storeToRefs(userStore)
+import { useUserStore } from "./user"
 
 export const useShoppingListsStore = defineStore({
     id: "shopping-lists-store",
@@ -16,6 +14,7 @@ export const useShoppingListsStore = defineStore({
             currentRecipe: null,
             isLoading: false,
             error: null,
+            userStore: useUserStore(),
         }
     },
     actions: {
@@ -132,7 +131,7 @@ export const useShoppingListsStore = defineStore({
             this.setError(null)
             try {
                 const data = await request(
-                    `${backendUrl}/shopping-lists/get-all?userId=${uid.value}`
+                    `${backendUrl}/shopping-lists/get-all?userId=${this.userStore.uid}`
                 )
                 this.setShoppingLists(data.shoppingLists)
                 this.setCollaboratedShoppingLists(
@@ -155,7 +154,7 @@ export const useShoppingListsStore = defineStore({
                     name: name,
                     members: members,
                     membersIds: membersIds,
-                    ownerId: uid.value,
+                    ownerId: this.userStore.uid,
                     items: [],
                     recipes: [],
                 }
@@ -365,13 +364,13 @@ export const useShoppingListsStore = defineStore({
                 const editedShoppingList = {
                     ...this.currentShoppingList,
                     members: this.currentShoppingList.members.filter(
-                        (m) => m.id !== uid.value
+                        (m) => m.id !== this.userStore.uid
                     ),
                 }
                 await this.updateShoppingList(editedShoppingList)
                 this.updateCurrentList(editedShoppingList)
                 const data = await request(
-                    `${backendUrl}/shopping-lists/get-collaborated?userId=${uid.value}`
+                    `${backendUrl}/shopping-lists/get-collaborated?userId=${this.userStore.uid}`
                 )
                 this.setCollaboratedShoppingLists(
                     data.collaboratedShoppingLists

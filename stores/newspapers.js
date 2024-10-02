@@ -1,27 +1,25 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 import axios from "axios"
-
-const userStore = useUserStore()
-const { idToken } = storeToRefs(userStore)
+import { useUserStore } from "./user"
 
 export const useNewspapersStore = defineStore({
     id: "newspapers-store",
     state: () => {
         return {
             shops: [],
+            user: useUserStore(),
         }
     },
     actions: {
         async fetchShops() {
             try {
-                const token = idToken.value
                 const response = await axios.get(`${backendUrl}/html`, {
                     params: {
                         url: "https://www.gazetkipromocyjne.net/",
                     },
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${this.user.idToken}`,
                         "Content-Type": "application/json", // Jeśli potrzebujesz innego typu zawartości
                     },
                 })

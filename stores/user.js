@@ -165,6 +165,7 @@ export const useUserStore = defineStore({
                 })
                 localStorage.setItem("uid", data.localId)
                 localStorage.setItem("emailVerified", data.emailVerified)
+                this.setIdToken(localStorage.getItem("idToken"))
                 this.setUid(data.localId)
                 this.setEmail(data.email)
                 this.setNickname(data.displayName)

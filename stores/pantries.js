@@ -1,9 +1,7 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
-
-const userStore = useUserStore()
-const { uid } = storeToRefs(userStore)
+import { useUserStore } from "./user"
 
 export const usePantriesStore = defineStore({
     id: "pantries-store",
@@ -13,6 +11,7 @@ export const usePantriesStore = defineStore({
             collaboratedPantries: [],
             currentPantry: null,
             isLoading: false,
+            user: useUserStore(),
         }
     },
     actions: {
@@ -42,7 +41,7 @@ export const usePantriesStore = defineStore({
             this.setLoading(true)
             try {
                 const data = await request(
-                    `${backendUrl}/pantries/get-all?userId=${uid.value}`
+                    `${backendUrl}/pantries/get-all?userId=${this.user.uid}`
                 )
                 this.addPantriesToStore(data.pantries)
                 this.addCollaboratedPantriesToStore(data.collaboratedPantries)
@@ -57,7 +56,7 @@ export const usePantriesStore = defineStore({
             this.setLoading(true)
             try {
                 const data = await request(
-                    `${backendUrl}/pantries/get-collaborated?userId=${uid.value}`
+                    `${backendUrl}/pantries/get-collaborated?userId=${this.user.uid}`
                 )
                 this.addCollaboratedPantriesToStore(data.collaboratedPantries)
             } catch (error) {
@@ -100,7 +99,7 @@ export const usePantriesStore = defineStore({
                 items: [],
                 members,
                 membersIds,
-                ownerId: uid.value,
+                ownerId: this.user.uid,
             }
             try {
                 const data = await request(`${backendUrl}/pantries/add`, {
@@ -227,13 +226,13 @@ export const usePantriesStore = defineStore({
                 const editedPantry = {
                     ...this.currentPantry,
                     members: this.currentPantry.members.filter(
-                        (m) => m.id !== uid.value
+                        (m) => m.id !== this.user.uid
                     ),
                 }
                 await this.updatePantry(editedPantry)
                 this.setCurrentPantry(editedPantry)
                 const data = await request(
-                    `${backendUrl}/shopping-lists/get-collaborated?userId=${uid.value}`
+                    `${backendUrl}/shopping-lists/get-collaborated?userId=${this.user.uid}`
                 )
                 this.setCollaboratedShoppingLists(
                     data.collaboratedShoppingLists

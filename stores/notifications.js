@@ -1,9 +1,7 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
-
-const userStore = useUserStore()
-const { uid } = storeToRefs(userStore)
+import { useUserStore } from "./user"
 
 export const useNotificationsStore = defineStore({
     id: "notifications-store",
@@ -11,6 +9,7 @@ export const useNotificationsStore = defineStore({
         return {
             notifications: [],
             isLoading: false,
+            user: useUserStore(),
         }
     },
     actions: {
@@ -24,24 +23,25 @@ export const useNotificationsStore = defineStore({
             this.isLoading = isLoading
         },
         async getNotifications() {
-            const uid = uid.value
             this.setLoading(true)
             const data = await request(
-                `${backendUrl}/notifications/get-all?userId=${uid}`
+                `${backendUrl}/notifications/get-all?userId=${this.user.uid}`
             )
             this.setLoading(false)
             this.setNotifications(data.notifications)
         },
         async updateNotification(notification) {
-            const uid = uid.value
             this.setLoading(true)
-            await request(`${backendUrl}/notifications/update?userId=${uid}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ notification }),
-            })
+            await request(
+                `${backendUrl}/notifications/update?userId=${this.user.uid}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ notification }),
+                }
+            )
             this.setLoading(false)
             const notificationIndex = this.notifications.findIndex(
                 (n) => n.id === notification.id

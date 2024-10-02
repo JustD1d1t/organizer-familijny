@@ -1,9 +1,7 @@
 import { defineStore } from "pinia"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
-
-const userStore = useUserStore()
-const { uid } = storeToRefs(userStore)
+import { useUserStore } from "./user"
 
 export const useFamilyMembersStore = defineStore({
     id: "family-members-store",
@@ -13,6 +11,7 @@ export const useFamilyMembersStore = defineStore({
             familyMembersDetails: [],
             familyId: null,
             isLoading: false,
+            userStore: useUserStore(),
         }
     },
     actions: {
@@ -47,7 +46,7 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     members,
-                    familyId: this.familyId ?? uid.value,
+                    familyId: this.familyId ?? this.userStore.uid,
                 }),
             })
             this.setLoading(false)
@@ -58,7 +57,7 @@ export const useFamilyMembersStore = defineStore({
             this.setLoading(true)
             const data = await request(
                 `${backendUrl}/family/get-family-details?familyId=${
-                    id ?? uid.value
+                    id ?? this.userStore.uid
                 }`
             )
             this.setLoading(false)
@@ -76,7 +75,7 @@ export const useFamilyMembersStore = defineStore({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    familyId: uid.value,
+                    familyId: this.userStore.uid,
                 }),
             })
             this.setLoading(false)
@@ -92,7 +91,7 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     members,
-                    familyId: this.familyId ?? uid.value,
+                    familyId: this.familyId ?? this.userStore.uid,
                 }),
             })
             this.setLoading(false)
@@ -107,13 +106,13 @@ export const useFamilyMembersStore = defineStore({
                 },
                 body: JSON.stringify({
                     membersDetails,
-                    familyId: uid.value,
+                    familyId: this.userStore.uid,
                 }),
             })
             this.setLoading(false)
-            this.familyMembers = [uid.value]
+            this.familyMembers = [this.userStore.uid]
             this.familyMembersDetails = membersDetails
-            this.familyId = uid.value
+            this.familyId = this.userStore.uid
         },
     },
 })

@@ -2,9 +2,7 @@ import { defineStore } from "pinia"
 import { StateEntries } from "@/types"
 const { backendUrl } = useConfig()
 const { request } = useFetchRequest()
-
-const userStore = useUserStore()
-const { uid } = storeToRefs(userStore)
+import { useUserStore } from "./user"
 
 const {
     getFirstDateOfCurrentMonth,
@@ -31,6 +29,7 @@ export const useExpensesStore = defineStore({
             category: null,
             isLoading: false,
             error: null,
+            user: useUserStore(),
         }
     },
     actions: {
@@ -156,7 +155,7 @@ export const useExpensesStore = defineStore({
             const endPeriod = new Date(this.endDate).getTime()
 
             this.setLoading(true)
-            let url = `${backendUrl}/expenses/get-all?userId=${uid.value}&start=${startPeriod}&end=${endPeriod}`
+            let url = `${backendUrl}/expenses/get-all?userId=${this.user.uid}&start=${startPeriod}&end=${endPeriod}`
             if (this.startPrice) {
                 url += `&startPrice=${this.startPrice}`
             }
@@ -183,7 +182,7 @@ export const useExpensesStore = defineStore({
             this.setLoading(false)
         },
         async getAllMyExpenses() {
-            let url = `${backendUrl}/expenses/get-all?userId=${uid.value}`
+            let url = `${backendUrl}/expenses/get-all?userId=${this.user.uid}`
             const data = await request(url)
             this.setLoading(false)
             const allExpenses = [...data.expenses]
