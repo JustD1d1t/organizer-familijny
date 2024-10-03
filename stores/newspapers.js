@@ -9,6 +9,7 @@ export const useNewspapersStore = defineStore({
         return {
             shops: [],
             user: useUserStore(),
+            isLoading: false,
         }
     },
     actions: {
@@ -29,6 +30,7 @@ export const useNewspapersStore = defineStore({
             }
         },
         async setShops() {
+            this.isLoading = true
             const content = await this.fetchShops()
             const el = document.createElement("html")
             el.innerHTML = content
@@ -49,6 +51,7 @@ export const useNewspapersStore = defineStore({
                     title,
                 })
             })
+            this.isLoading = false
         },
     },
 })

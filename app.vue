@@ -43,7 +43,7 @@ onMounted(async () => {
     if (uid.value) {
         await getFamilyDetails()
         await getNotifications()
-        setShops()
+        await setShops()
     }
     if (!localIdToken || !localRefreshToken) {
         await logoutUser()

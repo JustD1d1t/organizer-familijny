@@ -3,9 +3,8 @@ const { backendUrl } = useConfig()
 
 const newspapersStore = useNewspapersStore()
 const { setShops } = newspapersStore
-const { shops } = storeToRefs(newspapersStore)
+const { shops, isLoading } = storeToRefs(newspapersStore)
 
-const isLoading = ref(false)
 const searchValue = ref("")
 
 const shopsToDisplay = computed(() => {
@@ -19,7 +18,7 @@ const goToShop = (title) => {
     navigateTo(`/newspaper/${searchedIndex}`)
 }
 
-onMounted(() => {
+onMounted(async () => {
     if (!shops?.value.length) {
         setShops()
     }
@@ -58,11 +57,7 @@ onMounted(() => {
             <UiList v-show="!isLoading">
                 <ion-item v-for="shop in shopsToDisplay" :key="shop.title">
                     <ion-label>{{ shop.title }}</ion-label>
-                    <uiButton
-                        type="tertiary"
-                        @click="goToShop(shop.title)"
-                        
-                    >
+                    <uiButton type="tertiary" @click="goToShop(shop.title)">
                         Zobacz
                     </uiButton>
                 </ion-item>
