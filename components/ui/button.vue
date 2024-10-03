@@ -49,7 +49,8 @@ const buttonClass = computed(() => {
 <style scoped lang="scss">
 button {
     color: blue;
-    padding: 0.25rem 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
 }
 @import "@/assets/scss/variables.scss";
 .button-primary {
@@ -72,20 +73,24 @@ button {
     border: 2px solid $primary-color;
 }
 .button-tertiary {
-    &.ion-activated {
-        --background-activated: transparent !important;
-    }
     background-color: transparent;
     color: $primary-color;
     box-shadow: unset;
+    border-radius: 0;
     &.danger-color {
         color: $red !important;
+        border: 2px solid $red;
+        border-radius: 5px;
     }
     &.alert-color {
         color: $yellow !important;
+        border: 2px solid $yellow;
+        border-radius: 5px;
     }
     &.green-color {
         color: $green !important;
+        border: 2px solid $green;
+        border-radius: 5px;
     }
 }
 </style>
