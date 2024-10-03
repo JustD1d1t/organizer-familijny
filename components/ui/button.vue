@@ -33,7 +33,7 @@ const buttonClass = computed(() => {
 })
 </script>
 <template>
-    <ion-button
+    <button
         :class="{
             [buttonClass]: true,
             'danger-color': props.color === 'danger',
@@ -44,63 +44,48 @@ const buttonClass = computed(() => {
         :router-link="link"
     >
         <slot />
-    </ion-button>
+    </button>
 </template>
 <style scoped lang="scss">
+button {
+    color: blue;
+    padding: 0.25rem 0.5rem;
+}
 @import "@/assets/scss/variables.scss";
-
 .button-primary {
-    &::part(native) {
-        background-color: $primary-color;
-        color: $white;
-    }
+    background-color: $primary-color;
+    color: $white;
     &.danger-color {
-        &::part(native) {
-            background-color: $red !important;
-        }
+        background-color: $red !important;
     }
     &.alert-color {
-        &::part(native) {
-            background-color: $yellow !important;
-        }
+        background-color: $yellow !important;
     }
     &.green-color {
-        &::part(native) {
-            background-color: $green !important;
-        }
+        background-color: $green !important;
     }
 }
 
 .button-secondary {
-    &::part(native) {
-        background-color: $white;
-        color: $primary-color;
-        border: 2px solid $primary-color;
-    }
+    background-color: $white;
+    color: $primary-color;
+    border: 2px solid $primary-color;
 }
 .button-tertiary {
     &.ion-activated {
         --background-activated: transparent !important;
     }
-    &::part(native) {
-        background-color: transparent;
-        color: $primary-color;
-        box-shadow: unset;
-    }
+    background-color: transparent;
+    color: $primary-color;
+    box-shadow: unset;
     &.danger-color {
-        &::part(native) {
-            color: $red !important;
-        }
+        color: $red !important;
     }
     &.alert-color {
-        &::part(native) {
-            color: $yellow !important;
-        }
+        color: $yellow !important;
     }
     &.green-color {
-        &::part(native) {
-            color: $green !important;
-        }
+        color: $green !important;
     }
 }
 </style>

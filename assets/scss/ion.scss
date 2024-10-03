@@ -150,6 +150,10 @@ ion-header {
             }
         }
 
+        button {
+            color: blue !important;
+        }
+
         &:not(:has(ion-buttons[slot="start"])) {
             padding-left: 1rem;
         }
