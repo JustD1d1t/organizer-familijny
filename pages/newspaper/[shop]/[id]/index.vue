@@ -28,6 +28,7 @@ const pagesContainer = ref(null)
 const pdf = ref(null)
 const isLoading = ref(false)
 const waitingForRender = ref(false)
+const loadedFullPdf = ref(false)
 
 const currentNewspaper = computed(() => newspapers.value[id])
 
@@ -53,6 +54,9 @@ const fetchContent = async (imgs, pages) => {
                 },
             }
         )
+        if (pages === undefined) {
+            loadedFullPdf.value = true
+        }
 
         return response.data
     } catch (error) {
@@ -63,7 +67,6 @@ const fetchContent = async (imgs, pages) => {
 }
 
 const loadPdfFromUrl = async (pages) => {
-    console.log(pages)
     try {
         const pdfData = await fetchContent(currentNewspaper.value.imgs, pages)
         const pdfUint8Array = new Uint8Array(pdfData)
@@ -123,7 +126,7 @@ const renderPage = async (pageNum) => {
         isLoading.value = false
 
         // Update page indicator
-        pageIndicator.value = `Strona ${pageNum} z ${totalPageCount.value}`
+        pageIndicator.value = `Strona ${pageNum} z ${loadedFullPdf.value ? totalPageCount.value : "ładowanie..."}`
     } catch (error) {
         alert("Failed to render page: " + error.message)
     }
@@ -134,7 +137,7 @@ watch(route, async (newRoute, oldRoute) => {
 })
 
 onMounted(async () => {
-    await loadPdfFromUrl(5)
+    await loadPdfFromUrl(10)
     await loadPdfFromUrl()
 })
 </script>
