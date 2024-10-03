@@ -31,14 +31,20 @@ const waitingForRender = ref(false)
 
 const currentNewspaper = computed(() => newspapers.value[id])
 
-const fetchContent = async (imgs) => {
+const fetchContent = async (imgs, pages) => {
     try {
+        const objToSend = {
+            imgs,
+        }
+        if (pages) {
+            objToSend.pages = pages
+        }
         waitingForRender.value = true
         isLoading.value = true
         const token = idToken.value
         const response = await axios.post(
             `${backendUrl}/html/pdfFromLinks`,
-            { imgs }, // Przekazanie tablicy obrazów jako body zapytania
+            objToSend, // Przekazanie tablicy obrazów jako body zapytania
             {
                 responseType: "arraybuffer", // Odbieranie odpowiedzi jako PDF
                 headers: {
@@ -56,9 +62,10 @@ const fetchContent = async (imgs) => {
     }
 }
 
-const loadPdfFromUrl = async () => {
+const loadPdfFromUrl = async (pages) => {
+    console.log(pages)
     try {
-        const pdfData = await fetchContent(currentNewspaper.value.imgs)
+        const pdfData = await fetchContent(currentNewspaper.value.imgs, pages)
         const pdfUint8Array = new Uint8Array(pdfData)
         const loadingTask = getDocument({ data: pdfUint8Array })
 
@@ -126,8 +133,9 @@ watch(route, async (newRoute, oldRoute) => {
     waitingForRender.value = false
 })
 
-onMounted(() => {
-    loadPdfFromUrl()
+onMounted(async () => {
+    await loadPdfFromUrl(5)
+    await loadPdfFromUrl()
 })
 </script>
 
