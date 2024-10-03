@@ -52,13 +52,36 @@ const setNewspapers = async () => {
     const el = document.createElement("html")
     el.innerHTML = content
     const titles = el.querySelectorAll(".newspapper-footer p")
+    const buttons = el.querySelectorAll(".newspapper-footer button")
+    const ids = Array.from(buttons).map((button) =>
+        button.getAttribute("rel").replace("#", "")
+    )
+    const idDivs = ids.map((id) => el.querySelector(`#${id}`))
+    const iframes = idDivs.map((idDiv) => idDiv.querySelector("iframe"))
+
+    const token = idToken.value
+    const images = []
+    for (const iframe of iframes) {
+        if (iframe) {
+            const res = await axios.get(`${backendUrl}/html/imgs`, {
+                params: {
+                    url: iframe.dataset.src,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+            images.push(res.data.imgs)
+        }
+    }
     const downloadUrls = el.querySelectorAll(
         ".newspapper-nav-item.newspapper-nav-download"
     )
     titles.forEach((title, index) => {
         newspapers.value.push({
             title: title.textContent,
-            url: downloadUrls[index].href,
+            imgs: images[index]
         })
     })
     isLoading.value = false

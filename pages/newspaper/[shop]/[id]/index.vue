@@ -31,19 +31,23 @@ const waitingForRender = ref(false)
 
 const currentNewspaper = computed(() => newspapers.value[id])
 
-const fetchContent = async (url) => {
+const fetchContent = async (imgs) => {
     try {
         waitingForRender.value = true
         isLoading.value = true
         const token = idToken.value
-        const response = await axios.get(`${backendUrl}/html/pdf`, {
-            params: { url: url },
-            responseType: "arraybuffer",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json", // Jeśli potrzebujesz innego typu zawartości
-            },
-        })
+        const response = await axios.post(
+            `${backendUrl}/html/pdfFromLinks`,
+            { imgs }, // Przekazanie tablicy obrazów jako body zapytania
+            {
+                responseType: "arraybuffer", // Odbieranie odpowiedzi jako PDF
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        )
+
         return response.data
     } catch (error) {
         isLoading.value = false
@@ -54,7 +58,7 @@ const fetchContent = async (url) => {
 
 const loadPdfFromUrl = async () => {
     try {
-        const pdfData = await fetchContent(currentNewspaper.value.url)
+        const pdfData = await fetchContent(currentNewspaper.value.imgs)
         const pdfUint8Array = new Uint8Array(pdfData)
         const loadingTask = getDocument({ data: pdfUint8Array })
 

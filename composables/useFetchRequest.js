@@ -12,8 +12,7 @@ export const useFetchRequest = () => {
                 credentials: "include",
                 headers: updatedHeaders,
             })
-            const data = await response.json()
-            if (data.error === "Invalid or expired token") {
+            if (response.status === 401) {
                 const refreshResponse = await fetch(
                     `${backendUrl}/token/refresh-token`,
                     {
@@ -36,6 +35,7 @@ export const useFetchRequest = () => {
                     return await request(url, options)
                 }
             }
+            const data = await response.json()
             return data
         } catch (error) {
             console.error(error)

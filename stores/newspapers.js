@@ -42,6 +42,8 @@ export const useNewspapersStore = defineStore({
                 if (!itemDetails) return
                 const url = itemDetails.href
                 const title = itemDetails.textContent
+                    .replace("promocyjna", "")
+                    .replace("sieci", "")
                 this.shops.push({
                     url,
                     title,

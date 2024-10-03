@@ -24,11 +24,11 @@ export default [
         path: "/pantries",
         src: spizarnia_90x90,
     },
-    {
-        name: "Budżet",
-        path: '/budget',
-        src: wydatki_90x90,
-    }
+    // {
+    //     name: "Budżet",
+    //     path: '/budget',
+    //     src: wydatki_90x90,
+    // }
     // {
     //     name: "Gazetki",
     //     path: "/newspaper",
