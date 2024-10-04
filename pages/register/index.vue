@@ -100,7 +100,7 @@ const register = async () => {
             <div class="flex items-center h-full w-full">
                 <uiCard class="p-8 w-full">
                     <template v-slot:title> Rejestracja </template>
-                    <ion-list class="pb-4">
+                    <uiList class="pb-4">
                         <uiInput
                             class="w-full"
                             label="Email"
@@ -121,7 +121,7 @@ const register = async () => {
                             v-model="nickname"
                             :error="nicknameInputError"
                         ></uiInput>
-                    </ion-list>
+                    </uiList>
                     <uiButton class="w-full mt-4" @click="register"
                         >Zarejestruj</uiButton
                     >

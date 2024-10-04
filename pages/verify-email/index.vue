@@ -20,21 +20,17 @@ const checkVerification = async () => {
         <ion-content :fullscreen="true">
             <div class="flex justify-center items-center h-full w-full">
                 <uiCard class="parent flex justify-center items-center">
-                    <div>Zweryfikuj emaila</div>
+                    <div class="text-center">Zweryfikuj emaila</div>
                     <div class="text-center">Nie otrzymałeś/aś maila?</div>
-                    <div class="flex">
-                        <uiButton
-                            @click="resendVerificationEmail"
-                            class="w-full"
-                            type="secondary"
-                            >Wyślij ponownie</uiButton
-                        >
-                    </div>
-                    <div class="flex">
-                        <uiButton @click="checkVerification" class="w-full"
-                            >Sprawdź weryfikację</uiButton
-                        >
-                    </div>
+                    <uiButton
+                        @click="resendVerificationEmail"
+                        class="w-full mt-4"
+                        type="secondary"
+                        >Wyślij ponownie</uiButton
+                    >
+                    <uiButton @click="checkVerification" class="w-full mt-4"
+                        >Sprawdź weryfikację</uiButton
+                    >
                 </uiCard>
             </div>
         </ion-content>

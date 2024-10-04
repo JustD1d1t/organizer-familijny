@@ -10,7 +10,7 @@ const openPersonMenu = async () => {
 
 <template>
     <ion-page id="main-content">
-        <ion-header style="background: var(--ion-color-light)" v-if="uid">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Cześć, {{ nickname }}!</ion-title>
                 <ion-buttons slot="end">
@@ -20,7 +20,7 @@ const openPersonMenu = async () => {
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
-        <ion-content :fullscreen="true" v-if="uid">
+        <ion-content :fullscreen="true">
             <MainPageComponentsSlider />
 
             <div
@@ -37,14 +37,6 @@ const openPersonMenu = async () => {
                 </UiImageWithTitle>
             </div>
             <MainPageNewspapers />
-        </ion-content>
-        <ion-content :fullscreen="true" v-else>
-            <div class="w-full flex justify-center items-center h-full">
-                <ion-spinner
-                    name="lines-sharp"
-                    style="width: 100px; height: 100px"
-                ></ion-spinner>
-            </div>
         </ion-content>
     </ion-page>
 </template>
