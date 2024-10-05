@@ -35,6 +35,7 @@ const onWidthChange = () => {
 }
 
 onMounted(async () => {
+    isLoading.value = true
     window.addEventListener("resize", onWidthChange)
     isMobile.value = window.innerWidth < 750
     const localIdToken = localStorage.getItem("idToken")
@@ -47,8 +48,8 @@ onMounted(async () => {
     }
     if (!localIdToken || !localRefreshToken) {
         await logoutUser()
-        return
     }
+    isLoading.value = false
 })
 
 const downloadExpenses = async () => {
@@ -59,15 +60,12 @@ const downloadExpenses = async () => {
 <template>
     <ion-app>
         <ion-page v-if="isLoading">
-            <ion-header style="background: var(--ion-color-light)">
-                <ion-toolbar>
-                    <ion-title>Cześć</ion-title>
-                </ion-toolbar>
-            </ion-header>
-
             <ion-content :fullscreen="true">
                 <div class="w-full flex justify-center items-center h-full">
-                    <ion-spinner name="lines-sharp"></ion-spinner>
+                    <ion-spinner
+                        name="lines-sharp"
+                        style="width: 100px; height: 100px"
+                    ></ion-spinner>
                 </div>
             </ion-content>
         </ion-page>
