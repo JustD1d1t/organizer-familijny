@@ -15,7 +15,7 @@ const { setShops } = newspapersStore
 const userStore = useUserStore()
 const { logoutUser, getUserData } = userStore
 const { uid } = storeToRefs(userStore)
-const route = useRoute()
+const { openInfoModal } = useAlerts()
 
 CapacitorApp.addListener("backButton", (e) => {
     if (!e.canGoBack) {
@@ -48,6 +48,16 @@ onMounted(async () => {
     }
     if (!localIdToken || !localRefreshToken) {
         await logoutUser()
+        navigateTo("/login")
+        if (!localIdToken) {
+            openInfoModal("brak localIdToken", `localIdToken: ${localIdToken}`)
+        }
+        if (!localRefreshToken) {
+            openInfoModal(
+                "brak localRefreshToken",
+                `localRefreshToken: ${localRefreshToken}`
+            )
+        }
     }
     isLoading.value = false
 })
