@@ -158,9 +158,6 @@ export const useUserStore = defineStore({
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        idToken: localStorage.getItem("idToken"),
-                    }),
                     credentials: "include",
                 })
                 localStorage.setItem("uid", data.localId)

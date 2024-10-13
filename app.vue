@@ -41,23 +41,14 @@ onMounted(async () => {
     const localIdToken = localStorage.getItem("idToken")
     const localRefreshToken = localStorage.getItem("refreshToken")
     await getUserData()
+    if (!localIdToken || !localRefreshToken) {
+        await logoutUser()
+        navigateTo("/login")
+    }
     if (uid.value) {
         await getFamilyDetails()
         await getNotifications()
         await setShops()
-    }
-    if (!localIdToken || !localRefreshToken) {
-        await logoutUser()
-        navigateTo("/login")
-        if (!localIdToken) {
-            openInfoModal("brak localIdToken", `localIdToken: ${localIdToken}`)
-        }
-        if (!localRefreshToken) {
-            openInfoModal(
-                "brak localRefreshToken",
-                `localRefreshToken: ${localRefreshToken}`
-            )
-        }
     }
     isLoading.value = false
 })
