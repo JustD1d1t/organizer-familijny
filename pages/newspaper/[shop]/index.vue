@@ -81,7 +81,7 @@ const setNewspapers = async () => {
     titles.forEach((title, index) => {
         newspapers.value.push({
             title: title.textContent,
-            imgs: images[index]
+            imgs: images[index],
         })
     })
     isLoading.value = false
@@ -91,7 +91,7 @@ const goToNewspaper = (index) => {
     navigateTo(`/newspaper/${shop}/${index}`)
 }
 
-onMounted(() => {
+onMounted(async () => {
     setNewspapers()
 })
 </script>
@@ -118,17 +118,27 @@ onMounted(() => {
                 <span>ładowanie gazetek</span>
             </div>
             <div v-show="!isLoading">
-                <ion-list>
-                    <ion-item
+                <div class="flex flex-wrap gap-1 items-between justify-between">
+                    <div
                         v-for="(newspaper, index) in newspapers"
                         :key="newspaper.title"
+                        class="w-[49%] flex flex-col"
                     >
+                        <div class="flex items-center h-[320px]">
+                            <img
+                                :src="
+                                    'https://www.gazetkipromocyjne.net' +
+                                    newspaper.imgs[0]
+                                "
+                                class="w-full"
+                            />
+                        </div>
                         <ion-label>{{ newspaper.title }}</ion-label>
                         <uiButton type="tertiary" @click="goToNewspaper(index)">
                             Zobacz
                         </uiButton>
-                    </ion-item>
-                </ion-list>
+                    </div>
+                </div>
             </div>
         </ion-content>
     </ion-page>

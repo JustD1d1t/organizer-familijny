@@ -15,14 +15,17 @@ const handleClick = (recipe) => {
 }
 
 const recipeLink = computed(() => {
-    const domainPattern = /(https?:\/\/)?(www\.)?[\w\-]+\.(com|com\.pl|pl)/
-    const match = props.recipe.url.match(domainPattern)
-    return match ? match[0] : null
+    if (props.recipe.url) {
+        const domainPattern = /(https?:\/\/)?(www\.)?[\w\-]+\.(com|com\.pl|pl)/
+        const match = props.recipe.url.match(domainPattern)
+        return match ? match[0] : null
+    }
+    return ""
 })
 </script>
 <template>
     <div
-        class="flex flex-col py-2 pl-6 pr-2 my-1 bg-white rounded-2xl shadow-2xl"
+        class="flex flex-col py-2 pl-6 pr-2 bg-white rounded-2xl shadow-lg"
     >
         <div class="flex items-center">
             <div class="flex flex-col grow">
@@ -31,7 +34,11 @@ const recipeLink = computed(() => {
                     @click="() => handleClick(recipe)"
                     >{{ recipe.name }}</ion-label
                 >
-                <a :href="recipe.url" class="flex items-center">
+                <a
+                    :href="recipe.url"
+                    class="flex items-center"
+                    v-if="recipeLink"
+                >
                     <ion-icon
                         size="small"
                         :icon="ioniconsGlobeOutline"

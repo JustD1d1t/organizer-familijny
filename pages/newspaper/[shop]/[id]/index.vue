@@ -126,7 +126,7 @@ const renderPage = async (pageNum) => {
         isLoading.value = false
 
         // Update page indicator
-        pageIndicator.value = `Strona ${pageNum} z ${loadedFullPdf.value ? totalPageCount.value : "ładowanie..."}`
+        pageIndicator.value = `Strona ${pageNum} z ${loadedFullPdf.value ? totalPageCount.value : "..."}`
     } catch (error) {
         alert("Failed to render page: " + error.message)
     }

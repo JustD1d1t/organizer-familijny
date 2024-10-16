@@ -36,6 +36,7 @@ export const useNewspapersStore = defineStore({
             el.innerHTML = content
             const shopItems = el.querySelectorAll(".entry-image")
             const shopItemsLength = shopItems.length
+            const shops = []
             shopItems.forEach((item, index) => {
                 if (shopItemsLength === index + 1) {
                     return
@@ -46,11 +47,17 @@ export const useNewspapersStore = defineStore({
                 const title = itemDetails.textContent
                     .replace("promocyjna", "")
                     .replace("sieci", "")
-                this.shops.push({
+                    .replace("Gazetka", "")
+                    .toLowerCase()
+                    .trim()
+                shops.push({
                     url,
                     title,
                 })
             })
+            this.shops = shops.sort((a, b) =>
+                a.title.trim().localeCompare(b.title.trim())
+            )
             this.isLoading = false
         },
     },

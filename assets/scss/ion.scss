@@ -62,7 +62,8 @@ ion-item {
     }
 }
 
-ion-input {
+ion-input,
+ion-textarea {
     .native-wrapper {
         background-color: $white;
         border: 1px solid $light-gray;
@@ -71,7 +72,8 @@ ion-input {
         --padding-bottom: 0.5rem !important;
         --padding-start: 0.5rem !important;
         --padding-end: 0.5rem !important;
-        input {
+        input,
+        textarea {
             padding: 0.5rem !important;
         }
     }

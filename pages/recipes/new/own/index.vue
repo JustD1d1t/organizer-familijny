@@ -29,39 +29,41 @@ const saveRecipe = async () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-title>Nowa lista zakupowa</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
             <h2>Dodaj swój przpies</h2>
-            <ion-input
-                label="Nazwa przepisu"
-                v-model="name"
-                type="text"
-                placeholder="Nazwa Twojego przepisu..."
-            />
-            <ion-input
-                v-for="(ingredient, index) in ingredients"
-                :key="index"
-                :label="'Składnik ' + (index + 1)"
-                v-model="ingredients[index].name"
-                type="text"
-                placeholder="Twój składnik..."
-            />
-            <ion-textarea
-                label="Przepis"
-                placeholder="Podaj przepis"
-                v-model="steps"
-            ></ion-textarea>
+            <uiList>
+                <uiInput
+                    label="Nazwa przepisu"
+                    v-model="name"
+                    type="text"
+                    placeholder="Nazwa Twojego przepisu..."
+                />
+                <uiInput
+                    v-for="(ingredient, index) in ingredients"
+                    :key="index"
+                    :label="'Składnik ' + (index + 1)"
+                    v-model="ingredients[index].name"
+                    type="text"
+                    placeholder="Twój składnik..."
+                />
+                <uiTextarea
+                    label="Przepis"
+                    placeholder="Podaj przepis"
+                    v-model="steps"
+                ></uiTextarea>
+            </uiList>
 
-            <uiButton type="secondary"  @click="addIngredient" class="my-6"
-                >Dodaj składnik</uiButton
-            >
-            <uiButton  @click="saveRecipe" class="my-6">
-                Zapisz
-            </uiButton>
+            <div class="flex justify-between">
+                <uiButton type="secondary" @click="addIngredient" class="my-6"
+                    >Dodaj składnik</uiButton
+                >
+                <uiButton @click="saveRecipe" class="my-6"> Zapisz </uiButton>
+            </div>
         </ion-content>
     </ion-page>
 </template>

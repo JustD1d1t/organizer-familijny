@@ -56,9 +56,22 @@ onMounted(async () => {
             </UiList>
             <UiList v-show="!isLoading">
                 <ion-item v-for="shop in shopsToDisplay" :key="shop.title">
+                    <div class="w-16 h-16 mr-2 flex items-center">
+                        <img
+                            :src="`/organizer-familijny-deploy/assets/assets/img/shops/${shop.title}.png`"
+                            alt="shop"
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: contain;
+                            "
+                        />
+                    </div>
                     <ion-label>{{ shop.title }}</ion-label>
                     <uiButton type="tertiary" @click="goToShop(shop.title)">
-                        Zobacz
+                        <ion-icon
+                            :icon="ioniconsChevronForwardOutline"
+                        ></ion-icon>
                     </uiButton>
                 </ion-item>
             </UiList>

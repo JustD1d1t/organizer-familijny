@@ -26,9 +26,11 @@ const openShop = (shopName) => {
             :key="shop.id"
             @click="() => openShop(shop.name)"
         >
-            <div class="flex flex-col items-center">
-                <img :src="shop.src" alt="shop image" class="rounded-full" />
-                <span class="text-sm">{{ shop.name }}</span>
+            <div class="flex flex-col items-center h-24">
+                <div class="h-[70%] flex items-center">
+                    <img :src="shop.src" alt="shop image" />
+                </div>
+                <span class="text-sm mt-auto">{{ shop.name }}</span>
             </div>
         </swiper-slide>
     </swiper>

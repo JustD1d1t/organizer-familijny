@@ -60,7 +60,7 @@ const goToAddRecipePage = (recipe) => {
                     <p>Zawsze możesz zapisać również swój własny przepis</p>
                 </uiInfoCard>
             </div>
-            <div class="w-full" v-else>
+            <div class="w-full h-full" v-else>
                 <ion-accordion-group>
                     <ion-accordion value="first">
                         <ion-item slot="header" color="light">
@@ -89,11 +89,13 @@ const goToAddRecipePage = (recipe) => {
                         </div>
                     </ion-accordion>
                 </ion-accordion-group>
-                <RecipesItem
-                    v-for="recipe in recipes"
-                    :key="recipe.id"
-                    :recipe="recipe"
-                />
+                <uiList class="h-[70%]">
+                    <RecipesItem
+                        v-for="recipe in recipes"
+                        :key="recipe.id"
+                        :recipe="recipe"
+                    />
+                </uiList>
             </div>
 
             <ion-fab slot="fixed" vertical="bottom" horizontal="end">

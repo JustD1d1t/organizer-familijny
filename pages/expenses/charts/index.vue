@@ -116,7 +116,7 @@ const prepareChart = () => {
 
     for (const [key, value] of groupedExpenses.entries()) {
         option.xAxis.data.push(key)
-        option.series[0].data.push(value.toFixed(2))
+        option.series[0].data.push(Number(value).toFixed(2))
     }
 
     myChart.setOption(option)
@@ -163,7 +163,6 @@ watch(expenses, () => {
         <ion-content :fullscreen="true" class="h-dvh overflow-hidden">
             <ExpensesFilterPills :disableRemoveFilter="true" />
             <div style="overflow-x: auto">
-                {{ 70 * groupExpensesByCategory.size }}
                 <div
                     ref="chart"
                     :style="{
@@ -192,7 +191,9 @@ watch(expenses, () => {
                         </ion-icon>
                         {{ key }}
                     </ion-label>
-                    <ion-label slot="end"> {{ value.toFixed(2) }} </ion-label>
+                    <ion-label slot="end">
+                        {{ Number(value).toFixed(2) }}
+                    </ion-label>
                 </ion-item>
             </uiList>
         </ion-content>

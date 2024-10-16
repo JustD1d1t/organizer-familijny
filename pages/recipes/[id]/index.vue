@@ -16,9 +16,12 @@ watch(route, async (newRoute, oldRoute) => {
 })
 
 const recipeLink = computed(() => {
-    const domainPattern = /(https?:\/\/)?(www\.)?[\w\-]+\.(com|com\.pl|pl)/
-    const match = currentRecipe.value.url.match(domainPattern)
-    return match ? match[0] : null
+    if (currentRecipe.value.url) {
+        const domainPattern = /(https?:\/\/)?(www\.)?[\w\-]+\.(com|com\.pl|pl)/
+        const match = currentRecipe.value.url.match(domainPattern)
+        return match ? match[0] : null
+    }
+    return ""
 })
 </script>
 <template>
@@ -36,7 +39,11 @@ const recipeLink = computed(() => {
         </ion-header>
         <ion-content>
             <h2>{{ currentRecipe.name }}</h2>
-            <a :href="currentRecipe.url" class="flex items-center">
+            <a
+                :href="currentRecipe.url"
+                class="flex items-center"
+                v-if="recipeLink"
+            >
                 <ion-icon
                     size="small"
                     :icon="ioniconsGlobeOutline"
@@ -48,11 +55,7 @@ const recipeLink = computed(() => {
             <RecipesIngredientsList :ingredients="currentRecipe.ingredients" />
             <h3 v-if="currentRecipe.steps">Przepis</h3>
             <p v-if="currentRecipe.steps">{{ currentRecipe.steps }}</p>
-            <uiButton
-                
-                class="mt-8"
-                id="open-recipe-to-shopping-list-modal"
-            >
+            <uiButton class="mt-8" id="open-recipe-to-shopping-list-modal">
                 Dodaj do listy zakupowej
             </uiButton>
 

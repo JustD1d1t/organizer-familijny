@@ -11,7 +11,6 @@ const { getFamilyDetails } = familyMembersStore
 const nofiticationsStore = useNotificationsStore()
 const { getNotifications } = nofiticationsStore
 const newspapersStore = useNewspapersStore()
-const { setShops } = newspapersStore
 const userStore = useUserStore()
 const { logoutUser, getUserData } = userStore
 const { uid } = storeToRefs(userStore)
@@ -45,12 +44,11 @@ onMounted(async () => {
         await logoutUser()
         navigateTo("/login")
     }
+    isLoading.value = false
     if (uid.value) {
         await getFamilyDetails()
         await getNotifications()
-        await setShops()
     }
-    isLoading.value = false
 })
 
 const downloadExpenses = async () => {

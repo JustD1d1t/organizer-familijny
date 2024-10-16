@@ -88,7 +88,7 @@ const addOwnRecipe = () => {
     <ion-page>
         <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
-                <ion-title>Nowa lista zakupowa</ion-title>
+                <ion-title>Nowy przepis</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
@@ -112,11 +112,11 @@ const addOwnRecipe = () => {
                 </ul>
             </uiInfoCard>
 
-            <uiButton @click="add" class="my-6">
+            <uiButton @click="add" class="mt-6 mb-3 w-full">
                 Dodaj przepis ze strony
             </uiButton>
             <span class="text-center block">lub</span>
-            <uiButton type="secondary" @click="addOwnRecipe" class="my-6">
+            <uiButton type="secondary" @click="addOwnRecipe" class="my-3 w-full">
                 Zapisz swój własny przepis
             </uiButton>
         </ion-content>

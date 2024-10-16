@@ -48,7 +48,7 @@ watch(inputValue, (newValue) => {
 
 <template>
     <ion-item class="flex flex-col relative" :class="{ 'mb-3': error }">
-        <ion-input
+        <ion-textarea
             class="w-full"
             :class="classes"
             :label="label"
@@ -56,7 +56,7 @@ watch(inputValue, (newValue) => {
             :type="type"
             v-model="inputValue"
             :placeholder="placeholder"
-        ></ion-input>
+        ></ion-textarea>
         <span class="absolute top-[100%] text-sm font-bold" v-if="error">
             {{ error }}
         </span>
