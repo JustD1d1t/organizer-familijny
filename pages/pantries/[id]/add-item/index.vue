@@ -10,23 +10,33 @@ const pantryItemInput = ref("")
 const activeCategory = ref("")
 const addingItem = ref(false)
 
+const normalizeString = (str) => {
+    return str
+        .toLowerCase()
+        .replace(/z/g, '[zżź]')
+        .replace(/s/g, '[sś]')
+        .replace(/c/g, '[cć]')
+        .replace(/l/g, '[lł]');
+};
+
 const availableShoppingItemsByPhrase = computed(() => {
     const itemsWithCategory = shoppingItems.map((item) =>
         item.items.map((i) => ({ name: i, category: item.category }))
-    )
-    const flattendItemsWithCategory = itemsWithCategory.flat()
+    );
+    const flattendItemsWithCategory = itemsWithCategory.flat();
+
+    const normalizedInput = normalizeString(pantryItemInput.value);
+
     return [
         {
             name: pantryItemInput.value.toLowerCase(),
             category: "bez kateogrii",
         },
         ...flattendItemsWithCategory.filter((item) =>
-            item.name
-                .toLowerCase()
-                .includes(pantryItemInput.value.toLowerCase())
+            item.name.toLowerCase().match(new RegExp(normalizedInput))
         ),
-    ]
-})
+    ];
+});
 
 const handleCategory = (cat) => {
     activeCategory.value = activeCategory.value === cat ? "" : cat

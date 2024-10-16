@@ -11,23 +11,33 @@ const addingItem = ref(false)
 const shoppingItemInput = ref("")
 const { openToast } = useAlerts()
 
+const normalizeString = (str) => {
+    return str
+        .toLowerCase()
+        .replace(/z/g, '[zżź]')
+        .replace(/s/g, '[sś]')
+        .replace(/c/g, '[cć]')
+        .replace(/l/g, '[lł]');
+};
+
 const availableShoppingItemsByPhrase = computed(() => {
     const itemsWithCategory = shoppingItems.map((item) =>
         item.items.map((i) => ({ name: i, category: item.category }))
-    )
-    const flattendItemsWithCategory = itemsWithCategory.flat()
+    );
+    const flattendItemsWithCategory = itemsWithCategory.flat();
+
+    const normalizedInput = normalizeString(shoppingItemInput.value);
+
     return [
         ...flattendItemsWithCategory.filter((item) =>
-            item.name
-                .toLowerCase()
-                .includes(shoppingItemInput.value.toLowerCase())
+            item.name.toLowerCase().match(new RegExp(normalizedInput))
         ),
         {
             name: shoppingItemInput.value.toLowerCase(),
             category: "bez kateogrii",
         },
-    ]
-})
+    ];
+});
 
 const localHandleItem = async (name, category) => {
     const message = await handleItem(name, category)
@@ -119,7 +129,6 @@ const handleCategory = (cat) => {
                         v-for="item in availableShoppingItemsByPhrase"
                         :key="item"
                         :shopping-item="item.name"
-                        v-if="availableShoppingItemsByPhrase.length"
                         :active="
                             currentShoppingList.items.some(
                                 (shoppingItem) =>
