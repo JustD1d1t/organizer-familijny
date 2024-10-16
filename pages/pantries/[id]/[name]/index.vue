@@ -18,7 +18,7 @@ const expiryDate = computed(() => {
         const date = new Date(editedItem.value.expiryDate)
         return formatDate(date)
     }
-    return formatDate(new Date())
+    return null
 })
 
 const updateExpiryDate = (e) => {
@@ -48,7 +48,7 @@ const updateExpiryDate = (e) => {
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <div class="flex items-center">
+            <div class="flex items-center" v-if="expiryDate">
                 <span>Termin przydatności:</span>
                 <ion-datetime-button
                     datetime="expiryDate"

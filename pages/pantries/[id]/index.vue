@@ -3,7 +3,7 @@ import { useRoute } from "vue-router"
 
 import { usePantriesStore } from "~/stores/pantries"
 const pantriesStore = usePantriesStore()
-const { increaseQuantity, decreaseQuantity } = pantriesStore
+const { increaseQuantity, decreaseQuantity, editPantry } = pantriesStore
 const { currentPantry } = storeToRefs(pantriesStore)
 
 const route = useRoute()
@@ -17,6 +17,10 @@ const sortType = ref({
     name: 'date',
     dir: 'asc',
 });
+
+const openExpiryModal = ref(false)
+const itemToAddExpiryDate = ref(null)
+const itemExpiryDate = ref(null)
 
 const itemsToDisplay = computed(() => {
     const items = currentPantry?.value.items?.filter((item) =>
@@ -71,6 +75,10 @@ watch(route, async (newRoute, oldRoute) => {
     cancelSelectShoppingListModal()
 })
 
+const closeModal = () => {
+    openExpiryModal.value = false
+}
+
 const onWillDismissShoppingModal = () => cancelShoppingModal()
 
 const onWillDismissSelectModal = () => cancelSelectShoppingListModal()
@@ -97,17 +105,6 @@ const confirmShoppingModal = async () => {
     isOpenSelectShoppingListModal.value = true
 }
 
-const decrease = async (item) => {
-    await decreaseQuantity(item)
-    if (item.quantity === 1) {
-        setRemovedItem({
-            category: item.category,
-            name: item.name,
-            checked: false
-        })
-    }
-}
-
 const goToAddItemPage = () => {
     navigateTo(`/pantries/${currentPantry.value.id}/add-item`)
 }
@@ -117,7 +114,17 @@ const goToEditPantryItem = (name) => {
 }
 
 const addExpiryDate = (item) => {
-    navigateTo(`/pantries/${currentPantry.value.id}/${item.name}`)
+    openExpiryModal.value = true
+    const date = new Date(item.expiryDate)
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Miesiące są indeksowane od 0
+    const year = date.getFullYear();
+    
+    itemToAddExpiryDate.value = item;
+    const formattedDate = `${year}-${month}-${day}`;
+
+    itemExpiryDate.value = formattedDate
+
 }
 
 const formattedExpriyDate = (date) => {
@@ -144,6 +151,19 @@ const handleSortType = (type) => {
             dir: 'asc',
         }
     }
+}
+const saveExpireDate = () => {
+    const editedItems = currentPantry.value.items.map((item) => {
+        if (item.name === itemToAddExpiryDate.value.name) {
+            item.expiryDate = new Date(itemExpiryDate.value).getTime()
+        }
+        return item
+    })
+    editPantry({
+        ...currentPantry.value,
+        items: editedItems,
+    })
+    openExpiryModal.value = false
 }
 </script>
 <template>
@@ -184,7 +204,7 @@ const handleSortType = (type) => {
                         v-for="(item, index) in itemsToDisplay"
                         :key="item.name"
                         @increaseQuantity="() => increaseQuantity(item)"
-                        @decreaseQuantity="() => decrease(item)"
+                        @decreaseQuantity="() => decreaseQuantity(item)"
                         :quantity="item.quantity"
                         :category="item.category"
                     >
@@ -192,9 +212,13 @@ const handleSortType = (type) => {
                             <div class="flex flex-col flex-grow">
                                 <ion-label
                                     class="grow my-0"
-                                    @click="() => goToEditPantryItem(item.name)"
                                     >{{ item.name }}</ion-label
                                 >
+                                <!-- <ion-label
+                                    class="grow my-0"
+                                    @click="() => goToEditPantryItem(item.name)"
+                                    >{{ item.name }}</ion-label
+                                > -->
                                 <span v-if="item.expiryDate" class="text-sm">
                                     {{ formattedExpriyDate(item.expiryDate) }}
                                 </span>
@@ -223,8 +247,12 @@ const handleSortType = (type) => {
                                     <uiList>
                                         <ion-item>
                                             <ion-label @click="() => addExpiryDate(item)"
-                                                >Dodaj termin
-                                                przydatności</ion-label @click=
+                                                >
+                                                <span v-if="!item.expiryDate">Dodaj termin
+                                                    przydatności</span>
+                                                    <span v-else>Edytuj termin
+                                                        przydatności</span>
+                                                </ion-label @click=
                                             >
                                         </ion-item>
                                     </uiList>
@@ -240,6 +268,27 @@ const handleSortType = (type) => {
                     <ion-icon :icon="ioniconsAddCircle" size="large"></ion-icon>
                 </ion-fab-button>
             </ion-fab>
+            
+            <ion-modal
+                    class="auto-height"
+                    :is-open="openExpiryModal"
+                    @didDismiss="closeModal()"
+                >
+                    <div class="p-2">
+                        <uiList>
+                            <uiInput
+                            label="Dodaj termin przydatności"
+                            v-model="itemExpiryDate"
+                            type="date"
+                            />
+                        </uiList>
+                        <div class="flex justify-center">
+                            <uiButton @click="saveExpireDate" >
+                                <span> Zapisz termin</span>
+                            </uiButton>
+                        </div>
+                    </div>
+                </ion-modal>
 
             <ion-modal
                 class="auto-height"
@@ -252,6 +301,7 @@ const handleSortType = (type) => {
                     @confirmShoppingModal="confirmShoppingModal"
                     :name="removedItem.name"
                 />
+                
             </ion-modal>
 
             <ion-modal

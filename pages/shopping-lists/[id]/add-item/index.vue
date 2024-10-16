@@ -46,6 +46,12 @@ const handleCategory = (cat) => {
     <ion-page>
         <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
                 <ion-title>Listy zakupowe</ion-title>
             </ion-toolbar>
         </ion-header>

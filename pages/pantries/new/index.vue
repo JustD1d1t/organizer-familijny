@@ -34,7 +34,13 @@ const handleMember = (membersIds, members) => {
     <ion-page>
         <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
-                <ion-title>Nowa lista zakupowa</ion-title>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
+                <ion-title>Nowa spiżarnia</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">

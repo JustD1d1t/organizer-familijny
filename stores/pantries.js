@@ -213,8 +213,8 @@ export const usePantriesStore = defineStore({
                 },
                 body: JSON.stringify({
                     pantry: {
+                        ...this.currentPantry,
                         items,
-                        pantryId: this.currentPantry.id,
                     },
                 }),
             })
