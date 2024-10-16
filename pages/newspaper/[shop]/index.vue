@@ -122,7 +122,7 @@ onMounted(async () => {
                     <div
                         v-for="(newspaper, index) in newspapers"
                         :key="newspaper.title"
-                        class="w-[49%] flex flex-col"
+                        class="w-[49%] flex flex-col mb-2"
                     >
                         <div class="flex items-center h-[320px]">
                             <img
@@ -130,10 +130,12 @@ onMounted(async () => {
                                     'https://www.gazetkipromocyjne.net' +
                                     newspaper.imgs[0]
                                 "
-                                class="w-full"
+                                class="w-full h-full"
                             />
                         </div>
-                        <ion-label>{{ newspaper.title }}</ion-label>
+                        <ion-label class="text-center">
+                            <small>{{ newspaper.title }}</small>
+                        </ion-label>
                         <uiButton type="tertiary" @click="goToNewspaper(index)">
                             Zobacz
                         </uiButton>

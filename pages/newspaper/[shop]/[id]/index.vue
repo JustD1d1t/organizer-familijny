@@ -164,9 +164,9 @@ onMounted(async () => {
                 <span>ładowanie gazetki</span>
             </div>
             <div v-show="!isLoading">
-                <ion-list lines="none">
-                    <ion-item>
-                        <h1 class="text-base">{{ currentNewspaper.title }}</h1>
+                <uiList>
+                    <ion-item class="text-center">
+                        <h1 class="h2 w-full mt-0 mb-0">{{ currentNewspaper.title }}</h1>
                     </ion-item>
                     <ion-item class="canvas">
                         <div ref="pagesContainer" class="w-[100%]" />
@@ -182,7 +182,7 @@ onMounted(async () => {
                             >
                         </div>
                     </ion-item>
-                </ion-list>
+                </uiList>
             </div>
         </ion-content>
     </ion-page>
