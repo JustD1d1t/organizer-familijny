@@ -5,6 +5,10 @@ const newspapersStore = useNewspapersStore()
 const { setShops } = newspapersStore
 const { shops, isLoading } = storeToRefs(newspapersStore)
 
+import allshops from '@/data/allshops';
+console.log(allshops)
+console.log(allshops['abc'].img)
+
 const searchValue = ref("")
 
 const shopsToDisplay = computed(() => {
@@ -58,7 +62,7 @@ onMounted(async () => {
                 <ion-item v-for="shop in shopsToDisplay" :key="shop.title">
                     <div class="w-16 h-16 mr-2 flex items-center">
                         <img
-                            :src="`/organizer-familijny-deploy/assets/assets/img/shops/${shop.title}.png`"
+                            :src="allshops[shop.title].img"
                             alt="shop"
                             style="
                                 width: 100%;
