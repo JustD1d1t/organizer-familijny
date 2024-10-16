@@ -26,8 +26,8 @@ const unreadNotifications = computed(() => {
         : []
 })
 
-const handleLogout = () => {
-    logoutUser()
+const handleLogout = async () => {
+    await logoutUser()
     clearShoppingLists()
     clearRecipes()
     clearExpenses()

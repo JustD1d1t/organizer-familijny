@@ -12,7 +12,7 @@ const { uid, email, nickname } = storeToRefs(userStore)
 
 const emit = defineEmits("cancel", "confirmModal")
 
-const emailInput = ref()
+const memberEmail = ref("")
 
 const addMember = async (user) => {
     const newMembersDetails = [
@@ -40,7 +40,7 @@ const create = async (user) => {
 
 const handleFamilyMember = async () => {
     const data = await request(
-        `${backendUrl}/users/get-users?email=${email.value.toLowerCase()}`
+        `${backendUrl}/users/get-users?email=${memberEmail.value.toLowerCase()}`
     )
     const users = data.users
     if (!users.length) {
@@ -86,23 +86,19 @@ const cancel = () => {
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
-        <ion-list lines="none">
+        <uiList>
             <ion-item>
                 <ion-text>
                     <h3>Dodaj członka rodziny</h3>
                 </ion-text>
             </ion-item>
-            <ion-item>
-                <ion-input
-                    data-test="shop-input"
-                    label="Mail"
-                    label-placement="floating"
-                    ref="emailInput"
-                    class="shopInput"
-                    type="text"
-                    v-model="email"
-                ></ion-input>
-            </ion-item>
-        </ion-list>
+            <uiInput
+                data-test="shop-input"
+                label="Mail"
+                class="shopInput"
+                type="text"
+                v-model="memberEmail"
+            />
+        </uiList>
     </div>
 </template>

@@ -163,7 +163,7 @@ const resetFiltersFunction = () => {
                     </div>
                 </div>
             </div>
-            <uiButton @click="emit('downloadExpenses')" class="w-full">
+            <uiButton @click="emit('downloadExpenses')" class="w-full mb-2">
                 <span> Zastosuj filtry</span>
             </uiButton>
             <uiButton

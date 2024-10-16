@@ -43,7 +43,7 @@ const handleFamilyInvitation = async (accepted) => {
         await sendNotification(
             {
                 title: `Użytkownik "${userEmail.value}" zaakceptował zaproszenie do rodziny`,
-                content: `Zaproszenie do listy nie zostało zaakceptowane`,
+                content: `Zaproszenie do listy zostało zaakceptowane`,
             },
             notification.value.ownerId
         )
@@ -51,7 +51,7 @@ const handleFamilyInvitation = async (accepted) => {
         await sendNotification(
             {
                 title: `Użytkownik "${userEmail.value}" nie zaakceptował zaproszenie do rodziny`,
-                content: `Zaproszenie do listy zostało nie zaakceptowane`,
+                content: `Zaproszenie do listy nie zostało zaakceptowane`,
             },
             notification.value.ownerId
         )

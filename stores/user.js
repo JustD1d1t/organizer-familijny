@@ -27,6 +27,7 @@ export const useUserStore = defineStore({
         },
         setEmailVerified(emailVerified) {
             this.emailVerified = emailVerified
+            localStorage.setItem("emailVerified", emailVerified)
         },
         setIdToken(idToken) {
             this.idToken = idToken
