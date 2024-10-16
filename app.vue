@@ -60,11 +60,12 @@ const downloadExpenses = async () => {
     <ion-app>
         <ion-page v-if="isLoading">
             <ion-content :fullscreen="true">
-                <div class="w-full flex justify-center items-center h-full">
+                <div class="w-full flex flex-col justify-center items-center h-full">
                     <ion-spinner
                         name="lines-sharp"
                         style="width: 100px; height: 100px"
                     ></ion-spinner>
+                    <p>Ładowanie aplikacji</p>
                 </div>
             </ion-content>
         </ion-page>

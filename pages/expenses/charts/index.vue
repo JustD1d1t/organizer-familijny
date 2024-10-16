@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed, onMounted, watch, onBeforeMount } from "vue"
-import { init, dispose } from "echarts"
+import { init } from "echarts"
 
 const expensesStore = useExpensesStore()
-const { expenses } = storeToRefs(expensesStore)
+const { expenses, showSelect } = storeToRefs(expensesStore)
+const userStore = useUserStore()
+const { uid } = storeToRefs(userStore)
 
 const { billCategoriesIcons } = useBillCategories()
 
@@ -16,12 +18,31 @@ const totalSum = computed(() => {
     ).toFixed(2)
 })
 
+const expensesToShow = computed(() => {
+    if (showSelect.value === "all") {
+        return expenses.value
+    } else if (showSelect.value === "my") {
+        return expenses.value.filter(
+            (expense) =>
+                expense.userId === uid.value &&
+                expense.familyMembers.length === 0
+        )
+    } else {
+        return expenses.value.filter(
+            (expense) =>
+                (expense.userId === uid.value &&
+                    expense.familyMembers.length > 0) ||
+                expense.familyMembers.includes(uid.value)
+        )
+    }
+})
+
 const minChartSize = ref(350)
 
 const groupExpensesByCategory = computed(() => {
     const groupedExpenses = new Map()
 
-    expenses.value.forEach((expense) => {
+    expensesToShow.value.forEach((expense) => {
         const { category, value } = expense
         if (groupedExpenses.has(category)) {
             groupedExpenses.set(category, groupedExpenses.get(category) + value)

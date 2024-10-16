@@ -1,13 +1,12 @@
 <script setup>
-import { StateEntries } from "@/types"
 const userStore = useUserStore()
 const { uid } = storeToRefs(userStore)
 
 const expensesStore = useExpensesStore()
-const { queryExpenses, setCurrentExpense } = expensesStore
+const { queryExpenses, setCurrentExpense, handleExpensesVisibility } =
+    expensesStore
 
-const { expenses, isLoading } = storeToRefs(expensesStore)
-const showSelect = ref("all")
+const { expenses, isLoading, showSelect } = storeToRefs(expensesStore)
 
 const filters = [
     {
@@ -66,16 +65,6 @@ const expensesToShow = computed(() => {
 
 const openFilterMenu = async () => {
     await menuController.open("expense-filter")
-}
-
-const handleExpensesVisibility = (filter) => {
-    if (filter.label === "Wszystkie") {
-        showSelect.value = "all"
-    } else if (filter.label === "Moje") {
-        showSelect.value = "my"
-    } else {
-        showSelect.value = "common"
-    }
 }
 
 const openExpensesCharts = () => {

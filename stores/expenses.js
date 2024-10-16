@@ -29,6 +29,7 @@ export const useExpensesStore = defineStore({
             category: null,
             isLoading: false,
             error: null,
+            showSelect: "all",
             user: useUserStore(),
         }
     },
@@ -58,6 +59,15 @@ export const useExpensesStore = defineStore({
             this.endPrice = null
             this.shopName = null
             this.expenseName = null
+        },
+        handleExpensesVisibility(filter) {
+            if (filter.label === "Wszystkie") {
+                this.showSelect = "all"
+            } else if (filter.label === "Moje") {
+                this.showSelect = "my"
+            } else {
+                this.showSelect = "common"
+            }
         },
 
         async getExpensePhoto(id) {

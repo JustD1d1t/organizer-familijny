@@ -3,7 +3,7 @@ import auchan from "assets/img/shops/auchan.png"
 import lidl from "assets/img/shops/lidl.png"
 import kaufland from "assets/img/shops/kaufland.png"
 import dino from "assets/img/shops/dino.png"
-import polo_market from "assets/img/shops/polo_market.png"
+import polomarket from "assets/img/shops/polomarket.png"
 export default [
     {
         id: 1,
@@ -32,7 +32,7 @@ export default [
     },
     {
         id: 6,
-        src: polo_market,
+        src: polomarket,
         name: "polo",
     },
 ]
