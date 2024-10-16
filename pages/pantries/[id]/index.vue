@@ -157,7 +157,7 @@ const handleSortType = (type) => {
                     ></ion-back-button>
                 </ion-buttons>
                     
-                <ion-buttons slot="end">
+                <ion-buttons slot="end" v-if="itemsToDisplay.length">
                     <PopoverContainer sortId="pantries-sort" width="250px">
                         <SortItem label="Sortuj po nazwie" @click="handleSortType('name')" type="name" :dir="sortType.dir" :active="sortType.name === 'name'"/>
                         <SortItem label="Sortuj po dacie" @click="handleSortType('date')" type="amount" :dir="sortType.dir" :active="sortType.name === 'date'"/>
@@ -168,7 +168,7 @@ const handleSortType = (type) => {
         </ion-header>
         <ion-content>
             <div class="h-full overflow-auto">
-                <h2>{{ currentPantry.name }}</h2>
+                <h2 class="h1">{{ currentPantry.name }}</h2>
                 <UiList
                     v-if="itemsToDisplay.length">
                     <uiInput
@@ -178,7 +178,7 @@ const handleSortType = (type) => {
                         v-model="searchValue"
                     />
                 </UiList>   
-                <h2 v-else>Brak produktów w spiżarni</h2>
+                <h3 v-else>Brak produktów w spiżarni</h3>
                 <UiList class="overflow-auto max-h-[75%]">
                     <UiListItemCounter
                         v-for="(item, index) in itemsToDisplay"

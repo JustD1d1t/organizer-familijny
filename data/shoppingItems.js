@@ -420,6 +420,7 @@ export default [
             "chlebek lawasz",
             "chlebek chapati",
             "chlebek roti",
+            "bułka z budyniem",
         ],
         icon: pieczywo_24x24,
     },

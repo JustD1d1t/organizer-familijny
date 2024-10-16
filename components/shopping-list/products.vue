@@ -81,7 +81,7 @@ const boughtRecipes = computed(() =>
     </UiList>
     <div v-if="boughtItems.length || boughtRecipes.length">
         <UiDividerWithText>Kupione</UiDividerWithText>
-        <ion-list :inset="true" class="overflow-auto py-2">
+        <ion-list :inset="true" class="overflow-auto py-0">
             <ShoppingListItem
                 v-for="item in boughtItems"
                 :key="item"

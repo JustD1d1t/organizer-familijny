@@ -164,7 +164,7 @@ onMounted(async () => {
                 <span>ładowanie gazetki</span>
             </div>
             <div v-show="!isLoading">
-                <uiList>
+                <uiList class="py-0 gap-0">
                     <ion-item class="text-center">
                         <h1 class="h2 w-full mt-0 mb-0">{{ currentNewspaper.title }}</h1>
                     </ion-item>

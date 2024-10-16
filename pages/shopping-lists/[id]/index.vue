@@ -67,7 +67,7 @@ const openPantryModal = () => {
 </script>
 <template>
     <ion-page>
-        <ion-header style="background: var(--ion-color-light);">
+        <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
                 <ion-buttons slot="start">
                     <ion-back-button
@@ -77,7 +77,13 @@ const openPantryModal = () => {
                 </ion-buttons>
                 <ion-title>Listy zakupowe</ion-title>
 
-                <ion-buttons slot="end">
+                <ion-buttons
+                    slot="end"
+                    v-if="
+                        currentShoppingList.items.length ||
+                        currentShoppingList.recipes.length
+                    "
+                >
                     <ShoppingListSortAndFilter
                         :layout="layout"
                         :dir="dir"
@@ -97,7 +103,7 @@ const openPantryModal = () => {
         </ion-header>
         <ion-content>
             <div class="h-[90%]">
-                <h2>{{ name }}</h2>
+                <h2 class="h1">{{ name }}</h2>
                 <div
                     v-if="
                         currentShoppingList.items.length ||

@@ -59,9 +59,9 @@ const login = async () => {
         const response = await loginUser(email.value, password.value)
         if (!response.error) {
             navigateTo("/")
+            confirmLoginToast()
             await getNotifications()
             await getFamilyDetails()
-            confirmLoginToast()
         } else {
             errorLoginToast(response.error)
         }

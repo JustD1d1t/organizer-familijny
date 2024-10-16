@@ -17,7 +17,7 @@ const selectedCategory = ref("")
 
 const newExpenseName = ref("")
 const newExpenseValue = ref("")
-const newExpenseDate = ref("")
+const newExpenseDate = ref()
 const newShopName = ref("")
 const expenseMembers = ref([])
 const document = ref(null)
@@ -306,6 +306,16 @@ const addNewProduct = () => {
         category: "",
     }
 }
+
+onMounted(() => {
+    const today = new Date()
+
+    const day = String(today.getDate()).padStart(2, "0")
+    const month = String(today.getMonth() + 1).padStart(2, "0") // Miesiące są indeksowane od 0
+    const year = today.getFullYear()
+
+    newExpenseDate.value = `${year}-${month}-${day}`
+})
 </script>
 
 <template>
@@ -370,7 +380,7 @@ const addNewProduct = () => {
                     </div>
                 </ion-list>
             </div>
-            <ion-modal :is-open="isOpen">
+            <!-- <ion-modal :is-open="isOpen">
                 <ion-header>
                     <ion-toolbar>
                         <ion-title>Edytuj produkt</ion-title>
@@ -454,7 +464,7 @@ const addNewProduct = () => {
                         </ion-item>
                     </uiList>
                 </ion-content>
-            </ion-modal>
+            </ion-modal> -->
         </ion-content>
     </ion-page>
 </template>
