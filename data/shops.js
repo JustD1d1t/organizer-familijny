@@ -6,24 +6,24 @@ import dino from "assets/img/shops/dino.png"
 import polomarket from "assets/img/shops/polomarket.png"
 export default [
     {
-        id: 1,
-        src: biedronka,
-        name: "biedronka",
-    },
-    {
-        id: 2,
-        src: auchan,
-        name: "auchan",
-    },
-    {
         id: 3,
         src: lidl,
         name: "lidl",
     },
     {
+        id: 1,
+        src: biedronka,
+        name: "biedronka",
+    },
+    {
         id: 4,
         src: kaufland,
         name: "kaufland",
+    },
+    {
+        id: 2,
+        src: auchan,
+        name: "auchan",
     },
     {
         id: 5,
