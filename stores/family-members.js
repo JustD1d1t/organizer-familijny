@@ -10,6 +10,7 @@ export const useFamilyMembersStore = defineStore({
             familyMembers: [],
             familyMembersDetails: [],
             familyId: null,
+            familyName: null,
             isLoading: false,
             userStore: useUserStore(),
         }
@@ -28,6 +29,7 @@ export const useFamilyMembersStore = defineStore({
             this.familyMembers = []
             this.familyMembersDetails = []
             this.familyId = null
+            this.familyName = null
         },
         setLoading(isLoading) {
             this.isLoading = isLoading
@@ -65,6 +67,7 @@ export const useFamilyMembersStore = defineStore({
                 this.familyMembers = data.members
                 this.familyMembersDetails = data.membersDetails
                 this.familyId = data.familyId
+                this.familyName = data.name
             }
         },
         async removeFamily() {
@@ -97,7 +100,7 @@ export const useFamilyMembersStore = defineStore({
             this.setLoading(false)
             this.clearFamilyMembers()
         },
-        async createFamily(membersDetails) {
+        async createFamily(membersDetails, name) {
             this.setLoading(true)
             await request(`${backendUrl}/family/create-family`, {
                 method: "POST",
@@ -107,12 +110,14 @@ export const useFamilyMembersStore = defineStore({
                 body: JSON.stringify({
                     membersDetails,
                     familyId: this.userStore.uid,
+                    name,
                 }),
             })
             this.setLoading(false)
             this.familyMembers = [this.userStore.uid]
             this.familyMembersDetails = membersDetails
             this.familyId = this.userStore.uid
+            this.familyName = name
         },
     },
 })

@@ -6,9 +6,9 @@ const { request } = useFetchRequest()
 
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, createFamily } = familyMembersStore
-const { familyMembersDetails } = storeToRefs(familyMembersStore)
+const { familyMembersDetails, familyName } = storeToRefs(familyMembersStore)
 const userStore = useUserStore()
-const { uid, email, nickname } = storeToRefs(userStore)
+const { uid, email } = storeToRefs(userStore)
 
 const emit = defineEmits("cancel", "confirmModal")
 
@@ -20,21 +20,6 @@ const addMember = async (user) => {
         { ...user, status: "pending" },
     ]
     await updateMembers(newMembersDetails)
-    return newMembersDetails
-}
-
-const create = async (user) => {
-    const newMembersDetails = [
-        {
-            email: email.value,
-            id: uid.value,
-            uid: uid.value,
-            nickname: nickname.value,
-            status: "accepted",
-        },
-        { ...user, status: "pending" },
-    ]
-    await createFamily(newMembersDetails)
     return newMembersDetails
 }
 
@@ -50,14 +35,12 @@ const handleFamilyMember = async () => {
     let newMembersDetails
     if (familyMembersDetails.value.length) {
         newMembersDetails = await addMember(user)
-    } else {
-        newMembersDetails = await create(user)
     }
 
     await sendNotification(
         {
-            title: `Zaproszenie do rodziny użytkownika "${email.value}"`,
-            content: `Zostałeś zaproszony do rodziny przez użytkownika "${email.value}"`,
+            title: `Zaproszenie do rodziny "${familyName.value}"`,
+            content: `Zostałeś zaproszony do rodziny "${familyName.value}" przez użytkownika "${email.value}"`,
             type: "invitation-to-family",
             ownerId: uid.value,
         },

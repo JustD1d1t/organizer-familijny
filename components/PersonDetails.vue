@@ -11,7 +11,9 @@ const recipesStore = useRecipesStore()
 const expensesStore = useExpensesStore()
 const notificationsStore = useNotificationsStore()
 const pantriesStore = usePantriesStore()
+const familyMembersStore = useFamilyMembersStore()
 
+const { clearFamilyMembers } = familyMembersStore
 const { clearShoppingLists } = shoppingListsStore
 const { clearRecipes } = recipesStore
 const { clearExpenses } = expensesStore
@@ -33,6 +35,7 @@ const handleLogout = async () => {
     clearExpenses()
     clearNotifications()
     clearPantries()
+    clearFamilyMembers()
     navigateTo("/login")
 }
 

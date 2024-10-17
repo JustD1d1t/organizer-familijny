@@ -39,8 +39,9 @@ onMounted(async () => {
     isMobile.value = window.innerWidth < 750
     const localIdToken = localStorage.getItem("idToken")
     const localRefreshToken = localStorage.getItem("refreshToken")
+    const refreshToken = localStorage.getItem("refreshToken")
     await getUserData()
-    if (!localIdToken || !localRefreshToken) {
+    if (!localIdToken || !localRefreshToken || !refreshToken) {
         await logoutUser()
         navigateTo("/login")
     }
@@ -60,7 +61,9 @@ const downloadExpenses = async () => {
     <ion-app>
         <ion-page v-if="isLoading">
             <ion-content :fullscreen="true">
-                <div class="w-full flex flex-col justify-center items-center h-full">
+                <div
+                    class="w-full flex flex-col justify-center items-center h-full"
+                >
                     <ion-spinner
                         name="lines-sharp"
                         style="width: 100px; height: 100px"

@@ -6,9 +6,10 @@ const { uid, email } = storeToRefs(userStore)
 
 const familyMembersStore = useFamilyMembersStore()
 const { updateMembers, removeFamily, leaveFamily } = familyMembersStore
-const { familyMembers, familyMembersDetails, familyId } =
+const { familyMembers, familyMembersDetails, familyId, familyName } =
     storeToRefs(familyMembersStore)
 const modal = ref()
+const createModal = ref()
 
 const shoppingListsStore = useShoppingListsStore()
 const { shoppingLists } = storeToRefs(shoppingListsStore)
@@ -29,11 +30,19 @@ const familyOwner = computed(() => {
 const cancel = () => modal.value.$el.dismiss(null, "cancel")
 const confirmModal = () => modal.value.$el.dismiss(null, "confirm")
 
+const cancelCreateModal = () => createModal.value.$el.dismiss(null, "cancel")
+const confirmCreateModal = () => createModal.value.$el.dismiss(null, "confirm")
+
 const addMember = (newMembers) => {
     confirmModal()
     familyMembersDetails.value = newMembers
     familyOwner.value = true
 }
+
+const createFamily = () => {
+    confirmCreateModal()
+}
+
 const removeMemberFromShoppingLists = async (member) => {
     if (shoppingLists.value.length) {
         shoppingLists.value.forEach(async (list) => {
@@ -148,16 +157,72 @@ const leave = async () => {
     <ion-page>
         <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
-                <ion-title>Rodzina</ion-title>
+                <ion-title
+                    >Rodzina
+                    <span v-if="familyName">"{{ familyName }}"</span></ion-title
+                >
             </ion-toolbar>
         </ion-header>
 
         <ion-content :fullscreen="true">
             <div>
-                <h2>Członkowie rodziny</h2>
-                <h3 v-if="!familyMembersDetails.length">
-                    Nie należysz do żadnej rodziny
-                </h3>
+                <uiInfoCard
+                    v-if="!familyMembersDetails.length"
+                    title="Czy wiesz, że..."
+                    subtitle="Możesz utworzyć własną rodzinę a następnie dodawać do niej członków?"
+                    icon="ioniconsBulb"
+                    class="mt-8"
+                >
+                    <br />
+                    <p>
+                        Osoby z rodziny możesz dodawać do list zakupowych,
+                        spiżarni czy wydatków.
+                    </p>
+                    <br />
+                    <p>Dzięki temu:</p>
+                    <br />
+                    <ul>
+                        <li>Możecie wspólnie planować zakupy</li>
+                        <li>Możecie razem zarządzać zapasami w domu</li>
+                        <li>Możecie kontrolować Wasze wspólne wydatki</li>
+                    </ul>
+                    <br />
+                    <p class="h3 font-bold">Załóż rodzinę już teraz</p>
+                </uiInfoCard>
+                <ion-accordion-group v-else>
+                    <ion-accordion value="first">
+                        <ion-item slot="header" color="light">
+                            <ion-label><b>Czy wiesz, że...</b></ion-label>
+                        </ion-item>
+                        <div class="ion-padding" slot="content">
+                            <uiInfoCard
+                                subtitle="Możesz utworzyć własną rodzinę a następnie dodawać do niej członków?"
+                                icon="ioniconsBulb"
+                                class="mb-4 mt-2"
+                            >
+                                <br />
+                                <p>
+                                    Osoby z rodziny możesz dodawać do list
+                                    zakupowych, spiżarni czy wydatków.
+                                </p>
+                                <br />
+                                <p>Dzięki temu:</p>
+                                <br />
+                                <ul>
+                                    <li>Możecie wspólnie planować zakupy</li>
+                                    <li>
+                                        Możecie razem zarządzać zapasami w domu
+                                    </li>
+                                    <li>
+                                        Możecie kontrolować Wasze wspólne
+                                        wydatki
+                                    </li>
+                                </ul>
+                            </uiInfoCard>
+                        </div>
+                    </ion-accordion>
+                </ion-accordion-group>
+                <h2 v-if="familyMembersDetails.length">Członkowie rodziny</h2>
                 <ion-list lines="none">
                     <UiListItem
                         v-for="member in familyMembersDetails"
@@ -185,23 +250,35 @@ const leave = async () => {
                     </UiListItem>
                 </ion-list>
             </div>
-            <ion-modal
-                class="auto-height"
-                ref="modal"
-                trigger="open-modal"
-                v-if="familyOwner || !familyMembers.length"
-            >
+            <ion-modal class="auto-height" ref="modal" trigger="open-modal">
                 <FamilyEditModal @cancel="cancel" @confirmModal="addMember" />
             </ion-modal>
-            <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+            <ion-modal
+                class="auto-height"
+                ref="createModal"
+                trigger="open-create-modal"
+            >
+                <FamilyCreateModal
+                    @cancel="cancel"
+                    @confirmModal="createFamily"
+                />
+            </ion-modal>
+            <ion-fab
+                slot="fixed"
+                vertical="bottom"
+                horizontal="end"
+                v-if="!familyOwner && !familyMembers.includes(uid)"
+            >
+                <ion-fab-button id="open-create-modal" v-if="!familyOwner">
+                    <ion-icon :icon="ioniconsAdd"></ion-icon>
+                </ion-fab-button>
+            </ion-fab>
+            <ion-fab slot="fixed" vertical="bottom" horizontal="end" v-else>
                 <ion-fab-button>
                     <ion-icon :icon="ioniconsArrowUpCircle"></ion-icon>
                 </ion-fab-button>
                 <ion-fab-list side="top">
-                    <ion-fab-button
-                        id="open-modal"
-                        v-if="familyOwner || !familyMembers.length"
-                    >
+                    <ion-fab-button id="open-modal" v-if="familyOwner">
                         <ion-icon :icon="ioniconsAdd"></ion-icon>
                     </ion-fab-button>
                     <ion-fab-button v-if="!familyOwner" @click="leave">
