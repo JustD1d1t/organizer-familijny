@@ -189,6 +189,29 @@ const saveExpireDate = () => {
         <ion-content>
             <div class="h-full overflow-auto">
                 <h2 class="h1">{{ currentPantry.name }}</h2>
+                
+                <ion-accordion-group v-if="itemsToDisplay.length">
+                    <ion-accordion value="first">
+                        <ion-item slot="header" color="light">
+                            <ion-label><b>Czy wiesz, że...</b></ion-label>
+                        </ion-item>
+                        <div class="ion-padding" slot="content">
+                            <uiInfoCard
+                                subtitle="Możesz sortować swoje zapasy oraz dodawać do nich termin przydatności?"
+                                icon="ioniconsBulb"
+                                class="mb-4 mt-2"
+                            >
+                                <br />
+                                <p>Termin przydatności dodasz klikając przycisk "3 kropki" na danym produkcie. Wyskoczy Ci okienko z możliwością ustawienia terminu przydatności. Jeśli masz wiele produktów i każdy z nich ma inna datę to podaj tę najkrótszą</p>
+                                <br>
+                                <p>
+                                    Możesz też sortować swoje zapasy. Wystarczy, że klikniesz w ikonę "3
+                                    kropek" w prawym górnym rogu. Możesz sortować produkty po nazwie oraz dacie przydatności. Jeśli produkt nie ma daty przydatności nie będzie brany pod uwagę przy sortowaniu po dacie
+                                </p>
+                            </uiInfoCard>
+                        </div>
+                    </ion-accordion>
+                </ion-accordion-group>
                 <UiList
                     v-if="itemsToDisplay.length">
                     <uiInput
@@ -198,7 +221,37 @@ const saveExpireDate = () => {
                         v-model="searchValue"
                     />
                 </UiList>   
-                <h3 v-else>Brak produktów w spiżarni</h3>
+                <uiInfoCard
+                    v-else
+                    title="Czy wiesz, że..."
+                    subtitle="Możesz dodawać produkty z naszej bazy lub swoje własne?"
+                    icon="ioniconsBulb"
+                    class="mt-8"
+                >
+                    <br />
+                    <p>
+                        Wystarczy, że klikniesz w przycisk "+" na dole
+                        ekranu i przejdziesz do strony z dodawaniem
+                        artykułów do spiżarnii
+                    </p>
+                    <br />
+                    <p>Możesz:</p>
+                    <ul>
+                        <li>szukać artykułów w danej kategorii</li>
+                        <li>
+                            wyszukać artykuł spośród wszystkich kategorii
+                        </li>
+                        <li>
+                            doodać swój produkt, jeśli nie znaleziono
+                            produktu w żadnej z kategorii. Twój produkt
+                            zostanie dodany bez kategorii
+                        </li>
+                    </ul>
+                    <br />
+                    <p class="h3 font-bold">
+                        Dodaj swój pierwszy produkt do spiżarnii
+                    </p>
+                </uiInfoCard>
                 <UiList class="overflow-auto max-h-[75%]">
                     <UiListItemCounter
                         v-for="(item, index) in itemsToDisplay"

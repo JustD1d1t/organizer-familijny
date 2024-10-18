@@ -322,6 +322,12 @@ onMounted(() => {
     <ion-page>
         <ion-header style="background: var(--ion-color-light)">
             <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-back-button
+                        text=""
+                        :icon="ioniconsArrowBackOutline"
+                    ></ion-back-button>
+                </ion-buttons>
                 <ion-buttons slot="end">
                     <ion-button :strong="true" @click="addExpense()"
                         >Dodaj</ion-button

@@ -103,13 +103,20 @@ ion-select {
     }
 
     &::part(label) {
-        color: blue;
         & + div {
             flex-grow: 1;
             &::part(container) {
                 flex-grow: 1;
             }
         }
+    }
+}
+
+
+ion-alert {
+    .alert-wrapper {
+        --min-width: 90vw; /* Ustaw żądaną szerokość */
+        --max-width: 90vw; /* Możesz również ustawić max-szerokość, aby lepiej wyglądało na mniejszych ekranach */
     }
 }
 

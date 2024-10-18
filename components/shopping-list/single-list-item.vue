@@ -78,14 +78,14 @@ const familyMembers = computed(() => {
                 v-if="!collaboratedList"
             >
                 <ion-content class="ion-padding mr-8">
-                    <ion-list>
+                    <uiList>
                         <ion-item @click="goToEditShoppingList">
                             <ion-label>Edytuj</ion-label>
                         </ion-item>
                         <ion-item @click="removeShoppingList(shoppingList.id)">
                             <ion-label>Usuń</ion-label>
                         </ion-item>
-                    </ion-list>
+                    </uiList>
                 </ion-content>
             </ion-popover>
         </div>

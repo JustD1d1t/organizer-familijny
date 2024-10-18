@@ -58,13 +58,3 @@ const selectedMembers = computed(() => {
         </ion-select>
     </ion-item>
 </template>
-
-<style lang="scss" scoped>
-ion-accordion {
-    ion-item {
-        &::part(native) {
-            background: transparent;
-        }
-    }
-}
-</style>

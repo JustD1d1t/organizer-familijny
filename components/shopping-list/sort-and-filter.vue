@@ -41,6 +41,7 @@ const props = defineProps({
             :active="layout === 'products'"
         />
         <SortItem
+            v-if="layout === 'products'"
             label="Sortuj po kategorii"
             @click="emits('sortByCategory')"
             type="amount"
@@ -48,6 +49,7 @@ const props = defineProps({
             :active="lastSort === 'category'"
         />
         <SortItem
+            v-if="layout === 'products'"
             label="Sortuj po nazwie"
             @click="emits('sortByName')"
             type="amount"

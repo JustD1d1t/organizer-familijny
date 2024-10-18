@@ -20,17 +20,50 @@ const shoppingListsWithoutMembers = computed(() =>
         <ion-spinner name="lines-sharp"></ion-spinner>
     </div>
     <div v-else>
+        <ion-accordion-group v-if="shoppingLists.length">
+            <ion-accordion value="first">
+                <ion-item slot="header" color="light">
+                    <ion-label><b>Czy wiesz, że...</b></ion-label>
+                </ion-item>
+                <div class="ion-padding" slot="content">
+                    <uiInfoCard
+                        subtitle="Możesz utworzyć własne listy zakupowe i zaprosić do nich członków rodziny"
+                        icon="ioniconsBulb"
+                        class="mb-4 mt-2"
+                    >
+                        <br />
+                        <p>Dzięki temu możecie wspólnie planować zakupy</p>
+                        <br />
+                        <p>
+                            Osoby do listy możesz dodać przy tworzeniu lub
+                            edycji danej listy
+                        </p>
+                    </uiInfoCard>
+                </div>
+            </ion-accordion>
+        </ion-accordion-group>
         <ShoppingListListsContainer
             v-if="shoppingLists.length"
             title="Twoje listy zakupowe"
             :shoppingLists="shoppingListsWithoutMembers"
         />
-        <div
+        <uiInfoCard
             v-else
-            class="w-full p-2 grid-cols-2 grid auto-rows-max overflow-auto"
+            title="Czy wiesz, że..."
+            subtitle="Możesz utworzyć własne listy zakupowe i zaprosić do nich członków rodziny?"
+            icon="ioniconsBulb"
+            class="mt-8"
         >
-            <h2 class="col-span-2 text-center">Nie posiadasz swoich list</h2>
-        </div>
+            <br />
+            <p>Dzięki temu możecie wspólnie planować zakupy</p>
+            <br />
+            <p>
+                Osoby do listy możesz dodać przy tworzeniu lub edycji danej
+                listy
+            </p>
+            <br />
+            <p class="h3 font-bold">Stwórz pierwszą listę zakupową</p>
+        </uiInfoCard>
 
         <ShoppingListListsContainer
             v-if="shoppingLists.length && shoppingListsWithMembers.length"

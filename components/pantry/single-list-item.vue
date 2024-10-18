@@ -55,14 +55,14 @@ const familyMembers = computed(() => {
                 :dismiss-on-select="true"
             >
                 <ion-content class="ion-padding mr-8">
-                    <ion-list>
+                    <uiList>
                         <ion-item @click="goToEditPantry">
                             <ion-label>Edytuj</ion-label>
                         </ion-item>
                         <ion-item @click="removePantry(pantry.id)">
                             <ion-label>Usuń</ion-label>
                         </ion-item>
-                    </ion-list>
+                    </uiList>
                 </ion-content>
             </ion-popover>
         </div>
