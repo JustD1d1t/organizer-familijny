@@ -1,13 +1,8 @@
 <script setup>
-const { backendUrl } = useConfig()
-
 const newspapersStore = useNewspapersStore()
-const { setShops } = newspapersStore
 const { shops, isLoading } = storeToRefs(newspapersStore)
 
 import allshops from '@/data/allshops';
-console.log(allshops)
-console.log(allshops['abc'].img)
 
 const searchValue = ref("")
 
@@ -21,12 +16,6 @@ const goToShop = (title) => {
     const searchedIndex = shops.value.findIndex((shop) => shop.title === title)
     navigateTo(`/newspaper/${searchedIndex}`)
 }
-
-onMounted(async () => {
-    if (!shops?.value.length) {
-        setShops()
-    }
-})
 </script>
 
 <template>

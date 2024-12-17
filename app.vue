@@ -15,6 +15,7 @@ const userStore = useUserStore()
 const { logoutUser, getUserData } = userStore
 const { uid } = storeToRefs(userStore)
 const { openInfoModal } = useAlerts()
+const { setShops } = newspapersStore
 
 CapacitorApp.addListener("backButton", (e) => {
     if (!e.canGoBack) {
@@ -50,6 +51,7 @@ onMounted(async () => {
         await getFamilyDetails()
         await getNotifications()
     }
+    await setShops()
 })
 
 const downloadExpenses = async () => {

@@ -3,6 +3,7 @@ import axios from "axios"
 const router = useRouter()
 const userStore = useUserStore()
 const { uid } = storeToRefs(userStore)
+const { request } = useFetchRequest()
 
 const { backendUrl } = useConfig()
 
@@ -25,12 +26,8 @@ const recipeLink = ref("")
 
 const fetchContent = async (url) => {
     try {
-        const response = await axios.get(`${backendUrl}/html`, {
-            params: {
-                url: url,
-            },
-        })
-        return response.data.data
+        const response = await request(`${backendUrl}/html?url=${url}`)
+        return response.data
     } catch (error) {
         console.error("Error fetching content:", error)
     }
@@ -78,6 +75,7 @@ const add = async () => {
         url: recipeLink.value,
     }
     await addRecipe(recipe)
+    recipeLink.value = ""
     router.back()
 }
 const addOwnRecipe = () => {
@@ -116,7 +114,11 @@ const addOwnRecipe = () => {
                 Dodaj przepis ze strony
             </uiButton>
             <span class="text-center block">lub</span>
-            <uiButton type="secondary" @click="addOwnRecipe" class="my-3 w-full">
+            <uiButton
+                type="secondary"
+                @click="addOwnRecipe"
+                class="my-3 w-full"
+            >
                 Zapisz swój własny przepis
             </uiButton>
         </ion-content>

@@ -41,7 +41,6 @@ const goToAddRecipePage = (recipe) => {
                 <ion-spinner name="lines-sharp"></ion-spinner>
             </div>
             <div v-else-if="!recipes.length">
-                <h4>Nie masz jeszcze zapisanych przepisów.</h4>
                 <uiInfoCard
                     title="Czy wiesz, że..."
                     subtitle="Możesz dodawać przepisy ze stron:"
